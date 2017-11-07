@@ -20,6 +20,6 @@ public class TestController {
     @ResponseBody
     public String test(){
         testService.test();
-        return new String("TestCenterApplication --version 1");
+        return "TestCenterApplication --version 1";
     }
 }
