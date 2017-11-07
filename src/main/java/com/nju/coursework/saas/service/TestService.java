@@ -1,5 +1,7 @@
 package com.nju.coursework.saas.service;
 
+import com.nju.coursework.saas.db.StudentRepository;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 /**
@@ -7,8 +9,11 @@ import org.springframework.stereotype.Service;
  */
 @Service
 public class TestService {
+    @Autowired
+    StudentRepository studentRepository;
 
     public void test(){
-        System.out.println("yes");
+        System.out.println("test");
+        System.out.println(studentRepository.findAll().toString());
     }
 }
