@@ -1,4 +1,4 @@
-package com.nju.coursework.saas.entity;
+package com.nju.coursework.saas.data.entity;
 
 import javax.persistence.*;
 

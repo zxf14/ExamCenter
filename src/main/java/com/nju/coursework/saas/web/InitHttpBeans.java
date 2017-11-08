@@ -1,4 +1,4 @@
-package com.nju.coursework.saas;
+package com.nju.coursework.saas.web;
 
 import org.springframework.stereotype.Component;
 

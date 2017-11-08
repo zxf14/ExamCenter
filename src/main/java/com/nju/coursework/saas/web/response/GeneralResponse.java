@@ -1,4 +1,4 @@
-package com.nju.coursework.saas.entity.response;
+package com.nju.coursework.saas.web.response;
 
 import java.util.Map;
 

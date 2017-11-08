@@ -1,14 +1,13 @@
-package com.nju.coursework.saas.service;
+package com.nju.coursework.saas.logic.impl;
 
-import com.nju.coursework.saas.db.StudentRepository;
+import com.nju.coursework.saas.data.db.StudentRepository;
+import com.nju.coursework.saas.logic.service.TestService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-/**
- * Created by guhan on 17/11/1.
- */
+
 @Service
-public class TestService {
+public class TestImpl implements TestService{
     @Autowired
     StudentRepository studentRepository;
 

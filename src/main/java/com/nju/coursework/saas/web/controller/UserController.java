@@ -1,8 +1,7 @@
-package com.nju.coursework.saas.controller;
+package com.nju.coursework.saas.web.controller;
 
-import com.nju.coursework.saas.entity.response.GeneralResponse;
-import com.nju.coursework.saas.service.MailService;
-import com.nju.coursework.saas.service.UserService;
+import com.nju.coursework.saas.web.response.GeneralResponse;
+import com.nju.coursework.saas.logic.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
