@@ -1,6 +1,6 @@
-package com.nju.coursework.saas.db;
+package com.nju.coursework.saas.data.db;
 
-import com.nju.coursework.saas.entity.Student;
+import com.nju.coursework.saas.data.entity.Student;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
