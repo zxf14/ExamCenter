@@ -17,12 +17,6 @@ public class UserController {
     @Autowired
     UserService userService;
 
-    @PostMapping("/register")
-    @ResponseBody
-    public GeneralResponse register(String email, String password){
-        return userService.register(email,password);
-    }
-
     @GetMapping("/login")
     @ResponseBody
     public GeneralResponse login(String email, String password){

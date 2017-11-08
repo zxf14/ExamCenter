@@ -9,17 +9,17 @@ import javax.persistence.*;
 @Table(name = "user", schema = "TestCenter", catalog = "")
 public class User {
     @GeneratedValue
-    private long id;
+    private int id;
     private String userName;
     private String password;
 
     @Id
     @Column(name = "id", nullable = false)
-    public long getId() {
+    public int getId() {
         return id;
     }
 
-    public void setId(long id) {
+    public void setId(int id) {
         this.id = id;
     }
 

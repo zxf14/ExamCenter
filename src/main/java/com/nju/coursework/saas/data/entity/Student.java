@@ -1,5 +1,7 @@
 package com.nju.coursework.saas.data.entity;
 
+import com.nju.coursework.saas.logic.vo.StudentVO;
+
 import javax.persistence.*;
 
 /**
@@ -12,8 +14,6 @@ public class Student {
     private String studentNo;
     private String password;
     private String mail;
-    private String grade;
-    private String classname;
 
     @Basic
     @Column(name = "name", nullable = false, length = 100)
@@ -55,26 +55,6 @@ public class Student {
         this.studentNo = studentNo;
     }
 
-    @Basic
-    @Column(name = "classname", nullable = false, length = 100)
-    public String getClassname() {
-        return classname;
-    }
-
-    public void setClassname(String classname) {
-        this.classname = classname;
-    }
-
-    @Basic
-    @Column(name = "grade", nullable = false, length = 100)
-    public String getGrade() {
-        return classname;
-    }
-
-    public void setGrade(String grade) {
-        this.grade = grade;
-    }
-
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
@@ -85,9 +65,7 @@ public class Student {
         if (name != null ? !name.equals(student.name) : student.name != null) return false;
         if (studentNo != null ? !studentNo.equals(student.studentNo) : student.studentNo != null) return false;
         if (password != null ? !password.equals(student.password) : student.password != null) return false;
-        if (mail != null ? !mail.equals(student.mail) : student.mail != null) return false;
-        if (grade != null ? !grade.equals(student.grade) : student.grade != null) return false;
-        return classname != null ? classname.equals(student.classname) : student.classname == null;
+        return (mail != null ? !mail.equals(student.mail) : student.mail != null);
     }
 
     @Override
@@ -96,8 +74,6 @@ public class Student {
         result = 31 * result + (studentNo != null ? studentNo.hashCode() : 0);
         result = 31 * result + (password != null ? password.hashCode() : 0);
         result = 31 * result + (mail != null ? mail.hashCode() : 0);
-        result = 31 * result + (grade != null ? grade.hashCode() : 0);
-        result = 31 * result + (classname != null ? classname.hashCode() : 0);
         return result;
     }
 
@@ -108,8 +84,6 @@ public class Student {
                 ", studentNo='" + studentNo + '\'' +
                 ", password='" + password + '\'' +
                 ", mail='" + mail + '\'' +
-                ", grade='" + grade + '\'' +
-                ", classname='" + classname + '\'' +
                 '}';
     }
 }

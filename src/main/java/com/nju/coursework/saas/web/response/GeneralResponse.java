@@ -18,4 +18,13 @@ public class GeneralResponse {
     public void setData(Map<String,Object> data){
         this.data = data;
     }
+
+    @Override
+    public String toString() {
+        return "GeneralResponse{" +
+                "success=" + success +
+                ", msg='" + msg + '\'' +
+                ", data=" + data +
+                '}';
+    }
 }
