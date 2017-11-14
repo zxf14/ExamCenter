@@ -1,7 +1,6 @@
 package com.nju.coursework.saas.logic.impl;
 
 import com.nju.coursework.saas.data.db.UserRepository;
-import com.nju.coursework.saas.data.entity.Student;
 import com.nju.coursework.saas.data.entity.User;
 import com.nju.coursework.saas.logic.service.UserService;
 import com.nju.coursework.saas.web.response.GeneralResponse;

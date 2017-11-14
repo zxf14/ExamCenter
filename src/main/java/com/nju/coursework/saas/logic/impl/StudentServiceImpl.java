@@ -28,6 +28,7 @@ public class StudentServiceImpl implements StudentService {
         student.setName(studentVO.getName());
         student.setPassword(studentVO.getPassword());
         student.setStudentNo(studentVO.getStudentNo());
+
         studentRepository.saveAndFlush(student);
         return new GeneralResponse(true, "");
     }

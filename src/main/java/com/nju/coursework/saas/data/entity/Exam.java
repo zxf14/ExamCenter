@@ -1,35 +1,61 @@
 package com.nju.coursework.saas.data.entity;
 
 import javax.persistence.*;
+import java.sql.Timestamp;
+import java.util.Collection;
 
 /**
- * Created by zhouxiaofan on 2017/11/7.
+ * Created by zhouxiaofan on 2017/11/14.
  */
 @Entity
-@Table(name = "exam", schema = "TestCenter", catalog = "")
 public class Exam {
-    private long id;
-    private String title;
+    private int id;
+    private Timestamp startTime;
+    private Timestamp endTime;
+    private String subject;
+    private Collection<Quiz> quiz;
+    private User teacher;
+    private Collection<Testee> testee;
 
     @Id
     @GeneratedValue
     @Column(name = "id", nullable = false)
-    public long getId() {
+    public int getId() {
         return id;
     }
 
-    public void setId(long id) {
+    public void setId(int id) {
         this.id = id;
     }
 
     @Basic
-    @Column(name = "title", nullable = false, length = 100)
-    public String getTitle() {
-        return title;
+    @Column(name = "start_time", nullable = true)
+    public Timestamp getStartTime() {
+        return startTime;
     }
 
-    public void setTitle(String title) {
-        this.title = title;
+    public void setStartTime(Timestamp startTime) {
+        this.startTime = startTime;
+    }
+
+    @Basic
+    @Column(name = "end_time", nullable = true)
+    public Timestamp getEndTime() {
+        return endTime;
+    }
+
+    public void setEndTime(Timestamp endTime) {
+        this.endTime = endTime;
+    }
+
+    @Basic
+    @Column(name = "subject", nullable = true, length = 20)
+    public String getSubject() {
+        return subject;
+    }
+
+    public void setSubject(String subject) {
+        this.subject = subject;
     }
 
     @Override
@@ -37,18 +63,50 @@ public class Exam {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
 
-        Exam that = (Exam) o;
+        Exam exam = (Exam) o;
 
-        if (id != that.id) return false;
-        if (title != null ? !title.equals(that.title) : that.title != null) return false;
+        if (id != exam.id) return false;
+        if (startTime != null ? !startTime.equals(exam.startTime) : exam.startTime != null) return false;
+        if (endTime != null ? !endTime.equals(exam.endTime) : exam.endTime != null) return false;
+        if (subject != null ? !subject.equals(exam.subject) : exam.subject != null) return false;
 
         return true;
     }
 
     @Override
     public int hashCode() {
-        int result = (int) (id ^ (id >>> 32));
-        result = 31 * result + (title != null ? title.hashCode() : 0);
+        int result = id;
+        result = 31 * result + (startTime != null ? startTime.hashCode() : 0);
+        result = 31 * result + (endTime != null ? endTime.hashCode() : 0);
+        result = 31 * result + (subject != null ? subject.hashCode() : 0);
         return result;
+    }
+
+    @OneToMany(mappedBy = "exam")
+    public Collection<Quiz> getQuiz() {
+        return quiz;
+    }
+
+    public void setQuiz(Collection<Quiz> quiz) {
+        this.quiz = quiz;
+    }
+
+    @ManyToOne
+    @JoinColumn(name = "teacherId", referencedColumnName = "id")
+    public User getTeacher() {
+        return teacher;
+    }
+
+    public void setTeacher(User teacher) {
+        this.teacher = teacher;
+    }
+
+    @OneToMany(mappedBy = "exam")
+    public Collection<Testee> getTestee() {
+        return testee;
+    }
+
+    public void setTestee(Collection<Testee> testee) {
+        this.testee = testee;
     }
 }

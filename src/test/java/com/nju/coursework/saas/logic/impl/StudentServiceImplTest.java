@@ -2,13 +2,10 @@ package com.nju.coursework.saas.logic.impl;
 
 import com.nju.coursework.BaseTests;
 import com.nju.coursework.saas.logic.service.StudentService;
-import com.nju.coursework.saas.logic.service.UserService;
 import com.nju.coursework.saas.logic.vo.StudentVO;
 import org.junit.Test;
 
 import javax.annotation.Resource;
-
-import static org.junit.Assert.*;
 
 /**
  * Created by zhouxiaofan on 2017/11/8.
