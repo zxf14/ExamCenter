@@ -1,7 +1,7 @@
 package com.nju.coursework.saas.data.db;
 
-import com.nju.coursework.saas.data.entity.Group;
-import com.nju.coursework.saas.data.entity.Student;
+import com.nju.coursework.saas.data.entity.Groups;
+import com.nju.coursework.saas.data.entity.User;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
@@ -10,7 +10,9 @@ import java.util.List;
 
 
 @Repository
-public interface GroupRepository extends JpaRepository<Group, Integer> {
+public interface GroupRepository extends JpaRepository<Groups, Integer> {
 
+    @Query("select groups from Groups groups where groups.teacher=?1")
+    List<Groups> findByTeacher(User userId);
 }
 
