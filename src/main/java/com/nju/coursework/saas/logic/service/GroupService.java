@@ -1,6 +1,6 @@
 package com.nju.coursework.saas.logic.service;
 
-import com.nju.coursework.saas.data.entity.Groups;
+import com.nju.coursework.saas.logic.vo.GroupsVO;
 import com.nju.coursework.saas.web.response.GeneralResponse;
 
 import java.io.InputStream;
@@ -27,6 +27,6 @@ public interface GroupService {
      * @param userId
      * @return
      */
-    List<Groups> getGroups(int userId);
+    List<GroupsVO> getGroups(int userId);
 
 }

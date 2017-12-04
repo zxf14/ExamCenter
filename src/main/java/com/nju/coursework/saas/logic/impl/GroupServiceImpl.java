@@ -4,6 +4,7 @@ import com.nju.coursework.saas.data.db.GroupRepository;
 import com.nju.coursework.saas.data.db.UserRepository;
 import com.nju.coursework.saas.data.entity.Groups;
 import com.nju.coursework.saas.logic.service.GroupService;
+import com.nju.coursework.saas.logic.vo.GroupsVO;
 import com.nju.coursework.saas.util.ExcelConverter;
 import com.nju.coursework.saas.web.response.GeneralResponse;
 import org.apache.poi.xssf.usermodel.XSSFRow;
@@ -16,6 +17,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 public class GroupServiceImpl implements GroupService {
@@ -58,8 +60,9 @@ public class GroupServiceImpl implements GroupService {
     }
 
     @Override
-    public List<Groups> getGroups(int userId) {
+    public List<GroupsVO> getGroups(int userId) {
         List<Groups> groups = groupRepository.findByTeacher(userRepository.findOne(userId));
-        return groups;
+        List<GroupsVO> result = groups.stream().map(item -> new GroupsVO(item)).collect(Collectors.toList());
+        return result;
     }
 }

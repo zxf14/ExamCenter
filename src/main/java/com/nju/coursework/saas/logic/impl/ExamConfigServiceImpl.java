@@ -49,7 +49,7 @@ public class ExamConfigServiceImpl implements ExamConfigService {
                     String mail = s.getMail();
                     Testee testee = new Testee();
                     testee.setStudentMail(mail);
-                    testee.setStudentByStudentId(student.get(0));
+//                    testee.setStudent(student.get(0));
                     testees.add(testee);
                 }
         );
@@ -85,8 +85,8 @@ public class ExamConfigServiceImpl implements ExamConfigService {
         if (excel != null) {
             groupService.createGroup(userId, excel, groupName);
         }
-        List<Groups> validGroups = groupService.getGroups(userId).stream()
-                .filter(g -> g.getName() == groupName).collect(Collectors.toList());
+//        List<Groups> validGroups = groupService.getGroups(userId).stream()
+//                .filter(g -> g.getName() == groupName).collect(Collectors.toList());
         //TODO 从groups中获取name和mail
         List<Quiz> quizs = new ArrayList<>();
         quizVO.stream().forEach(

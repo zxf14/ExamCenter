@@ -22,7 +22,6 @@ public class GroupServiceImplTest extends BaseTests {
     @Test
     public void getGroups() throws Exception {
         System.out.println(groupService.getGroups(1));
-
     }
 
 }
