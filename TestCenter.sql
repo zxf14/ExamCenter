@@ -11,7 +11,7 @@
  Target Server Version : 50716
  File Encoding         : utf-8
 
- Date: 12/04/2017 17:02:46 PM
+ Date: 12/04/2017 17:42:41 PM
 */
 
 SET NAMES utf8;
@@ -44,7 +44,7 @@ CREATE TABLE `course` (
   PRIMARY KEY (`id`),
   KEY `user_id` (`user_id`),
   CONSTRAINT `course_ibfk_1` FOREIGN KEY (`user_id`) REFERENCES `user` (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=7 DEFAULT CHARSET=utf8;
 
 -- ----------------------------
 --  Table structure for `exam`
@@ -143,6 +143,7 @@ CREATE TABLE `testee` (
   `score` int(11) DEFAULT '0' COMMENT '分数',
   PRIMARY KEY (`id`),
   KEY `examId` (`exam_id`),
+  KEY `testee_ibfk_1` (`student_id`),
   CONSTRAINT `testee_ibfk_1` FOREIGN KEY (`student_id`) REFERENCES `student` (`student_no`),
   CONSTRAINT `testee_ibfk_2` FOREIGN KEY (`exam_id`) REFERENCES `exam` (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_bin COMMENT='参加考试者';
@@ -156,6 +157,6 @@ CREATE TABLE `user` (
   `password` varchar(45) COLLATE utf8_bin NOT NULL,
   `user_name` varchar(100) COLLATE utf8_bin NOT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_bin;
+) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8 COLLATE=utf8_bin;
 
 SET FOREIGN_KEY_CHECKS = 1;
