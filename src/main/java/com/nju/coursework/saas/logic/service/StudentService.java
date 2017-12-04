@@ -10,6 +10,7 @@ public interface StudentService {
 
     /**
      * 学生注册
+     *
      * @param studentVO 学生信息
      * @return
      */
@@ -17,14 +18,16 @@ public interface StudentService {
 
     /**
      * 登陆
+     *
      * @param studentNo 学号
-     * @param password 密码
+     * @param password  密码
      * @return
      */
     GeneralResponse login(String studentNo, String password);
 
     /**
      * 获取验证码
+     *
      * @param mail 邮箱地址
      * @return 验证码 6 位数字
      */

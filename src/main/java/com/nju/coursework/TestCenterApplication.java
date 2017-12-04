@@ -8,8 +8,8 @@ import org.springframework.context.annotation.ComponentScan;
 @ComponentScan(basePackages = "com.nju.coursework")
 public class TestCenterApplication {
 
-	public static void main(String[] args) {
-		SpringApplication.run(TestCenterApplication.class, args);
-	}
+    public static void main(String[] args) {
+        SpringApplication.run(TestCenterApplication.class, args);
+    }
 
 }

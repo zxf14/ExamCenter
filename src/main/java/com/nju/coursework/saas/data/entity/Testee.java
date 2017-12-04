@@ -84,4 +84,8 @@ public class Testee {
     public void setExamByExamId(Exam examByExamId) {
         this.examByExamId = examByExamId;
     }
+
+    public boolean hasEmail() {
+        return studentMail != null;
+    }
 }

@@ -18,7 +18,7 @@ public class TestController {
 
     @GetMapping("/test")
     @ResponseBody
-    public String test(){
+    public String test() {
         testService.test();
         return "TestCenterApplication --version 1";
     }

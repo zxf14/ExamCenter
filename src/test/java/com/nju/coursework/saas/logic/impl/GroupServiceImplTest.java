@@ -6,7 +6,6 @@ import org.junit.Test;
 import org.springframework.core.io.ClassPathResource;
 
 import javax.annotation.Resource;
-import java.io.InputStream;
 
 /**
  * Created by zhouxiaofan on 2017/12/2.
@@ -17,7 +16,7 @@ public class GroupServiceImplTest extends BaseTests {
 
     @Test
     public void createGroup() throws Exception {
-        groupService.createGroup(1, new ClassPathResource("static/studentList.xlsx").getInputStream(),"name");
+        groupService.createGroup(1, new ClassPathResource("static/studentList.xlsx").getInputStream(), "name");
     }
 
     @Test

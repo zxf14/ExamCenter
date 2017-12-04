@@ -14,7 +14,7 @@ public class MailServiceImpl implements MailService {
     MailMaster mailMaster;
 
     public void validateMail(String userMail){
-        mailMaster.sendForValidation(userMail,"https://localhost:8080/login");
+        mailMaster.sendForValidation(userMail,"https://localhost:8080/student/login");
     }
 
 }

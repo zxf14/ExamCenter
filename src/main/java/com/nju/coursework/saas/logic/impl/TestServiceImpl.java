@@ -7,11 +7,11 @@ import org.springframework.stereotype.Service;
 
 
 @Service
-public class TestServiceImpl implements TestService{
+public class TestServiceImpl implements TestService {
     @Autowired
     StudentRepository studentRepository;
 
-    public void test(){
+    public void test() {
         System.out.println("test");
         System.out.println(studentRepository.findAll().toString());
     }

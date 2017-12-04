@@ -16,7 +16,7 @@ public class StudentServiceImplTest extends BaseTests {
 
     @Test
     public void login() throws Exception {
-        System.out.println(studentService.login("aa","a"));
+        System.out.println(studentService.login("aa", "a"));
     }
 
     @Test
@@ -26,7 +26,7 @@ public class StudentServiceImplTest extends BaseTests {
     }
 
     @Test
-    public void getVerifyCode(){
+    public void getVerifyCode() {
         System.out.println(studentService.getVerifyCode("mail1@qq.com"));
     }
 }
