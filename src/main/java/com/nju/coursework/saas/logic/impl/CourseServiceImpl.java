@@ -3,7 +3,6 @@ package com.nju.coursework.saas.logic.impl;
 import com.nju.coursework.saas.data.db.CourseRepository;
 import com.nju.coursework.saas.data.db.UserRepository;
 import com.nju.coursework.saas.data.entity.Course;
-import com.nju.coursework.saas.data.entity.User;
 import com.nju.coursework.saas.logic.service.CourseService;
 import com.nju.coursework.saas.web.response.GeneralResponse;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -38,12 +37,7 @@ public class CourseServiceImpl implements CourseService {
 
     @Override
     public List<Course> getCourse(int userId) {
-        User user = userRepository.findOne(userId);
-        if (user != null) {
-            List<Course> courses = (List<Course>) user.getCoursesById();
-            return courses;
-        } else {
-            return null;
-        }
+        List<Course> courses = courseRepository.findByUserId(userId);
+        return courses;
     }
 }

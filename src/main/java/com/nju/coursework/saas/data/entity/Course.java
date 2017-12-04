@@ -54,6 +54,16 @@ public class Course {
         return result;
     }
 
+    @Override
+    public String toString() {
+        return "Course{" +
+                "name='" + name + '\'' +
+                ", id=" + id +
+                ", userByUserId=" +
+                ", questionsById=" +
+                '}';
+    }
+
     @ManyToOne
     @JoinColumn(name = "user_id", referencedColumnName = "id")
     public User getUserByUserId() {
