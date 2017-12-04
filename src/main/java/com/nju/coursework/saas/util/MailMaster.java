@@ -68,13 +68,19 @@ public class MailMaster {
     private MimeMessage createMessage(String sender, List<String> receiver, String subject, String content) throws Exception {
         MimeMessage message = new MimeMessage(session);
         List<InternetAddress> receiverList = new ArrayList<>();
-        for (String ritem : receiver) {
-            receiverList.add(new InternetAddress(ritem, "学生", "UTF-8"));
+        Address[] recvArray = new Address[receiver.size()];
+        int i=0;
+        for(String ritem: receiver){
+            receiverList.add(new InternetAddress(ritem,"学生","UTF-8"));
+            recvArray[i] = new InternetAddress(ritem,"学生","UTF-8");
+            i++;
         }
-        message.setFrom(new InternetAddress(sender, "软件学院考试中心", "UTF-8"));
-        message.setRecipients(MimeMessage.RecipientType.TO, (Address[]) receiverList.toArray());
-        message.setSubject(subject, "UTF-8");
-        message.setContent(content, "text/html;charset=UTF-8");
+
+
+        message.setFrom(new InternetAddress(sender,"软件学院考试中心","UTF-8"));
+        message.setRecipients(MimeMessage.RecipientType.TO, recvArray);
+        message.setSubject(subject,"UTF-8");
+        message.setContent(content,"text/html;charset=UTF-8");
         message.setSentDate(new Date());
         message.saveChanges();
         return message;

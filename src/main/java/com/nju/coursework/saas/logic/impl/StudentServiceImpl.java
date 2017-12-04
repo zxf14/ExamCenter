@@ -2,6 +2,7 @@ package com.nju.coursework.saas.logic.impl;
 
 import com.nju.coursework.saas.data.db.StudentRepository;
 import com.nju.coursework.saas.data.entity.Student;
+import com.nju.coursework.saas.logic.service.MailService;
 import com.nju.coursework.saas.logic.service.StudentService;
 import com.nju.coursework.saas.logic.vo.StudentVO;
 import com.nju.coursework.saas.web.response.GeneralResponse;
@@ -19,10 +20,14 @@ public class StudentServiceImpl implements StudentService {
     @Autowired
     StudentRepository studentRepository;
 
+    @Autowired
+    MailService mailService;
+
     @Override
     public GeneralResponse register(StudentVO studentVO) {
         List<Student> students = studentRepository.findByNo(studentVO.getStudentNo());
         if (students.size() > 0) return new GeneralResponse(false, "学号已注册");
+        mailService.validateMail(studentVO.getMail());
         Student student = new Student();
         student.setMail(studentVO.getMail());
         student.setName(studentVO.getName());
@@ -30,7 +35,7 @@ public class StudentServiceImpl implements StudentService {
         student.setStudentNo(studentVO.getStudentNo());
 
         studentRepository.saveAndFlush(student);
-        return new GeneralResponse(true, "");
+        return new GeneralResponse(true, "mail sent");
     }
 
     @Override
