@@ -11,7 +11,7 @@
  Target Server Version : 50716
  File Encoding         : utf-8
 
- Date: 12/02/2017 13:55:46 PM
+ Date: 12/04/2017 17:02:46 PM
 */
 
 SET NAMES utf8;
@@ -22,16 +22,29 @@ SET FOREIGN_KEY_CHECKS = 0;
 -- ----------------------------
 DROP TABLE IF EXISTS `answer`;
 CREATE TABLE `answer` (
-  `id` int(11) NOT NULL,
-  `quizId` int(11) NOT NULL,
-  `studentId` varchar(100) COLLATE utf8_bin NOT NULL,
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `quiz_id` int(11) NOT NULL,
+  `student_id` varchar(100) COLLATE utf8_bin NOT NULL,
   `content` varchar(100) COLLATE utf8_bin DEFAULT NULL COMMENT '存选择的option id 的数组',
   PRIMARY KEY (`id`),
-  KEY `studentId` (`studentId`),
-  KEY `quizId` (`quizId`),
-  CONSTRAINT `answer_ibfk_1` FOREIGN KEY (`quizId`) REFERENCES `quiz` (`id`),
-  CONSTRAINT `answer_ibfk_2` FOREIGN KEY (`studentId`) REFERENCES `student` (`student_no`)
+  KEY `studentId` (`student_id`),
+  KEY `quizId` (`quiz_id`),
+  CONSTRAINT `answer_ibfk_1` FOREIGN KEY (`quiz_id`) REFERENCES `quiz` (`id`),
+  CONSTRAINT `answer_ibfk_2` FOREIGN KEY (`student_id`) REFERENCES `student` (`student_no`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_bin COMMENT='学生的回答';
+
+-- ----------------------------
+--  Table structure for `course`
+-- ----------------------------
+DROP TABLE IF EXISTS `course`;
+CREATE TABLE `course` (
+  `name` varchar(20) DEFAULT NULL,
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `user_id` int(11) DEFAULT NULL,
+  PRIMARY KEY (`id`),
+  KEY `user_id` (`user_id`),
+  CONSTRAINT `course_ibfk_1` FOREIGN KEY (`user_id`) REFERENCES `user` (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 -- ----------------------------
 --  Table structure for `exam`
@@ -39,13 +52,13 @@ CREATE TABLE `answer` (
 DROP TABLE IF EXISTS `exam`;
 CREATE TABLE `exam` (
   `start_time` datetime DEFAULT NULL,
-  `id` int(11) NOT NULL,
+  `id` int(11) NOT NULL AUTO_INCREMENT,
   `end_time` datetime DEFAULT NULL,
   `subject` varchar(20) DEFAULT NULL COMMENT '科目',
-  `teacherId` int(11) DEFAULT NULL,
+  `user_id` int(11) DEFAULT NULL,
   PRIMARY KEY (`id`),
-  KEY `teacherId` (`teacherId`),
-  CONSTRAINT `teacherId` FOREIGN KEY (`teacherId`) REFERENCES `user` (`id`) ON DELETE SET NULL ON UPDATE SET NULL
+  KEY `user_id` (`user_id`) USING BTREE,
+  CONSTRAINT `exam_ibfk_1` FOREIGN KEY (`user_id`) REFERENCES `user` (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='一次老师发起的考试';
 
 -- ----------------------------
@@ -53,27 +66,27 @@ CREATE TABLE `exam` (
 -- ----------------------------
 DROP TABLE IF EXISTS `groups`;
 CREATE TABLE `groups` (
-  `teacher_id` int(11) DEFAULT NULL,
+  `user_id` int(11) DEFAULT NULL,
   `name` varchar(20) DEFAULT NULL,
   `students` varchar(5000) DEFAULT NULL,
   `id` int(11) NOT NULL AUTO_INCREMENT,
   PRIMARY KEY (`id`),
-  KEY `teacherId` (`teacher_id`),
-  CONSTRAINT `groups_ibfk_1` FOREIGN KEY (`teacher_id`) REFERENCES `user` (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8;
+  KEY `user_id` (`user_id`) USING BTREE,
+  CONSTRAINT `groups_ibfk_1` FOREIGN KEY (`user_id`) REFERENCES `user` (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=7 DEFAULT CHARSET=utf8;
 
 -- ----------------------------
 --  Table structure for `option`
 -- ----------------------------
 DROP TABLE IF EXISTS `option`;
 CREATE TABLE `option` (
-  `id` int(11) NOT NULL,
-  `questionId` int(11) NOT NULL,
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `question_id` int(11) NOT NULL,
   `content` varchar(1000) DEFAULT NULL,
   `isRight` tinyint(4) DEFAULT '0' COMMENT '0错误1正确',
   PRIMARY KEY (`id`),
-  KEY `questionId` (`questionId`),
-  CONSTRAINT `questionId` FOREIGN KEY (`questionId`) REFERENCES `question` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
+  KEY `questionId` (`question_id`),
+  CONSTRAINT `option_ibfk_1` FOREIGN KEY (`question_id`) REFERENCES `question` (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='题目选项';
 
 -- ----------------------------
@@ -82,9 +95,12 @@ CREATE TABLE `option` (
 DROP TABLE IF EXISTS `question`;
 CREATE TABLE `question` (
   `content` varchar(10000) DEFAULT NULL,
-  `id` int(11) NOT NULL,
+  `id` int(11) NOT NULL AUTO_INCREMENT,
   `type` int(11) DEFAULT '0',
-  PRIMARY KEY (`id`)
+  `course_id` int(100) DEFAULT NULL,
+  PRIMARY KEY (`id`),
+  KEY `courseId` (`course_id`) USING BTREE,
+  CONSTRAINT `question_ibfk_1` FOREIGN KEY (`course_id`) REFERENCES `course` (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='倒入的题目';
 
 -- ----------------------------
@@ -92,15 +108,15 @@ CREATE TABLE `question` (
 -- ----------------------------
 DROP TABLE IF EXISTS `quiz`;
 CREATE TABLE `quiz` (
-  `examId` int(11) DEFAULT NULL,
-  `questionId` int(11) DEFAULT NULL,
-  `id` int(11) NOT NULL,
+  `exam_id` int(11) DEFAULT NULL,
+  `question_id` int(11) DEFAULT NULL,
+  `id` int(11) NOT NULL AUTO_INCREMENT,
   `value` int(11) DEFAULT NULL COMMENT '分值',
   PRIMARY KEY (`id`),
-  KEY `examId` (`examId`),
-  KEY `questionId` (`questionId`),
-  CONSTRAINT `quiz_ibfk_1` FOREIGN KEY (`examId`) REFERENCES `exam` (`id`) ON DELETE SET NULL ON UPDATE SET NULL,
-  CONSTRAINT `quiz_ibfk_2` FOREIGN KEY (`questionId`) REFERENCES `question` (`id`) ON DELETE SET NULL ON UPDATE SET NULL
+  KEY `examId` (`exam_id`),
+  KEY `questionId` (`question_id`),
+  CONSTRAINT `quiz_ibfk_1` FOREIGN KEY (`exam_id`) REFERENCES `exam` (`id`),
+  CONSTRAINT `quiz_ibfk_2` FOREIGN KEY (`question_id`) REFERENCES `question` (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='考试试题';
 
 -- ----------------------------
@@ -120,14 +136,15 @@ CREATE TABLE `student` (
 -- ----------------------------
 DROP TABLE IF EXISTS `testee`;
 CREATE TABLE `testee` (
-  `studentId` varchar(100) COLLATE utf8_bin NOT NULL,
-  `examId` int(11) NOT NULL,
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `student_id` varchar(100) COLLATE utf8_bin NOT NULL,
+  `exam_id` int(11) NOT NULL,
   `student_mail` varchar(30) COLLATE utf8_bin DEFAULT NULL,
   `score` int(11) DEFAULT '0' COMMENT '分数',
-  PRIMARY KEY (`studentId`,`examId`),
-  KEY `examId` (`examId`),
-  CONSTRAINT `testee_ibfk_1` FOREIGN KEY (`studentId`) REFERENCES `student` (`student_no`) ON DELETE CASCADE ON UPDATE CASCADE,
-  CONSTRAINT `testee_ibfk_2` FOREIGN KEY (`examId`) REFERENCES `exam` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
+  PRIMARY KEY (`id`),
+  KEY `examId` (`exam_id`),
+  CONSTRAINT `testee_ibfk_1` FOREIGN KEY (`student_id`) REFERENCES `student` (`student_no`),
+  CONSTRAINT `testee_ibfk_2` FOREIGN KEY (`exam_id`) REFERENCES `exam` (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_bin COMMENT='参加考试者';
 
 -- ----------------------------
@@ -135,7 +152,7 @@ CREATE TABLE `testee` (
 -- ----------------------------
 DROP TABLE IF EXISTS `user`;
 CREATE TABLE `user` (
-  `id` int(11) NOT NULL,
+  `id` int(11) NOT NULL AUTO_INCREMENT,
   `password` varchar(45) COLLATE utf8_bin NOT NULL,
   `user_name` varchar(100) COLLATE utf8_bin NOT NULL,
   PRIMARY KEY (`id`)

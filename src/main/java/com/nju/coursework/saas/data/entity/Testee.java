@@ -3,15 +3,15 @@ package com.nju.coursework.saas.data.entity;
 import javax.persistence.*;
 
 /**
- * Created by zhouxiaofan on 2017/11/14.
+ * Created by zhouxiaofan on 2017/12/4.
  */
 @Entity
 public class Testee {
     private int id;
     private String studentMail;
     private Integer score;
-    private Student student;
-    private Exam exam;
+    private Student studentByStudentId;
+    private Exam examByExamId;
 
     @Id
     @GeneratedValue
@@ -50,7 +50,6 @@ public class Testee {
         if (o == null || getClass() != o.getClass()) return false;
 
         Testee testee = (Testee) o;
-
         if (id != testee.id) return false;
         if (studentMail != null ? !studentMail.equals(testee.studentMail) : testee.studentMail != null) return false;
         if (score != null ? !score.equals(testee.score) : testee.score != null) return false;
@@ -67,22 +66,22 @@ public class Testee {
     }
 
     @ManyToOne
-    @JoinColumn(name = "studentId", referencedColumnName = "student_no", nullable = false)
-    public Student getStudent() {
-        return student;
+    @JoinColumn(name = "student_id", referencedColumnName = "student_no", nullable = false)
+    public Student getStudentByStudentId() {
+        return studentByStudentId;
     }
 
-    public void setStudent(Student student) {
-        this.student = student;
+    public void setStudentByStudentId(Student studentByStudentId) {
+        this.studentByStudentId = studentByStudentId;
     }
 
     @ManyToOne
-    @JoinColumn(name = "examId", referencedColumnName = "id", nullable = false)
-    public Exam getExam() {
-        return exam;
+    @JoinColumn(name = "exam_id", referencedColumnName = "id", nullable = false)
+    public Exam getExamByExamId() {
+        return examByExamId;
     }
 
-    public void setExam(Exam exam) {
-        this.exam = exam;
+    public void setExamByExamId(Exam examByExamId) {
+        this.examByExamId = examByExamId;
     }
 }

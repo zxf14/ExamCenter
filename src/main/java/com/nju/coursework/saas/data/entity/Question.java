@@ -1,18 +1,16 @@
 package com.nju.coursework.saas.data.entity;
 
 import javax.persistence.*;
-import java.util.Collection;
 
 /**
- * Created by zhouxiaofan on 2017/11/14.
+ * Created by zhouxiaofan on 2017/12/4.
  */
 @Entity
 public class Question {
     private String content;
     private int id;
     private Integer type;
-    private Collection<Quiz> quiz;
-    private Collection<Option> option;
+    private Course courseByCourseId;
 
     @Basic
     @Column(name = "content", nullable = true, length = 10000)
@@ -67,21 +65,13 @@ public class Question {
         return result;
     }
 
-    @OneToMany(mappedBy = "question")
-    public Collection<Quiz> getQuiz() {
-        return quiz;
+    @ManyToOne
+    @JoinColumn(name = "course_id", referencedColumnName = "id")
+    public Course getCourseByCourseId() {
+        return courseByCourseId;
     }
 
-    public void setQuiz(Collection<Quiz> quiz) {
-        this.quiz = quiz;
-    }
-
-    @OneToMany(mappedBy = "question")
-    public Collection<Option> getOption() {
-        return option;
-    }
-
-    public void setOption(Collection<Option> option) {
-        this.option = option;
+    public void setCourseByCourseId(Course courseByCourseId) {
+        this.courseByCourseId = courseByCourseId;
     }
 }

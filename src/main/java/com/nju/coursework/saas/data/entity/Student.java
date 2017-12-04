@@ -4,7 +4,7 @@ import javax.persistence.*;
 import java.util.Collection;
 
 /**
- * Created by zhouxiaofan on 2017/11/14.
+ * Created by zhouxiaofan on 2017/12/4.
  */
 @Entity
 public class Student {
@@ -12,8 +12,8 @@ public class Student {
     private String studentNo;
     private String mail;
     private String password;
-    private Collection<Testee> testee;
-    private Collection<Answer> answer;
+    private Collection<Answer> answersByStudentNo;
+    private Collection<Testee> testeesByStudentNo;
 
     @Basic
     @Column(name = "name", nullable = false, length = 100)
@@ -26,6 +26,7 @@ public class Student {
     }
 
     @Id
+    @GeneratedValue
     @Column(name = "student_no", nullable = false, length = 100)
     public String getStudentNo() {
         return studentNo;
@@ -79,21 +80,21 @@ public class Student {
         return result;
     }
 
-    @OneToMany(mappedBy = "student")
-    public Collection<Testee> getTestee() {
-        return testee;
+    @OneToMany(mappedBy = "studentByStudentId")
+    public Collection<Answer> getAnswersByStudentNo() {
+        return answersByStudentNo;
     }
 
-    public void setTestee(Collection<Testee> testee) {
-        this.testee = testee;
+    public void setAnswersByStudentNo(Collection<Answer> answersByStudentNo) {
+        this.answersByStudentNo = answersByStudentNo;
     }
 
-    @OneToMany(mappedBy = "student")
-    public Collection<Answer> getAnswer() {
-        return answer;
+    @OneToMany(mappedBy = "studentByStudentId")
+    public Collection<Testee> getTesteesByStudentNo() {
+        return testeesByStudentNo;
     }
 
-    public void setAnswer(Collection<Answer> answer) {
-        this.answer = answer;
+    public void setTesteesByStudentNo(Collection<Testee> testeesByStudentNo) {
+        this.testeesByStudentNo = testeesByStudentNo;
     }
 }

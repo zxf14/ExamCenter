@@ -1,15 +1,19 @@
 package com.nju.coursework.saas.data.entity;
 
 import javax.persistence.*;
+import java.util.Collection;
 
 /**
- * Created by zhouxiaofan on 2017/11/14.
+ * Created by zhouxiaofan on 2017/12/4.
  */
 @Entity
 public class User {
     private int id;
     private String userName;
     private String password;
+    private Collection<Course> coursesById;
+    private Collection<Exam> examsById;
+    private Collection<Groups> groupssById;
 
     @Id
     @GeneratedValue
@@ -62,5 +66,32 @@ public class User {
         result = 31 * result + (userName != null ? userName.hashCode() : 0);
         result = 31 * result + (password != null ? password.hashCode() : 0);
         return result;
+    }
+
+    @OneToMany(mappedBy = "userByUserId")
+    public Collection<Course> getCoursesById() {
+        return coursesById;
+    }
+
+    public void setCoursesById(Collection<Course> coursesById) {
+        this.coursesById = coursesById;
+    }
+
+    @OneToMany(mappedBy = "userByUserId")
+    public Collection<Exam> getExamsById() {
+        return examsById;
+    }
+
+    public void setExamsById(Collection<Exam> examsById) {
+        this.examsById = examsById;
+    }
+
+    @OneToMany(mappedBy = "userByUserId")
+    public Collection<Groups> getGroupssById() {
+        return groupssById;
+    }
+
+    public void setGroupssById(Collection<Groups> groupssById) {
+        this.groupssById = groupssById;
     }
 }

@@ -21,6 +21,7 @@ public class StudentServiceImplTest extends BaseTests {
 
     @Test
     public void register() throws Exception {
+        System.out.println(studentService.login("aa","a"));
         System.out.println(studentService.register(new StudentVO("myname","14125","password","mial@11")));
     }
 

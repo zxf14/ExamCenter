@@ -5,7 +5,7 @@ import java.sql.Timestamp;
 import java.util.Collection;
 
 /**
- * Created by zhouxiaofan on 2017/11/14.
+ * Created by zhouxiaofan on 2017/12/4.
  */
 @Entity
 public class Exam {
@@ -13,9 +13,9 @@ public class Exam {
     private Timestamp startTime;
     private Timestamp endTime;
     private String subject;
-    private Collection<Quiz> quiz;
-    private User teacher;
-    private Collection<Testee> testee;
+    private User userByUserId;
+    private Collection<Quiz> quizzesById;
+    private Collection<Testee> testeesById;
 
     @Id
     @GeneratedValue
@@ -82,31 +82,31 @@ public class Exam {
         return result;
     }
 
-    @OneToMany(mappedBy = "exam")
-    public Collection<Quiz> getQuiz() {
-        return quiz;
-    }
-
-    public void setQuiz(Collection<Quiz> quiz) {
-        this.quiz = quiz;
-    }
-
     @ManyToOne
-    @JoinColumn(name = "teacherId", referencedColumnName = "id")
-    public User getTeacher() {
-        return teacher;
+    @JoinColumn(name = "user_id", referencedColumnName = "id")
+    public User getUserByUserId() {
+        return userByUserId;
     }
 
-    public void setTeacher(User teacher) {
-        this.teacher = teacher;
+    public void setUserByUserId(User userByUserId) {
+        this.userByUserId = userByUserId;
     }
 
-    @OneToMany(mappedBy = "exam")
-    public Collection<Testee> getTestee() {
-        return testee;
+    @OneToMany(mappedBy = "examByExamId")
+    public Collection<Quiz> getQuizzesById() {
+        return quizzesById;
     }
 
-    public void setTestee(Collection<Testee> testee) {
-        this.testee = testee;
+    public void setQuizzesById(Collection<Quiz> quizzesById) {
+        this.quizzesById = quizzesById;
+    }
+
+    @OneToMany(mappedBy = "examByExamId")
+    public Collection<Testee> getTesteesById() {
+        return testeesById;
+    }
+
+    public void setTesteesById(Collection<Testee> testeesById) {
+        this.testeesById = testeesById;
     }
 }

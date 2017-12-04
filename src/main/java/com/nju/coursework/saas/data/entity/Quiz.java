@@ -4,15 +4,15 @@ import javax.persistence.*;
 import java.util.Collection;
 
 /**
- * Created by zhouxiaofan on 2017/11/14.
+ * Created by zhouxiaofan on 2017/12/4.
  */
 @Entity
 public class Quiz {
     private int id;
     private Integer value;
-    private Exam exam;
-    private Question question;
-    private Collection<Answer> answer;
+    private Collection<Answer> answersById;
+    private Exam examByExamId;
+    private Question questionByQuestionId;
 
     @Id
     @GeneratedValue
@@ -55,32 +55,32 @@ public class Quiz {
         return result;
     }
 
+    @OneToMany(mappedBy = "quizByQuizId")
+    public Collection<Answer> getAnswersById() {
+        return answersById;
+    }
+
+    public void setAnswersById(Collection<Answer> answersById) {
+        this.answersById = answersById;
+    }
+
     @ManyToOne
-    @JoinColumn(name = "examId", referencedColumnName = "id")
-    public Exam getExam() {
-        return exam;
+    @JoinColumn(name = "exam_id", referencedColumnName = "id")
+    public Exam getExamByExamId() {
+        return examByExamId;
     }
 
-    public void setExam(Exam exam) {
-        this.exam = exam;
+    public void setExamByExamId(Exam examByExamId) {
+        this.examByExamId = examByExamId;
     }
 
     @ManyToOne
-    @JoinColumn(name = "questionId", referencedColumnName = "id")
-    public Question getQuestion() {
-        return question;
+    @JoinColumn(name = "question_id", referencedColumnName = "id")
+    public Question getQuestionByQuestionId() {
+        return questionByQuestionId;
     }
 
-    public void setQuestion(Question question) {
-        this.question = question;
-    }
-
-    @OneToMany(mappedBy = "quiz")
-    public Collection<Answer> getAnswer() {
-        return answer;
-    }
-
-    public void setAnswer(Collection<Answer> answer) {
-        this.answer = answer;
+    public void setQuestionByQuestionId(Question questionByQuestionId) {
+        this.questionByQuestionId = questionByQuestionId;
     }
 }

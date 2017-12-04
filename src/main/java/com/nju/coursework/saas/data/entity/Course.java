@@ -1,17 +1,17 @@
 package com.nju.coursework.saas.data.entity;
 
-
 import javax.persistence.*;
+import java.util.Collection;
 
 /**
  * Created by zhouxiaofan on 2017/12/4.
  */
 @Entity
-public class Groups {
+public class Course {
     private String name;
-    private String students;
     private int id;
     private User userByUserId;
+    private Collection<Question> questionsById;
 
     @Basic
     @Column(name = "name", nullable = true, length = 20)
@@ -21,16 +21,6 @@ public class Groups {
 
     public void setName(String name) {
         this.name = name;
-    }
-
-    @Basic
-    @Column(name = "students", nullable = true, length = 5000)
-    public String getStudents() {
-        return students;
-    }
-
-    public void setStudents(String students) {
-        this.students = students;
     }
 
     @Id
@@ -49,11 +39,10 @@ public class Groups {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
 
-        Groups groups = (Groups) o;
+        Course course = (Course) o;
 
-        if (id != groups.id) return false;
-        if (name != null ? !name.equals(groups.name) : groups.name != null) return false;
-        if (students != null ? !students.equals(groups.students) : groups.students != null) return false;
+        if (id != course.id) return false;
+        if (name != null ? !name.equals(course.name) : course.name != null) return false;
 
         return true;
     }
@@ -61,19 +50,8 @@ public class Groups {
     @Override
     public int hashCode() {
         int result = name != null ? name.hashCode() : 0;
-        result = 31 * result + (students != null ? students.hashCode() : 0);
         result = 31 * result + id;
         return result;
-    }
-
-    @Override
-    public String toString() {
-        return "Groups{" +
-                "name='" + name + '\'' +
-                ", students='" + students + '\'' +
-                ", id=" + id +
-                ", userByUserId=" + userByUserId +
-                '}';
     }
 
     @ManyToOne
@@ -84,5 +62,14 @@ public class Groups {
 
     public void setUserByUserId(User userByUserId) {
         this.userByUserId = userByUserId;
+    }
+
+    @OneToMany(mappedBy = "courseByCourseId")
+    public Collection<Question> getQuestionsById() {
+        return questionsById;
+    }
+
+    public void setQuestionsById(Collection<Question> questionsById) {
+        this.questionsById = questionsById;
     }
 }

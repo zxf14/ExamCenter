@@ -3,14 +3,14 @@ package com.nju.coursework.saas.data.entity;
 import javax.persistence.*;
 
 /**
- * Created by zhouxiaofan on 2017/11/14.
+ * Created by zhouxiaofan on 2017/12/4.
  */
 @Entity
 public class Option {
     private int id;
     private String content;
     private Boolean isRight;
-    private Question question;
+    private Question questionByQuestionId;
 
     @Id
     @GeneratedValue
@@ -35,12 +35,12 @@ public class Option {
 
     @Basic
     @Column(name = "isRight", nullable = true)
-    public Boolean getRight() {
+    public Boolean getIsRight() {
         return isRight;
     }
 
-    public void setRight(Boolean right) {
-        isRight = right;
+    public void setIsRight(Boolean isRight) {
+        this.isRight = isRight;
     }
 
     @Override
@@ -66,12 +66,12 @@ public class Option {
     }
 
     @ManyToOne
-    @JoinColumn(name = "questionId", referencedColumnName = "id", nullable = false)
-    public Question getQuestion() {
-        return question;
+    @JoinColumn(name = "question_id", referencedColumnName = "id", nullable = false)
+    public Question getQuestionByQuestionId() {
+        return questionByQuestionId;
     }
 
-    public void setQuestion(Question question) {
-        this.question = question;
+    public void setQuestionByQuestionId(Question questionByQuestionId) {
+        this.questionByQuestionId = questionByQuestionId;
     }
 }

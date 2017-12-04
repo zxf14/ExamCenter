@@ -3,14 +3,24 @@ package com.nju.coursework.saas.data.entity;
 import javax.persistence.*;
 
 /**
- * Created by zhouxiaofan on 2017/11/14.
+ * Created by zhouxiaofan on 2017/12/4.
  */
 @Entity
 public class Answer {
-    private int id;
     private String content;
-    private Quiz quiz;
-    private Student student;
+    private int id;
+    private Quiz quizByQuizId;
+    private Student studentByStudentId;
+
+    @Basic
+    @Column(name = "content", nullable = true, length = 100)
+    public String getContent() {
+        return content;
+    }
+
+    public void setContent(String content) {
+        this.content = content;
+    }
 
     @Id
     @GeneratedValue
@@ -23,16 +33,6 @@ public class Answer {
         this.id = id;
     }
 
-    @Basic
-    @Column(name = "content", nullable = true, length = 100)
-    public String getContent() {
-        return content;
-    }
-
-    public void setContent(String content) {
-        this.content = content;
-    }
-
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
@@ -42,36 +42,34 @@ public class Answer {
 
         if (id != answer.id) return false;
         if (content != null ? !content.equals(answer.content) : answer.content != null) return false;
-        if (quiz != null ? !quiz.equals(answer.quiz) : answer.quiz != null) return false;
-        return student != null ? student.equals(answer.student) : answer.student == null;
+
+        return true;
     }
 
     @Override
     public int hashCode() {
-        int result = id;
-        result = 31 * result + (content != null ? content.hashCode() : 0);
-        result = 31 * result + (quiz != null ? quiz.hashCode() : 0);
-        result = 31 * result + (student != null ? student.hashCode() : 0);
+        int result = content != null ? content.hashCode() : 0;
+        result = 31 * result + id;
         return result;
     }
 
     @ManyToOne
-    @JoinColumn(name = "quizId", referencedColumnName = "id", nullable = false)
-    public Quiz getQuiz() {
-        return quiz;
+    @JoinColumn(name = "quiz_id", referencedColumnName = "id", nullable = false)
+    public Quiz getQuizByQuizId() {
+        return quizByQuizId;
     }
 
-    public void setQuiz(Quiz quiz) {
-        this.quiz = quiz;
+    public void setQuizByQuizId(Quiz quizByQuizId) {
+        this.quizByQuizId = quizByQuizId;
     }
 
     @ManyToOne
-    @JoinColumn(name = "studentId", referencedColumnName = "student_no", nullable = false)
-    public Student getStudent() {
-        return student;
+    @JoinColumn(name = "student_id", referencedColumnName = "student_no", nullable = false)
+    public Student getStudentByStudentId() {
+        return studentByStudentId;
     }
 
-    public void setStudent(Student student) {
-        this.student = student;
+    public void setStudentByStudentId(Student studentByStudentId) {
+        this.studentByStudentId = studentByStudentId;
     }
 }
