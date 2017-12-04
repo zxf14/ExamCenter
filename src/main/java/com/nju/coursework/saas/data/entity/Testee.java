@@ -85,4 +85,8 @@ public class Testee {
     public void setExam(Exam exam) {
         this.exam = exam;
     }
+
+    public boolean hasEmail() {
+        return studentMail != null;
+    }
 }

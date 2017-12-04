@@ -8,14 +8,14 @@ import java.util.Map;
 public class GeneralResponse {
     private boolean success;
     private String msg;
-    private Map<String,Object> data;
+    private Map<String, Object> data;
 
-    public GeneralResponse(boolean success, String msg){
+    public GeneralResponse(boolean success, String msg) {
         this.success = success;
         this.msg = msg;
     }
 
-    public void setData(Map<String,Object> data){
+    public void setData(Map<String, Object> data) {
         this.data = data;
     }
 

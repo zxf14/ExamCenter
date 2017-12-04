@@ -13,6 +13,7 @@ public class Exam {
     private Timestamp startTime;
     private Timestamp endTime;
     private String subject;
+    private int quizCount;
     private Collection<Quiz> quiz;
     private User teacher;
     private Collection<Testee> testee;
@@ -56,6 +57,16 @@ public class Exam {
 
     public void setSubject(String subject) {
         this.subject = subject;
+    }
+
+    @Basic
+    @Column(name = "quizCount", nullable = true)
+    public int getQuizCount() {
+        return quizCount;
+    }
+
+    public void setQuizCount(int quizCount) {
+        this.quizCount = quiz.size();
     }
 
     @Override

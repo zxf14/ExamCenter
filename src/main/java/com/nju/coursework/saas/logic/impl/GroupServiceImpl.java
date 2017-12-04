@@ -38,16 +38,16 @@ public class GroupServiceImpl implements GroupService {
             }
             try {
                 saveGroup(list, groupName);
-            }catch (Exception error){
-                return new GeneralResponse(false,"excel格式错误");
+            } catch (Exception error) {
+                return new GeneralResponse(false, "excel格式错误");
             }
 
-            return new GeneralResponse(true,"");
+            return new GeneralResponse(true, "");
         } catch (IOException e) {
             e.printStackTrace();
         }
 
-        return new GeneralResponse(false,"");
+        return new GeneralResponse(false, "");
     }
 
     private void saveGroup(List<String> list, String groupName) {
@@ -59,7 +59,7 @@ public class GroupServiceImpl implements GroupService {
     }
 
     private String getCellValue(XSSFCell cell) {
-        if(cell!= null){
+        if (cell != null) {
             if (cell.getCellTypeEnum() == CellType.BOOLEAN) {
                 return String.valueOf(cell.getBooleanCellValue());
             } else if (cell.getCellTypeEnum() == CellType.NUMERIC) {
@@ -67,7 +67,7 @@ public class GroupServiceImpl implements GroupService {
             } else {
                 return String.valueOf(cell.getStringCellValue());
             }
-        }else{
+        } else {
             return "";
         }
     }

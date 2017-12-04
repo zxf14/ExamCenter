@@ -1,11 +1,10 @@
 package com.nju.coursework.saas.web.controller;
 
-import com.nju.coursework.saas.web.response.GeneralResponse;
 import com.nju.coursework.saas.logic.service.UserService;
+import com.nju.coursework.saas.web.response.GeneralResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 /**
@@ -19,7 +18,7 @@ public class UserController {
 
     @GetMapping("/login")
     @ResponseBody
-    public GeneralResponse login(String email, String password){
+    public GeneralResponse login(String email, String password) {
         return userService.login(email, password);
     }
 }

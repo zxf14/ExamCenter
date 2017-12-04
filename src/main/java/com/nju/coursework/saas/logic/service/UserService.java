@@ -6,6 +6,7 @@ public interface UserService {
 
     /**
      * 管理员（教师）登陆
+     *
      * @param username 用户名
      * @param password 密码
      * @return 登陆结果

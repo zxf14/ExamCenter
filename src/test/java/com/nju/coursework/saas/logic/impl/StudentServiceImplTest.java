@@ -16,16 +16,16 @@ public class StudentServiceImplTest extends BaseTests {
 
     @Test
     public void login() throws Exception {
-        System.out.println(studentService.login("aa","a"));
+        System.out.println(studentService.login("aa", "a"));
     }
 
     @Test
     public void register() throws Exception {
-        System.out.println(studentService.register(new StudentVO("myname","14125","password","mial@11")));
+        System.out.println(studentService.register(new StudentVO("myname", "14125", "password", "mial@11")));
     }
 
     @Test
-    public void getVerifyCode(){
+    public void getVerifyCode() {
         System.out.println(studentService.getVerifyCode("mail1@qq.com"));
     }
 }

@@ -29,7 +29,7 @@ public class MailMaster {
     private Session session;
 
     @PostConstruct
-    public void init(){
+    public void init() {
         props = new Properties();
         props.setProperty("mail.transport.protocol", "smtp");   // 使用的协议（JavaMail规范要求）
         props.setProperty("mail.smtp.host", myEmailSMTPHost);   // 发件人的邮箱的 SMTP 服务器地址
@@ -39,26 +39,26 @@ public class MailMaster {
         session.setDebug(true);
     }
 
-    public void sendForValidation(String userMail, String url){
+    public void sendForValidation(String userMail, String url) {
         try {
             List<String> receiverList = new ArrayList<>();
             receiverList.add(userMail);
-            MimeMessage message = createMessage(myMailAccount,receiverList,"在线考试平台邮箱验证",url);
+            MimeMessage message = createMessage(myMailAccount, receiverList, "在线考试平台邮箱验证", url);
             Transport transport = session.getTransport();
             transport.connect(myMailAccount, myMailPassword);
-            transport.sendMessage(message,message.getAllRecipients());
+            transport.sendMessage(message, message.getAllRecipients());
             transport.close();
         } catch (Exception e) {
             e.printStackTrace();
         }
     }
 
-    public void sendForExam(List<String> students, String key){
+    public void sendForExam(List<String> students, String key) {
         try {
-            MimeMessage message = createMessage(myMailAccount,students,"考试密钥","本次考试密钥为: "+key);
+            MimeMessage message = createMessage(myMailAccount, students, "考试密钥", "本次考试密钥为: " + key);
             Transport transport = session.getTransport();
             transport.connect(myMailAccount, myMailPassword);
-            transport.sendMessage(message,message.getAllRecipients());
+            transport.sendMessage(message, message.getAllRecipients());
             transport.close();
         } catch (Exception e) {
             e.printStackTrace();
@@ -68,13 +68,13 @@ public class MailMaster {
     private MimeMessage createMessage(String sender, List<String> receiver, String subject, String content) throws Exception {
         MimeMessage message = new MimeMessage(session);
         List<InternetAddress> receiverList = new ArrayList<>();
-        for(String ritem: receiver){
-            receiverList.add(new InternetAddress(ritem,"学生","UTF-8"));
+        for (String ritem : receiver) {
+            receiverList.add(new InternetAddress(ritem, "学生", "UTF-8"));
         }
-        message.setFrom(new InternetAddress(sender,"软件学院考试中心","UTF-8"));
-        message.setRecipients(MimeMessage.RecipientType.TO, (Address[])receiverList.toArray());
-        message.setSubject(subject,"UTF-8");
-        message.setContent(content,"text/html;charset=UTF-8");
+        message.setFrom(new InternetAddress(sender, "软件学院考试中心", "UTF-8"));
+        message.setRecipients(MimeMessage.RecipientType.TO, (Address[]) receiverList.toArray());
+        message.setSubject(subject, "UTF-8");
+        message.setContent(content, "text/html;charset=UTF-8");
         message.setSentDate(new Date());
         message.saveChanges();
         return message;

@@ -15,7 +15,7 @@ public class UserServiceImplTest extends BaseTests {
 
     @Test
     public void login() throws Exception {
-        System.out.println(userService.login("aa","a"));
+        System.out.println(userService.login("aa", "a"));
     }
 
 }
