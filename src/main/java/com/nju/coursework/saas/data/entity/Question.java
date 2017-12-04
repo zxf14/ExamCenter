@@ -9,7 +9,7 @@ import javax.persistence.*;
 public class Question {
     private String content;
     private int id;
-    private Integer type;
+    private Integer type;//0单选1多选
     private Course courseByCourseId;
 
     @Basic

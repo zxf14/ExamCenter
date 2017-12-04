@@ -1,9 +1,10 @@
 package com.nju.coursework.saas.logic.impl;
 
+import com.nju.coursework.saas.data.db.CourseRepository;
 import com.nju.coursework.saas.data.db.OptionRepository;
 import com.nju.coursework.saas.data.db.QuestionRepository;
-import com.nju.coursework.saas.data.db.UserRepository;
-import com.nju.coursework.saas.data.entity.Option;
+import com.nju.coursework.saas.data.entity.Course;
+import com.nju.coursework.saas.data.entity.Aoption;
 import com.nju.coursework.saas.data.entity.Question;
 import com.nju.coursework.saas.logic.service.QuestionService;
 import com.nju.coursework.saas.util.ExcelConverter;
@@ -28,28 +29,29 @@ public class QuestionServiceImpl implements QuestionService {
     QuestionRepository questionRepository;
 
     @Autowired
-    UserRepository userRepository;
+    CourseRepository courseRepository;
 
     @Autowired
     OptionRepository optionRepository;
 
     @Override
-    public GeneralResponse importQuestion(int userId, InputStream excel, String className) {
+    public GeneralResponse importQuestion(InputStream excel, int courseId) {
+        GeneralResponse generalResponse = null;
+        Course course = courseRepository.findOne(courseId);
         try {
             XSSFSheet xssfSheet = new XSSFWorkbook(excel).getSheetAt(0);
-
+            //第一行为标题
             for (int rowNum = 1; rowNum <= xssfSheet.getLastRowNum(); rowNum++) {
                 XSSFRow xssfRow = xssfSheet.getRow(rowNum);
 
                 try {
-                    saveQuestions(xssfRow, className, userId);
-                } catch (Exception error) {
-                    return new GeneralResponse(false, "excel格式错误");
+                    saveQuestions(xssfRow, course);
+                } catch (Exception e) {
+                    e.printStackTrace();
+                    generalResponse = new GeneralResponse(false, "excel格式错误");
                 }
-
             }
-
-            return new GeneralResponse(true, "");
+            return generalResponse == null ? new GeneralResponse(true, "") : generalResponse;
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -57,15 +59,16 @@ public class QuestionServiceImpl implements QuestionService {
         return null;
     }
 
-    private void saveQuestions(XSSFRow xssfRow, String className, int userId) {
+    private void saveQuestions(XSSFRow xssfRow, Course course) {
         Question question = new Question();
+        question.setCourseByCourseId(course);
         question.setContent(ExcelConverter.getCellValue(xssfRow.getCell(0)));
         question.setType((int) xssfRow.getCell(5).getNumericCellValue());
         questionRepository.saveAndFlush(question);
 
-        String[] answers = ExcelConverter.getCellValue(xssfRow.getCell(0)).split(" ");
+        String[] answers = ExcelConverter.getCellValue(xssfRow.getCell(5)).split(" ");
         for (int i = 0; i < 4; i++) {
-            Option option = new Option();
+            Aoption option = new Aoption();
             option.setQuestionByQuestionId(question);
             option.setContent(ExcelConverter.getCellValue(xssfRow.getCell(i + 1)));
             option.setIsRight(false);

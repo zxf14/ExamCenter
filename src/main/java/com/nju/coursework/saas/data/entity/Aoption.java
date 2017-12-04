@@ -6,7 +6,7 @@ import javax.persistence.*;
  * Created by zhouxiaofan on 2017/12/4.
  */
 @Entity
-public class Option {
+public class Aoption {
     private int id;
     private String content;
     private Boolean isRight;
@@ -24,7 +24,7 @@ public class Option {
     }
 
     @Basic
-    @Column(name = "content", nullable = true, length = 1000)
+    @Column(name = "content", length = 1000)
     public String getContent() {
         return content;
     }
@@ -34,7 +34,7 @@ public class Option {
     }
 
     @Basic
-    @Column(name = "isRight", nullable = true)
+    @Column(name = "is_right")
     public Boolean getIsRight() {
         return isRight;
     }
@@ -48,7 +48,7 @@ public class Option {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
 
-        Option option = (Option) o;
+        Aoption option = (Aoption) o;
 
         if (id != option.id) return false;
         if (content != null ? !content.equals(option.content) : option.content != null) return false;
