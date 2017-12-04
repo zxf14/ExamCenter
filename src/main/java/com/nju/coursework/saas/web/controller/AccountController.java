@@ -24,7 +24,7 @@ public class AccountController {
     @Autowired
     StudentService studentService;      /*学生*/
 
-    @GetMapping("/teacher/login")
+    @PostMapping("/teacher/login")
     @ResponseBody
     public String loginTeacher(String username, String password){
         GeneralResponse resp = userService.login(username, password);
@@ -40,7 +40,7 @@ public class AccountController {
         return js;
     }
 
-    @GetMapping("/student/login")
+    @PostMapping("/student/login")
     @ResponseBody
     public String loginStudent(String id, String password){
         GeneralResponse resp =  studentService.login(id, password);
