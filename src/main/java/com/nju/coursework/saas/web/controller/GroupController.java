@@ -40,8 +40,9 @@ public class GroupController {
     @GetMapping("/list")
     @ResponseBody
     public String getGroup(HttpSession session) throws IOException {
-        List<GroupsVO> resp = groupService.getGroups((Integer) session.getAttribute("id"));
-        return JsonUtil.toJsonString(resp);
+        List<GroupsVO> groups = groupService.getGroups((Integer) session.getAttribute("id"));
+        GeneralResponse response = new GeneralResponse(true, "");
+        response.putDate("groups", groups);
+        return JsonUtil.toJsonString(response);
     }
-
 }
