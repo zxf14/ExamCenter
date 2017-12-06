@@ -21,8 +21,11 @@ public class UserServiceImpl implements UserService {
         List<User> users = userRepository.findByName(username);
         if (users.size() == 0)
             return new GeneralResponse(false, "用户不存在");
-        if (users.get(0).getPassword().equals(password))
-            return new GeneralResponse(true, "");
+        if (users.get(0).getPassword().equals(password)){
+            GeneralResponse response = new GeneralResponse(true, "");
+            response.putDate("id", users.get(0).getId());
+            return response;
+        }
         else
             return new GeneralResponse(false, "密码错误");
     }

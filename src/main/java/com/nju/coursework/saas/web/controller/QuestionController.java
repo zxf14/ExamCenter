@@ -16,7 +16,7 @@ import java.util.List;
  * Created by guhan on 17/11/8.
  */
 @Controller
-@RequestMapping(value = "/v1/api/question")
+@RequestMapping(value = "/question")
 public class QuestionController {
 
     @Autowired
@@ -24,14 +24,14 @@ public class QuestionController {
 
     @PostMapping("/import")
     @ResponseBody
-    public String importQuestion(@RequestParam("file")MultipartFile file, @RequestParam("courseId") int courseId) throws IOException {
+    public String importQuestion(@RequestParam("file")MultipartFile file, int courseId) throws IOException {
         GeneralResponse resp = questionService.importQuestion(file.getInputStream(), courseId);
         return JsonUtil.toJsonString(resp);
     }
 
     @GetMapping("/list")
     @ResponseBody
-    public String getQuestion(@RequestParam("courseId") int courseId) throws IOException {
+    public String getQuestion(int courseId) throws IOException {
         List<QuestionVO> list = questionService.getQuestions(courseId);
         GeneralResponse response = new GeneralResponse(true, "");
         response.putDate("questions", list);

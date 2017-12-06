@@ -20,13 +20,13 @@ import java.util.List;
  * Created by guhan on 17/11/8.
  */
 @Controller
-@RequestMapping(value = "/v1/api")
+@RequestMapping(value = "/group")
 public class GroupController {
 
     @Autowired
     GroupService groupService;
 
-    @PostMapping("/group/import")
+    @PostMapping("/import")
     @ResponseBody
     public String createGroup(@RequestParam("file")MultipartFile file,
                                  @RequestParam("groupName") String groupName,
@@ -34,17 +34,14 @@ public class GroupController {
         GeneralResponse resp = groupService.createGroup((Integer) session.getAttribute("id"),
                 file.getInputStream(),
                 groupName);
-        String js = JsonUtil.toJsonString(resp);
-        return js;
+        return JsonUtil.toJsonString(resp);
     }
 
-    @GetMapping("/group/list")
+    @GetMapping("/list")
     @ResponseBody
-    public String getGroup(@RequestParam("groupName") String groupName,
-                              HttpSession session) throws IOException {
+    public String getGroup(HttpSession session) throws IOException {
         List<GroupsVO> resp = groupService.getGroups((Integer) session.getAttribute("id"));
-        String js = JsonUtil.toJsonString(resp);
-        return js;
+        return JsonUtil.toJsonString(resp);
     }
 
 }

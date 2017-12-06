@@ -3,6 +3,7 @@ package com.nju.coursework.saas.logic.impl;
 import com.nju.coursework.BaseTests;
 import com.nju.coursework.saas.data.entity.Course;
 import com.nju.coursework.saas.logic.service.CourseService;
+import com.nju.coursework.saas.logic.vo.CourseVO;
 import org.junit.Test;
 
 import javax.annotation.Resource;
@@ -26,7 +27,7 @@ public class CourseServiceImplTest extends BaseTests {
 
     @Test
     public void getCourse() throws Exception {
-        List<Course> courses = courseService.getCourse(2);
+        List<CourseVO> courses = courseService.getCourse(2);
         System.out.println(courses);
     }
 

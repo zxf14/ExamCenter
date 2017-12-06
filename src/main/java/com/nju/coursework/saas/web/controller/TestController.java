@@ -11,7 +11,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
  * Created by guhan on 17/11/1.
  */
 @Controller
-@RequestMapping(value = "/v1/api")
+@RequestMapping(value = "/test")
 public class TestController {
     @Autowired
     TestService testService;
