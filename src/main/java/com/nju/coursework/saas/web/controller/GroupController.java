@@ -8,10 +8,7 @@ import com.nju.coursework.saas.util.JsonUtil;
 import com.nju.coursework.saas.web.response.GeneralResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import javax.mail.Session;
@@ -23,6 +20,7 @@ import java.util.List;
  * Created by guhan on 17/11/8.
  */
 @Controller
+@RequestMapping(value = "/v1/api")
 public class GroupController {
 
     @Autowired
@@ -40,7 +38,7 @@ public class GroupController {
         return js;
     }
 
-    @GetMapping("/group/import")
+    @GetMapping("/group/list")
     @ResponseBody
     public String getGroup(@RequestParam("groupName") String groupName,
                               HttpSession session) throws IOException {

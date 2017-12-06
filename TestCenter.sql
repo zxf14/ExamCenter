@@ -27,7 +27,7 @@ CREATE TABLE `answer` (
   `student_id` varchar(100) COLLATE utf8_bin NOT NULL,
   `content` varchar(100) COLLATE utf8_bin DEFAULT NULL COMMENT '存选择的option id 的数组',
   PRIMARY KEY (`id`),
-  KEY `studentId` (`student_id`),
+  KEY `student_id` (`student_id`),
   KEY `quizId` (`quiz_id`),
   CONSTRAINT `answer_ibfk_1` FOREIGN KEY (`quiz_id`) REFERENCES `quiz` (`id`),
   CONSTRAINT `answer_ibfk_2` FOREIGN KEY (`student_id`) REFERENCES `student` (`student_no`)
@@ -76,17 +76,17 @@ CREATE TABLE `groups` (
 ) ENGINE=InnoDB AUTO_INCREMENT=7 DEFAULT CHARSET=utf8;
 
 -- ----------------------------
---  Table structure for `option`
+--  Table structure for `aoption`
 -- ----------------------------
-DROP TABLE IF EXISTS `option`;
-CREATE TABLE `option` (
+DROP TABLE IF EXISTS `aoption`;
+CREATE TABLE `aoption` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `question_id` int(11) NOT NULL,
   `content` varchar(1000) DEFAULT NULL,
-  `isRight` tinyint(4) DEFAULT '0' COMMENT '0错误1正确',
+  `is_right` tinyint(4) DEFAULT '0' COMMENT '0错误1正确',
   PRIMARY KEY (`id`),
   KEY `questionId` (`question_id`),
-  CONSTRAINT `option_ibfk_1` FOREIGN KEY (`question_id`) REFERENCES `question` (`id`)
+  CONSTRAINT `aoption_ibfk_1` FOREIGN KEY (`question_id`) REFERENCES `question` (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='题目选项';
 
 -- ----------------------------

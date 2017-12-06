@@ -7,6 +7,7 @@ import com.nju.coursework.saas.data.entity.Course;
 import com.nju.coursework.saas.data.entity.Aoption;
 import com.nju.coursework.saas.data.entity.Question;
 import com.nju.coursework.saas.logic.service.QuestionService;
+import com.nju.coursework.saas.logic.vo.QuestionVO;
 import com.nju.coursework.saas.util.ExcelConverter;
 import com.nju.coursework.saas.web.response.GeneralResponse;
 import org.apache.poi.xssf.usermodel.XSSFRow;
@@ -17,6 +18,8 @@ import org.springframework.stereotype.Service;
 
 import java.io.IOException;
 import java.io.InputStream;
+import java.util.List;
+import java.util.stream.Collectors;
 
 import static java.lang.Integer.parseInt;
 
@@ -57,6 +60,16 @@ public class QuestionServiceImpl implements QuestionService {
         }
 
         return null;
+    }
+
+    @Override
+    public List<QuestionVO> getQuestions(int courseId) {
+        List<Question> questions = questionRepository.findByCourseId(courseId);
+        List<QuestionVO> questionVOS = questions.stream().map(item -> {
+            item.setAoptionsById(optionRepository.findByQuestion(item.getId()));
+            return new QuestionVO(item);
+        }).collect(Collectors.toList());
+        return questionVOS;
     }
 
     private void saveQuestions(XSSFRow xssfRow, Course course) {
