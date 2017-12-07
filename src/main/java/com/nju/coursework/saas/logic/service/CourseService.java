@@ -1,6 +1,6 @@
 package com.nju.coursework.saas.logic.service;
 
-import com.nju.coursework.saas.data.entity.Course;
+import com.nju.coursework.saas.logic.vo.CourseVO;
 import com.nju.coursework.saas.web.response.GeneralResponse;
 
 import java.util.List;
@@ -11,11 +11,12 @@ import java.util.List;
 public interface CourseService {
     /**
      * 创建课程
+     *
      * @param userId
      * @param courseName
      * @return
      */
     GeneralResponse createCourse(int userId, String courseName);
 
-    List<Course> getCourse(int userId);
+    List<CourseVO> getCourse(int userId);
 }

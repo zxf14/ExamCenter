@@ -9,6 +9,7 @@ import javax.persistence.*;
 public class Testee {
     private int id;
     private String studentMail;
+    private String studentName;
     private Integer score;
     private Student studentByStudentId;
     private Exam examByExamId;
@@ -87,5 +88,15 @@ public class Testee {
 
     public boolean hasEmail() {
         return studentMail != null;
+    }
+
+    @Basic
+    @Column(name = "student_name", nullable = true, length = 30)
+    public String getStudentName() {
+        return studentName;
+    }
+
+    public void setStudentName(String studentName) {
+        this.studentName = studentName;
     }
 }

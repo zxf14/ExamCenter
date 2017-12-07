@@ -1,6 +1,9 @@
 package com.nju.coursework.saas.logic.vo;
 
+import com.fasterxml.jackson.annotation.JsonInclude;
 import com.nju.coursework.saas.data.entity.Groups;
+import lombok.Getter;
+import lombok.Setter;
 
 import java.util.Arrays;
 import java.util.List;
@@ -8,6 +11,9 @@ import java.util.List;
 /**
  * Created by zhouxiaofan on 2017/12/4.
  */
+@JsonInclude(JsonInclude.Include.NON_NULL)
+@Getter
+@Setter
 public class GroupsVO {
     private String name;
     private List<String> students;

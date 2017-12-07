@@ -1,6 +1,7 @@
 package com.nju.coursework.saas.data.entity;
 
 import javax.persistence.*;
+import java.util.Collection;
 
 /**
  * Created by zhouxiaofan on 2017/12/4.
@@ -11,6 +12,7 @@ public class Question {
     private int id;
     private Integer type;//0单选1多选
     private Course courseByCourseId;
+    private Collection<Aoption> aoptionsById;
 
     @Basic
     @Column(name = "content", nullable = true, length = 10000)
@@ -63,6 +65,15 @@ public class Question {
         result = 31 * result + id;
         result = 31 * result + (type != null ? type.hashCode() : 0);
         return result;
+    }
+
+    @OneToMany(mappedBy = "questionByQuestionId")
+    public Collection<Aoption> getAoptionsById() {
+        return aoptionsById;
+    }
+
+    public void setAoptionsById(Collection<Aoption> aoptionsById) {
+        this.aoptionsById = aoptionsById;
     }
 
     @ManyToOne

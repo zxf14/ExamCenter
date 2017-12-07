@@ -4,11 +4,13 @@ import com.nju.coursework.saas.data.db.CourseRepository;
 import com.nju.coursework.saas.data.db.UserRepository;
 import com.nju.coursework.saas.data.entity.Course;
 import com.nju.coursework.saas.logic.service.CourseService;
+import com.nju.coursework.saas.logic.vo.CourseVO;
 import com.nju.coursework.saas.web.response.GeneralResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 /**
  * Created by zhouxiaofan on 2017/12/4.
@@ -36,8 +38,8 @@ public class CourseServiceImpl implements CourseService {
     }
 
     @Override
-    public List<Course> getCourse(int userId) {
-        List<Course> courses = courseRepository.findByUserId(userId);
+    public List<CourseVO> getCourse(int userId) {
+        List<CourseVO> courses = courseRepository.findByUserId(userId).stream().map(i -> new CourseVO(i)).collect(Collectors.toList());
         return courses;
     }
 }

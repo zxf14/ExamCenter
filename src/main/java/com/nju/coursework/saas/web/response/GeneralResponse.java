@@ -2,6 +2,7 @@ package com.nju.coursework.saas.web.response;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
 
+import java.util.HashMap;
 import java.util.Map;
 
 /**
@@ -12,6 +13,11 @@ public class GeneralResponse {
     private boolean success;
     private String msg;
     private Map<String, Object> data;
+
+    public GeneralResponse(boolean success, String msg) {
+        this.success = success;
+        this.msg = msg;
+    }
 
     public boolean isSuccess() {
         return success;
@@ -33,13 +39,13 @@ public class GeneralResponse {
         return data;
     }
 
-    public GeneralResponse(boolean success, String msg){
-        this.success = success;
-        this.msg = msg;
-    }
+//    public void setData(Map<String, Object> data) {
+//        this.data = data;
+//    }
 
-    public void setData(Map<String, Object> data) {
-        this.data = data;
+    public void putDate(String name, Object value) {
+        if (data == null) data = new HashMap<>();
+        data.put(name, value);
     }
 
     @Override

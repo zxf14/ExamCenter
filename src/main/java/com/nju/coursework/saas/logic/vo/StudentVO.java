@@ -1,8 +1,11 @@
 package com.nju.coursework.saas.logic.vo;
 
+import com.fasterxml.jackson.annotation.JsonInclude;
+
 /**
  * Created by zhouxiaofan on 2017/11/8.
  */
+@JsonInclude(JsonInclude.Include.NON_NULL)
 public class StudentVO {
     private String name;
     private String studentNo;
