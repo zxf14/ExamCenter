@@ -1,6 +1,5 @@
 package com.nju.coursework.saas.logic.service;
 
-import com.nju.coursework.saas.data.entity.Question;
 import com.nju.coursework.saas.logic.vo.QuestionVO;
 import com.nju.coursework.saas.web.response.GeneralResponse;
 
@@ -14,7 +13,8 @@ public interface QuestionService {
 
     /**
      * 导入试题
-     * @param excel     excel文件
+     *
+     * @param excel    excel文件
      * @param courseId
      * @return
      */
@@ -22,6 +22,7 @@ public interface QuestionService {
 
     /**
      * 获取题库
+     *
      * @param courseId 课程id
      * @return 题库列表
      */

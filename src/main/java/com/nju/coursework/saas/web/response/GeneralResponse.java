@@ -14,6 +14,11 @@ public class GeneralResponse {
     private String msg;
     private Map<String, Object> data;
 
+    public GeneralResponse(boolean success, String msg) {
+        this.success = success;
+        this.msg = msg;
+    }
+
     public boolean isSuccess() {
         return success;
     }
@@ -32,11 +37,6 @@ public class GeneralResponse {
 
     public Map<String, Object> getData() {
         return data;
-    }
-
-    public GeneralResponse(boolean success, String msg) {
-        this.success = success;
-        this.msg = msg;
     }
 
 //    public void setData(Map<String, Object> data) {

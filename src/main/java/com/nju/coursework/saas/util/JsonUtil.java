@@ -11,11 +11,11 @@ import java.text.SimpleDateFormat;
 public class JsonUtil {
     private static ObjectMapper mapper = new ObjectMapper();
 
-    static{
+    static {
         mapper.setDateFormat(new SimpleDateFormat("yyyy-MM-dd HH:mm:ss"));
     }
 
-    public static String toJsonString(Object object){
+    public static String toJsonString(Object object) {
         String str = null;
         try {
             str = mapper.writeValueAsString(object);

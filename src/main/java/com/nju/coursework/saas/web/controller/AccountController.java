@@ -26,10 +26,10 @@ public class AccountController {
 
     @PostMapping("/teacher/login")
     @ResponseBody
-    public String loginTeacher(String username, String password, HttpSession session){
+    public String loginTeacher(String username, String password, HttpSession session) {
         GeneralResponse resp = userService.login(username, password);
         String js = JsonUtil.toJsonString(resp);
-        if (resp.isSuccess()){
+        if (resp.isSuccess()) {
             session.setAttribute("id", resp.getData().get("id"));
         }
         return js;
@@ -37,10 +37,10 @@ public class AccountController {
 
     @PostMapping("/student/register")
     @ResponseBody
-    public String registerStudent(String name, String id, String email, String password, HttpSession session){
+    public String registerStudent(String name, String id, String email, String password, HttpSession session) {
         GeneralResponse resp = studentService.register(new StudentVO(name, id, password, email));
         String js = JsonUtil.toJsonString(resp);
-        if (resp.isSuccess()){
+        if (resp.isSuccess()) {
             session.setAttribute("id", id);
         }
         return js;
@@ -48,9 +48,9 @@ public class AccountController {
 
     @PostMapping("/student/login")
     @ResponseBody
-    public String loginStudent(String id, String password, HttpSession session){
-        GeneralResponse resp =  studentService.login(id, password);
-        if (resp.isSuccess()){
+    public String loginStudent(String id, String password, HttpSession session) {
+        GeneralResponse resp = studentService.login(id, password);
+        if (resp.isSuccess()) {
             session.setAttribute("id", id);
         }
         String js = JsonUtil.toJsonString(resp);

@@ -24,7 +24,7 @@ public class QuestionController {
 
     @PostMapping("/import")
     @ResponseBody
-    public String importQuestion(@RequestParam("file")MultipartFile file, int courseId) throws IOException {
+    public String importQuestion(@RequestParam("file") MultipartFile file, int courseId) throws IOException {
         GeneralResponse resp = questionService.importQuestion(file.getInputStream(), courseId);
         return JsonUtil.toJsonString(resp);
     }

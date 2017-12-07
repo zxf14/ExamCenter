@@ -13,8 +13,8 @@ public class MailServiceImpl implements MailService {
     @Autowired
     MailMaster mailMaster;
 
-    public void validateMail(String userMail){
-        mailMaster.sendForValidation(userMail,"https://localhost:8080/student/login");
+    public void validateMail(String userMail) {
+        mailMaster.sendForValidation(userMail, "https://localhost:8080/student/login");
     }
 
 }
