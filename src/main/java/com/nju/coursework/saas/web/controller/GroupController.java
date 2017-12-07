@@ -40,7 +40,7 @@ public class GroupController {
         return js;
     }
 
-    @GetMapping("/group/import")
+    @GetMapping("/group/list")
     @ResponseBody
     public String getGroup(@RequestParam("groupName") String groupName,
                               HttpSession session) throws IOException {
