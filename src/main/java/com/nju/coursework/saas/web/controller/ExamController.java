@@ -1,6 +1,7 @@
 package com.nju.coursework.saas.web.controller;
 
 import com.nju.coursework.saas.logic.service.ExamConfigService;
+import com.nju.coursework.saas.logic.vo.QuestionVO;
 import com.nju.coursework.saas.logic.vo.QuizVO;
 import com.nju.coursework.saas.logic.vo.StudentVO;
 import com.nju.coursework.saas.util.JsonUtil;
@@ -27,26 +28,22 @@ public class ExamController {
     private ExamConfigService examConfigService;
 
     @PostMapping("/create")
-    public String createExam(int questionNum, @NonNull List<Integer> questions, @RequestParam List<StudentVO> testees,
-                             @NonNull Timestamp startTime, @NonNull Timestamp endTime, HttpSession session) {
-        List<QuizVO> quiz = new ArrayList<>();
-        questions.stream().forEach(
-                q -> quiz.add(new QuizVO(q)));
-         GeneralResponse response = examConfigService.examConfig((Integer)session.getAttribute("userId"),questionNum, quiz,testees,
-                startTime, endTime);
+    public String createExam(int questionNum, @NonNull List<Integer> scores, @RequestParam List<StudentVO> testees,
+                             List<QuestionVO> questions, @NonNull Timestamp startTime, @NonNull Timestamp endTime,
+                             HttpSession session) {
+         GeneralResponse response = examConfigService.examConfig((Integer)session.getAttribute("userId"),questionNum, scores,
+                 testees, questions, startTime, endTime);
          return JsonUtil.toJsonString(response);
     }
 
     @PostMapping("/import")
     public String importStudentToCreateExam(int quizCount, @RequestParam("file") MultipartFile file, String groupName,
-                                            List<Integer> questions, Timestamp startTime, Timestamp endTime, HttpSession session) {
+                                            List<Integer> scores, List<QuestionVO> questions, Timestamp startTime, Timestamp endTime, HttpSession session) {
         GeneralResponse response;
         try {
-            List<QuizVO> quiz = new ArrayList<>();
-            questions.stream().forEach(
-                    q -> quiz.add(new QuizVO(q)));
+
             response = examConfigService.examConfigByExcel((Integer)session.getAttribute("userId"), quizCount,
-                    file.getInputStream(),groupName, quiz, startTime, endTime);
+                    file.getInputStream(),groupName, scores, questions, startTime, endTime);
         } catch (IOException e) {
             e.printStackTrace();
             return JsonUtil.toJsonString(new GeneralResponse(false, "excel文件导入出错"));
