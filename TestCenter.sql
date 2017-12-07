@@ -142,6 +142,7 @@ CREATE TABLE `testee` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `student_id` varchar(100) COLLATE utf8_bin NOT NULL,
   `exam_id` int(11) NOT NULL,
+  `student_name` varchar(30) COLLATE utf8_bin DEFAULT NULL,
   `student_mail` varchar(30) COLLATE utf8_bin DEFAULT NULL,
   `score` int(11) DEFAULT '0' COMMENT '分数',
   PRIMARY KEY (`id`),
