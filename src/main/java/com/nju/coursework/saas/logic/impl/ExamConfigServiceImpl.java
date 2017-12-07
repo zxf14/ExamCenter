@@ -6,6 +6,7 @@ import com.nju.coursework.saas.data.db.UserRepository;
 import com.nju.coursework.saas.data.entity.*;
 import com.nju.coursework.saas.logic.service.ExamConfigService;
 import com.nju.coursework.saas.logic.service.GroupService;
+import com.nju.coursework.saas.logic.vo.GroupsVO;
 import com.nju.coursework.saas.logic.vo.QuizVO;
 import com.nju.coursework.saas.logic.vo.StudentVO;
 import com.nju.coursework.saas.web.response.GeneralResponse;
@@ -17,6 +18,7 @@ import java.io.InputStream;
 import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 public class ExamConfigServiceImpl implements ExamConfigService {
@@ -48,7 +50,7 @@ public class ExamConfigServiceImpl implements ExamConfigService {
                     String mail = s.getMail();
                     Testee testee = new Testee();
                     testee.setStudentMail(mail);
-//                    testee.setStudent(student.get(0));
+                    testee.setStudentByStudentId(student.get(0));
                     testees.add(testee);
                 }
         );
@@ -56,23 +58,11 @@ public class ExamConfigServiceImpl implements ExamConfigService {
         quizVO.stream().forEach(
                 q -> {
                     Quiz quiz = new Quiz();
-                    //TODO
-//                    quiz.setValue(q.getValue());
+                    quiz.setValue(q.getValue());
                     quizs.add(quiz);
                 }
         );
-        Exam exam = new Exam();
-        exam.setUserByUserId(teacher);
-        exam.setQuizzesById(quizs);
-
-        //TODO
-//        exam.setQuizCount(quizCount);
-        exam.setStartTime(startTime);
-        exam.setEndTime(endTime);
-        exam.setTesteesById(testees);
-
-        examRepository.saveAndFlush(exam);
-        return new GeneralResponse(true, "成功创建试卷");
+        return saveExam(teacher, testees, quizs, startTime, endTime);
     }
 
     @Override
@@ -84,29 +74,39 @@ public class ExamConfigServiceImpl implements ExamConfigService {
         if (excel != null) {
             groupService.createGroup(userId, excel, groupName);
         }
-//        List<Groups> validGroups = groupService.getGroups(userId).stream()
-//                .filter(g -> g.getName() == groupName).collect(Collectors.toList());
+        List<GroupsVO> validGroups = groupService.getGroups(userId).stream()
+                .filter(g -> g.getName() == groupName).collect(Collectors.toList());
         //TODO 从groups中获取name和mail
         List<Quiz> quizs = new ArrayList<>();
+        List<Testee> testees = new ArrayList<>();
+
         quizVO.stream().forEach(
                 q -> {
                     Quiz quiz = new Quiz();
-                    //TODO
-//                    quiz.setValue(q.getValue());
+                    quiz.setValue(q.getValue());
                     quizs.add(quiz);
                 }
         );
         User teacher = userRepository.findOne(userId);
-        Exam exam = new Exam();
-        exam.setUserByUserId(teacher);
-        exam.setQuizzesById(quizs);
-        //TODO
-//        exam.setQuizCount(quizCount);
-        exam.setStartTime(startTime);
-        exam.setEndTime(endTime);
+        return saveExam(teacher, testees, quizs, startTime, endTime);
+    }
 
-        examRepository.saveAndFlush(exam);
+    private GeneralResponse saveExam(User teacher, List<Testee> testees, List<Quiz> quizs, Timestamp startTime, Timestamp endTime) {
+        try {
+            Exam exam = new Exam();
+            exam.setUserByUserId(teacher);
+            exam.setQuizzesById(quizs);
+            exam.setStartTime(startTime);
+            exam.setEndTime(endTime);
+            exam.setTesteesById(testees);
+
+            examRepository.saveAndFlush(exam);
+
+        } catch (Exception e) {
+            return new GeneralResponse(false, e.getMessage());
+        }
         return new GeneralResponse(true, "成功创建试卷");
     }
+
 
 }
