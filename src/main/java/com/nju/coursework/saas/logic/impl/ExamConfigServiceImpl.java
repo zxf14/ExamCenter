@@ -98,6 +98,7 @@ public class ExamConfigServiceImpl implements ExamConfigService {
             exam.setQuizzesById(quizs);
             exam.setStartTime(startTime);
             exam.setEndTime(endTime);
+            //TODO 这里set 以后并不会保存testee的数据吧，必须先save exam 再testeeRepository来save testee
             exam.setTesteesById(testees);
 
             examRepository.saveAndFlush(exam);

@@ -8,6 +8,7 @@ import javax.persistence.*;
 @Entity
 public class Answer {
     private String content;
+    private int score;
     private int id;
     private Quiz quizByQuizId;
     private Student studentByStudentId;
@@ -71,5 +72,15 @@ public class Answer {
 
     public void setStudentByStudentId(Student studentByStudentId) {
         this.studentByStudentId = studentByStudentId;
+    }
+
+    @Basic
+    @Column(name = "score", nullable = true)
+    public int getScore() {
+        return score;
+    }
+
+    public void setScore(int score) {
+        this.score = score;
     }
 }
