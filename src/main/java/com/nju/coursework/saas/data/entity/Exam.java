@@ -12,7 +12,7 @@ public class Exam {
     private int id;
     private Timestamp startTime;
     private Timestamp endTime;
-    private String subject;
+    private Course courseById;
     private User userByUserId;
     private Collection<Quiz> quizzesById;
     private Collection<Testee> testeesById;
@@ -48,16 +48,6 @@ public class Exam {
         this.endTime = endTime;
     }
 
-    @Basic
-    @Column(name = "subject", nullable = true, length = 20)
-    public String getSubject() {
-        return subject;
-    }
-
-    public void setSubject(String subject) {
-        this.subject = subject;
-    }
-
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
@@ -68,7 +58,6 @@ public class Exam {
         if (id != exam.id) return false;
         if (startTime != null ? !startTime.equals(exam.startTime) : exam.startTime != null) return false;
         if (endTime != null ? !endTime.equals(exam.endTime) : exam.endTime != null) return false;
-        if (subject != null ? !subject.equals(exam.subject) : exam.subject != null) return false;
 
         return true;
     }
@@ -78,8 +67,17 @@ public class Exam {
         int result = id;
         result = 31 * result + (startTime != null ? startTime.hashCode() : 0);
         result = 31 * result + (endTime != null ? endTime.hashCode() : 0);
-        result = 31 * result + (subject != null ? subject.hashCode() : 0);
         return result;
+    }
+
+    @ManyToOne
+    @JoinColumn(name = "course_id", referencedColumnName = "id")
+    public Course getCourseById() {
+        return courseById;
+    }
+
+    public void setCourseById(Course courseById) {
+        this.courseById = courseById;
     }
 
     @ManyToOne
