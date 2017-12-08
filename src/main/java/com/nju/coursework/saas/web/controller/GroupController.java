@@ -42,4 +42,12 @@ public class GroupController {
         response.putDate("groups", groups);
         return JsonUtil.toJsonString(response);
     }
+
+    @GetMapping("/template")
+    @ResponseBody
+    public String getTemplate() throws IOException {
+        GeneralResponse response = new GeneralResponse(true, "");
+        response.putDate("template", "/studentList.xlsx");
+        return JsonUtil.toJsonString(response);
+    }
 }
