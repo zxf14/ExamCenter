@@ -16,7 +16,7 @@ import java.util.List;
  * Created by guhan on 17/11/8.
  */
 @Controller
-@RequestMapping(value = "/question")
+@RequestMapping(value = "/test/question")
 public class QuestionController {
 
     @Autowired

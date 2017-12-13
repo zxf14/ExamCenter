@@ -16,7 +16,7 @@ import java.io.IOException;
 import java.util.List;
 
 @Controller
-@RequestMapping(value = "/course")
+@RequestMapping(value = "/test/course")
 public class CourseController {
 
     @Autowired

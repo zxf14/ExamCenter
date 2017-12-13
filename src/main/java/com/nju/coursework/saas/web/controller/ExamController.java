@@ -21,7 +21,7 @@ import java.sql.Timestamp;
 import java.util.List;
 
 @RestController
-@RequestMapping("/Exam")
+@RequestMapping("/test/Exam")
 public class ExamController {
 
     @Autowired

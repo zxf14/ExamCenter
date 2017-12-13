@@ -17,7 +17,7 @@ import java.util.List;
  * Created by guhan on 17/11/8.
  */
 @Controller
-@RequestMapping(value = "/group")
+@RequestMapping(value = "/test/group")
 public class GroupController {
 
     @Autowired
