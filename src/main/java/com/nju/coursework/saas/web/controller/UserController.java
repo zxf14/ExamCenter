@@ -12,7 +12,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
  * Created by guhan on 17/11/8.
  */
 @Controller
-@RequestMapping(value = "/user")
+@RequestMapping(value = "/test/user")
 public class UserController {
 
     @Autowired

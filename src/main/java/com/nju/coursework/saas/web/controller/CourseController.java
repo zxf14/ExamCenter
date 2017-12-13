@@ -16,7 +16,7 @@ import java.io.IOException;
 import java.util.List;
 
 @Controller
-@RequestMapping(value = "/course")
+@RequestMapping(value = "/test/course")
 public class CourseController {
 
     @Autowired
@@ -32,8 +32,13 @@ public class CourseController {
     @GetMapping("/list")
     @ResponseBody
     public String getCourse(HttpSession session) throws IOException {
+        if (session.getAttribute("id") == null){
+            return JsonUtil.toJsonString(new GeneralResponse(false, "未登录"));
+        }
+        GeneralResponse response = new GeneralResponse(true, "");
         List<CourseVO> resp = courseService.getCourse((Integer) session.getAttribute("id"));
-        return JsonUtil.toJsonString(resp);
+        response.putDate("courses", resp);
+        return JsonUtil.toJsonString(response);
     }
 
 }
