@@ -26,7 +26,6 @@ public class Student {
     }
 
     @Id
-    @GeneratedValue
     @Column(name = "student_no", nullable = false, length = 100)
     public String getStudentNo() {
         return studentNo;
