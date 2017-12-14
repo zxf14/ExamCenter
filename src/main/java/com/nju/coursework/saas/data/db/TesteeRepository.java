@@ -11,5 +11,7 @@ public interface TesteeRepository extends JpaRepository<Testee, Integer> {
 
     @Query("select t from Testee t where t.examByExamId.id=?1")
     List<Testee> findByExamId(int examId);
+    @Query("select t from Testee t where t.studentByStudentId.id=?1")
+    List<Testee> findByStudentId(String studentNo);
 }
 

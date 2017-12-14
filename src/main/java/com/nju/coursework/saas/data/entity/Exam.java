@@ -10,6 +10,8 @@ import java.util.Collection;
 @Entity
 public class Exam {
     private int id;
+    private String examTitle;
+    private String examPlace;
     private Timestamp startTime;
     private Timestamp endTime;
     private Course courseById;
@@ -44,8 +46,28 @@ public class Exam {
         return endTime;
     }
 
+    @Basic
+    @Column(name = "title", nullable = true)
+    public String getExamTitle() {
+        return examTitle;
+    }
+
+    @Basic
+    @Column(name = "place", nullable = true)
+    public String getExamPlace() {
+        return examPlace;
+    }
+
     public void setEndTime(Timestamp endTime) {
         this.endTime = endTime;
+    }
+
+    public void setExamTitle(String title) {
+        this.examTitle = title;
+    }
+
+    public void setExamPlace(String place) {
+        this.examPlace = place;
     }
 
     @Override
@@ -58,7 +80,8 @@ public class Exam {
         if (id != exam.id) return false;
         if (startTime != null ? !startTime.equals(exam.startTime) : exam.startTime != null) return false;
         if (endTime != null ? !endTime.equals(exam.endTime) : exam.endTime != null) return false;
-
+        if (examTitle != null ? !examTitle.equals(exam.examTitle) : exam.examTitle != null) return false;
+        if (examPlace != null ? !examPlace.equals(exam.examPlace) : exam.examPlace != null) return false;
         return true;
     }
 
@@ -67,6 +90,8 @@ public class Exam {
         int result = id;
         result = 31 * result + (startTime != null ? startTime.hashCode() : 0);
         result = 31 * result + (endTime != null ? endTime.hashCode() : 0);
+        result = 31 * result + (examTitle != null ? examTitle.hashCode() : 0);
+        result = 31 * result + (examPlace != null ? examPlace.hashCode() : 0);
         return result;
     }
 

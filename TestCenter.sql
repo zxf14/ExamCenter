@@ -57,6 +57,8 @@ CREATE TABLE `exam` (
   `end_time` datetime DEFAULT NULL,
   `course_id` int(11) DEFAULT NULL,
   `user_id` int(11) DEFAULT NULL,
+  `title` VARCHAR(1000) DEFAULT NULL,
+  `place` VARCHAR(1000) DEFAULT NULL,
   PRIMARY KEY (`id`),
   KEY `user_id` (`user_id`) USING BTREE,
   KEY `course_id` (`course_id`) USING BTREE,
