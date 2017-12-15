@@ -3,6 +3,7 @@ package com.nju.coursework.saas.web.controller;
 import com.nju.coursework.saas.logic.service.QuestionService;
 import com.nju.coursework.saas.logic.vo.QuestionVO;
 import com.nju.coursework.saas.util.JsonUtil;
+import com.nju.coursework.saas.web.annotation.LoginRequired;
 import com.nju.coursework.saas.web.response.GeneralResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -22,6 +23,7 @@ public class QuestionController {
     @Autowired
     QuestionService questionService;
 
+    @LoginRequired
     @PostMapping("/import")
     @ResponseBody
     public String importQuestion(@RequestParam("file") MultipartFile file, int courseId) throws IOException {
@@ -29,6 +31,7 @@ public class QuestionController {
         return JsonUtil.toJsonString(resp);
     }
 
+    @LoginRequired
     @GetMapping("/list")
     @ResponseBody
     public String getQuestion(int courseId) throws IOException {
@@ -38,6 +41,7 @@ public class QuestionController {
         return JsonUtil.toJsonString(response);
     }
 
+    @LoginRequired
     @GetMapping("/template")
     @ResponseBody
     public String getTemplate() throws IOException {

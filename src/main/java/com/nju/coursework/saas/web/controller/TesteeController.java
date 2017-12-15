@@ -5,6 +5,7 @@ import com.nju.coursework.saas.logic.service.TesteeService;
 import com.nju.coursework.saas.logic.vo.CourseVO;
 import com.nju.coursework.saas.logic.vo.TesteeVO;
 import com.nju.coursework.saas.util.JsonUtil;
+import com.nju.coursework.saas.web.annotation.LoginRequired;
 import com.nju.coursework.saas.web.response.GeneralResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -24,6 +25,7 @@ public class TesteeController {
     @Autowired
     TesteeService testeeService;
 
+    @LoginRequired
     @PostMapping("/list")
     @ResponseBody
     public String getTesteesReport(int examId, HttpSession session) throws IOException {

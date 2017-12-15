@@ -3,6 +3,7 @@ package com.nju.coursework.saas.web.controller;
 import com.nju.coursework.saas.logic.service.GroupService;
 import com.nju.coursework.saas.logic.vo.GroupsVO;
 import com.nju.coursework.saas.util.JsonUtil;
+import com.nju.coursework.saas.web.annotation.LoginRequired;
 import com.nju.coursework.saas.web.response.GeneralResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -23,6 +24,7 @@ public class GroupController {
     @Autowired
     GroupService groupService;
 
+    @LoginRequired
     @PostMapping("/import")
     @ResponseBody
     public String createGroup(@RequestParam("file") MultipartFile file,
@@ -34,6 +36,7 @@ public class GroupController {
         return JsonUtil.toJsonString(resp);
     }
 
+    @LoginRequired
     @GetMapping("/list")
     @ResponseBody
     public String getGroup(HttpSession session) throws IOException {
@@ -43,6 +46,7 @@ public class GroupController {
         return JsonUtil.toJsonString(response);
     }
 
+    @LoginRequired
     @GetMapping("/template")
     @ResponseBody
     public String getTemplate() throws IOException {

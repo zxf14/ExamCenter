@@ -7,6 +7,7 @@ import com.nju.coursework.saas.logic.vo.QuestionVO;
 import com.nju.coursework.saas.logic.vo.QuizVO;
 import com.nju.coursework.saas.logic.vo.StudentVO;
 import com.nju.coursework.saas.util.JsonUtil;
+import com.nju.coursework.saas.web.annotation.LoginRequired;
 import com.nju.coursework.saas.web.response.GeneralResponse;
 import lombok.NonNull;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -24,7 +25,7 @@ public class ExamController {
 
     @Autowired
     private ExamService examService;
-
+    @LoginRequired
     @PostMapping("/config/create")
     public String createExam(int questionNum, @NonNull List<Integer> scores, @RequestParam List<StudentVO> testees,
                              List<QuestionVO> questions, @NonNull Timestamp startTime, @NonNull Timestamp endTime,
@@ -33,7 +34,7 @@ public class ExamController {
                 testees, questions, startTime, endTime, title, place);
         return JsonUtil.toJsonString(response);
     }
-
+    @LoginRequired
     @PostMapping("/config/import")
     public String importStudentToCreateExam(int quizCount, @RequestParam("file") MultipartFile file, String groupName,
                                             List<Integer> scores, List<QuestionVO> questions, Timestamp startTime, Timestamp endTime,
@@ -49,13 +50,13 @@ public class ExamController {
         }
         return JsonUtil.toJsonString(response);
     }
-
+    @LoginRequired
     @PostMapping("/submit")
     public String submitExam(int testeeId, List<QuizVO> quiz) {
         GeneralResponse response = examService.submitExam(testeeId, quiz);
         return JsonUtil.toJsonString(response);
     }
-
+    @LoginRequired
     @GetMapping("/teacherCreate")
     public String teacherCreate(List<Integer> examId) {
         List<ExamVO> examList = examService.createExamBefore(examId);
@@ -63,7 +64,7 @@ public class ExamController {
         resp.putDate("examList",examList);
         return JsonUtil.toJsonString(resp);
     }
-
+    @LoginRequired
     @GetMapping("/getExam")
     public String getExam(int examId, String studentNo) {
         ExamVO exam = examService.getExamAfter(examId, studentNo);
@@ -71,7 +72,7 @@ public class ExamController {
         resp.putDate("exam",exam);
         return JsonUtil.toJsonString(resp);
     }
-
+    @LoginRequired
     @GetMapping("/getExamList")
     public String getExamList(int examId) {
         List<ExamVO> exam = examService.getExamAfterList(examId);
@@ -79,7 +80,7 @@ public class ExamController {
         resp.putDate("exam",exam);
         return JsonUtil.toJsonString(resp);
     }
-
+    @LoginRequired
     @GetMapping("/getExamByCourse")
     public String getExamByCourse(int courseId) {
         List<ExamVO> exam = examService.getExamInfoByCourse(courseId);
@@ -87,7 +88,7 @@ public class ExamController {
         resp.putDate("exam",exam);
         return JsonUtil.toJsonString(resp);
     }
-
+    @LoginRequired
     @GetMapping("/getExamByStudentNo")
     public String getExamByStudentId(String studentNo) {
         List<ExamVO> exam = examService.getExamInfoByStudent(studentNo);

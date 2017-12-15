@@ -4,6 +4,7 @@ import com.nju.coursework.saas.data.db.*;
 import com.nju.coursework.saas.data.entity.*;
 import com.nju.coursework.saas.logic.service.ExamService;
 import com.nju.coursework.saas.logic.service.GroupService;
+import com.nju.coursework.saas.logic.service.MailService;
 import com.nju.coursework.saas.logic.vo.*;
 import com.nju.coursework.saas.web.response.GeneralResponse;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -44,6 +45,8 @@ public class ExamServiceImpl implements ExamService {
     CourseRepository courseRepository;
     @Resource
     GroupService groupService;
+    @Resource
+    MailService mailService;
 
     @Override
     public GeneralResponse examConfig(int userId, int quizCount, List<Integer> scores, List<StudentVO> studentVO,
@@ -185,7 +188,9 @@ public class ExamServiceImpl implements ExamService {
         } catch (Exception e) {
             return new GeneralResponse(false, e.getMessage());
         }
-
+        //向考生发送考试结果
+        Testee testee = testeeRepository.findOne(testeeId);
+        mailService.scoreMail(testee.getStudentMail(), testee.getExamByExamId().getExamTitle(), testee.getScore());
         return new GeneralResponse(true, "试卷提交成功");
     }
 
