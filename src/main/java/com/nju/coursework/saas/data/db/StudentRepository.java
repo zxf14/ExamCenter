@@ -16,5 +16,8 @@ public interface StudentRepository extends JpaRepository<Student, String> {
 
     @Query("select us from Student us where us.name=?1")
     List<Student> findByName(String studentName);
+
+    @Query("select us from Student us where us.mail=?1")
+    List<Student> findByEmail(String s);
 }
 
