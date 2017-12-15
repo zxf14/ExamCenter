@@ -24,6 +24,7 @@ DROP TABLE IF EXISTS `answer`;
 CREATE TABLE `answer` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `quiz_id` int(11) NOT NULL,
+  `score` int(11) NOT NULL,
   `student_id` varchar(100) COLLATE utf8_bin NOT NULL,
   `content` varchar(100) COLLATE utf8_bin DEFAULT NULL COMMENT '存选择的option id 的数组',
   PRIMARY KEY (`id`),
@@ -54,11 +55,15 @@ CREATE TABLE `exam` (
   `start_time` datetime DEFAULT NULL,
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `end_time` datetime DEFAULT NULL,
-  `subject` varchar(20) DEFAULT NULL COMMENT '科目',
+  `course_id` int(11) DEFAULT NULL,
   `user_id` int(11) DEFAULT NULL,
+  `title` VARCHAR(1000) DEFAULT NULL,
+  `place` VARCHAR(1000) DEFAULT NULL,
   PRIMARY KEY (`id`),
   KEY `user_id` (`user_id`) USING BTREE,
-  CONSTRAINT `exam_ibfk_1` FOREIGN KEY (`user_id`) REFERENCES `user` (`id`)
+  KEY `course_id` (`course_id`) USING BTREE,
+  CONSTRAINT `exam_ibfk_1` FOREIGN KEY (`user_id`) REFERENCES `user` (`id`),
+  CONSTRAINT `exam_ibfk_2` FOREIGN KEY (`course_id`) REFERENCES `course` (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='一次老师发起的考试';
 
 -- ----------------------------
@@ -139,6 +144,7 @@ CREATE TABLE `testee` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `student_id` varchar(100) COLLATE utf8_bin NOT NULL,
   `exam_id` int(11) NOT NULL,
+  `student_name` varchar(30) COLLATE utf8_bin DEFAULT NULL,
   `student_mail` varchar(30) COLLATE utf8_bin DEFAULT NULL,
   `score` int(11) DEFAULT '0' COMMENT '分数',
   PRIMARY KEY (`id`),

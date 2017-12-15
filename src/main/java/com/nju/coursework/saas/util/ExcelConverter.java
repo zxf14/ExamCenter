@@ -10,7 +10,7 @@ import java.math.BigDecimal;
  */
 public class ExcelConverter {
     public static String getCellValue(XSSFCell cell) {
-        if(cell!= null){
+        if (cell != null) {
             if (cell.getCellTypeEnum() == CellType.BOOLEAN) {
                 return String.valueOf(cell.getBooleanCellValue());
             } else if (cell.getCellTypeEnum() == CellType.NUMERIC) {
@@ -18,7 +18,7 @@ public class ExcelConverter {
             } else {
                 return String.valueOf(cell.getStringCellValue());
             }
-        }else{
+        } else {
             return "";
         }
     }

@@ -6,10 +6,7 @@ import org.junit.Test;
 import org.springframework.core.io.ClassPathResource;
 
 import javax.annotation.Resource;
-
 import java.io.InputStream;
-
-import static org.junit.Assert.*;
 
 /**
  * Created by zhouxiaofan on 2017/12/4.

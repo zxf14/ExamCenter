@@ -34,7 +34,7 @@ public class GroupServiceImpl implements GroupService {
             List<String> list = new ArrayList<>();
             for (int rowNum = 1; rowNum <= xssfSheet.getLastRowNum(); rowNum++) {
                 XSSFRow xssfRow = xssfSheet.getRow(rowNum);
-                String info = ExcelConverter.getCellValue(xssfRow.getCell(0))+" "+ExcelConverter.getCellValue(xssfRow.getCell(1));
+                String info = ExcelConverter.getCellValue(xssfRow.getCell(0)) + " " + ExcelConverter.getCellValue(xssfRow.getCell(1));
                 list.add(info);
             }
             try {

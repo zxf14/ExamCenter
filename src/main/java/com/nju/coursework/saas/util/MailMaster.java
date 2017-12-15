@@ -8,10 +8,7 @@ import javax.mail.Session;
 import javax.mail.Transport;
 import javax.mail.internet.InternetAddress;
 import javax.mail.internet.MimeMessage;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
-import java.util.Properties;
+import java.util.*;
 
 /**
  * Created by guhan on 17/11/8.
@@ -65,22 +62,37 @@ public class MailMaster {
         }
     }
 
+    public void sendForResult(String userMail, String examTitle, int score) {
+        try {
+            MimeMessage message = createMessage(myMailAccount, Arrays.asList(userMail), "考试结果", "您参加的考试: " +
+            examTitle + "分数为： " + score);
+            Transport transport = session.getTransport();
+            transport.connect(myMailAccount, myMailPassword);
+            transport.sendMessage(message, message.getAllRecipients());
+            transport.close();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+
+
     private MimeMessage createMessage(String sender, List<String> receiver, String subject, String content) throws Exception {
         MimeMessage message = new MimeMessage(session);
         List<InternetAddress> receiverList = new ArrayList<>();
         Address[] recvArray = new Address[receiver.size()];
-        int i=0;
-        for(String ritem: receiver){
-            receiverList.add(new InternetAddress(ritem,"学生","UTF-8"));
-            recvArray[i] = new InternetAddress(ritem,"学生","UTF-8");
+        int i = 0;
+        for (String ritem : receiver) {
+            receiverList.add(new InternetAddress(ritem, "学生", "UTF-8"));
+            recvArray[i] = new InternetAddress(ritem, "学生", "UTF-8");
             i++;
         }
 
 
-        message.setFrom(new InternetAddress(sender,"软件学院考试中心","UTF-8"));
+        message.setFrom(new InternetAddress(sender, "软件学院考试中心", "UTF-8"));
         message.setRecipients(MimeMessage.RecipientType.TO, recvArray);
-        message.setSubject(subject,"UTF-8");
-        message.setContent(content,"text/html;charset=UTF-8");
+        message.setSubject(subject, "UTF-8");
+        message.setContent(content, "text/html;charset=UTF-8");
         message.setSentDate(new Date());
         message.saveChanges();
         return message;

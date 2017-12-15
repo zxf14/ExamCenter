@@ -1,7 +1,9 @@
 package com.nju.coursework.saas.web.controller;
 
 import com.nju.coursework.saas.logic.service.CourseService;
+import com.nju.coursework.saas.logic.service.TesteeService;
 import com.nju.coursework.saas.logic.vo.CourseVO;
+import com.nju.coursework.saas.logic.vo.TesteeVO;
 import com.nju.coursework.saas.util.JsonUtil;
 import com.nju.coursework.saas.web.annotation.LoginRequired;
 import com.nju.coursework.saas.web.response.GeneralResponse;
@@ -17,30 +19,20 @@ import java.io.IOException;
 import java.util.List;
 
 @Controller
-@RequestMapping(value = "/test/course")
-public class CourseController {
+@RequestMapping(value = "/test/testee")
+public class TesteeController {
 
     @Autowired
-    CourseService courseService;
+    TesteeService testeeService;
 
     @LoginRequired
-    @PostMapping("/create")
+    @PostMapping("/list")
     @ResponseBody
-    public String createCourse(String courseName, HttpSession session) throws IOException {
-        GeneralResponse resp = courseService.createCourse((Integer) session.getAttribute("id"), courseName);
+    public String getTesteesReport(int examId, HttpSession session) throws IOException {
+        List<TesteeVO> testeeVOS = testeeService.getTesteeReport(examId);
+        GeneralResponse resp = new GeneralResponse(true, "");
+        resp.putDate("report",testeeVOS);
         return JsonUtil.toJsonString(resp);
-    }
-    @LoginRequired
-    @GetMapping("/list")
-    @ResponseBody
-    public String getCourse(HttpSession session) throws IOException {
-        if (session.getAttribute("id") == null){
-            return JsonUtil.toJsonString(new GeneralResponse(false, "未登录"));
-        }
-        GeneralResponse response = new GeneralResponse(true, "");
-        List<CourseVO> resp = courseService.getCourse((Integer) session.getAttribute("id"));
-        response.putDate("courses", resp);
-        return JsonUtil.toJsonString(response);
     }
 
 }
