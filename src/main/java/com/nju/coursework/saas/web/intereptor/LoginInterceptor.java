@@ -1,5 +1,6 @@
 package com.nju.coursework.saas.web.intereptor;
 
+import com.nju.coursework.saas.data.db.UserRepository;
 import com.nju.coursework.saas.data.entity.User;
 import com.nju.coursework.saas.logic.service.StudentService;
 import com.nju.coursework.saas.logic.service.UserService;
@@ -16,7 +17,7 @@ import java.lang.reflect.Method;
 //todo
 public class LoginInterceptor extends HandlerInterceptorAdapter {
     @Autowired
-    private UserService userService;
+    private UserRepository userRepository;
 
     @Autowired
     private StudentService studentService;
@@ -40,6 +41,19 @@ public class LoginInterceptor extends HandlerInterceptorAdapter {
 
         // 判断接口是否需要登录
         LoginRequired methodAnnotation = method.getAnnotation(LoginRequired.class);
+        if (methodAnnotation != null) {
+            // 验证用户是否登陆
+            Object obj = request.getSession().getAttribute("id");
+            if (obj == null || !(obj instanceof String)) {
+                response.sendRedirect(request.getContextPath() + "/index.html");
+                return false;
+            }
+            User use = userRepository.findOne((int) obj);
+            if (use == null) {
+                return false;
+            }
+        }
+        return true;
         // 有 @LoginRequired 注解，需要认证
 //        if (methodAnnotation != null) {
 //            // 执行认证
@@ -70,14 +84,6 @@ public class LoginInterceptor extends HandlerInterceptorAdapter {
 //            return true;
 //        }
 //        return true;
-
-        // 验证用户是否登陆
-        Object obj = request.getSession().getAttribute("id");
-        if (obj == null || !(obj instanceof String)) {
-            response.sendRedirect(request.getContextPath() + "/index.html");
-            return false;
-        }
-        return true;
     }
 
     /**
