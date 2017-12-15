@@ -1,7 +1,6 @@
 package com.nju.coursework.saas.data.entity;
 
 import javax.persistence.*;
-import java.sql.Timestamp;
 import java.util.Collection;
 
 /**
@@ -46,24 +45,24 @@ public class Exam {
         return endTime;
     }
 
+    public void setEndTime(String endTime) {
+        this.endTime = endTime;
+    }
+
     @Basic
     @Column(name = "title", nullable = true)
     public String getExamTitle() {
         return examTitle;
     }
 
+    public void setExamTitle(String title) {
+        this.examTitle = title;
+    }
+
     @Basic
     @Column(name = "place", nullable = true)
     public String getExamPlace() {
         return examPlace;
-    }
-
-    public void setEndTime(String endTime) {
-        this.endTime = endTime;
-    }
-
-    public void setExamTitle(String title) {
-        this.examTitle = title;
     }
 
     public void setExamPlace(String place) {

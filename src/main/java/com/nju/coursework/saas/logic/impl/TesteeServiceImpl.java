@@ -18,6 +18,6 @@ public class TesteeServiceImpl implements TesteeService {
     @Override
     public List<TesteeVO> getTesteeReport(int examId) {
         List<Testee> testeeList = testeeRepository.findByExamId(examId);
-        return testeeList.stream().map(i->new TesteeVO(i)).collect(Collectors.toList());
+        return testeeList.stream().map(i -> new TesteeVO(i)).collect(Collectors.toList());
     }
 }

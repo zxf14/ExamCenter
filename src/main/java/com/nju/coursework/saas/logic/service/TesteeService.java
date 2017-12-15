@@ -10,6 +10,7 @@ import java.util.List;
 public interface TesteeService {
     /**
      * 获取某次考试成绩单
+     *
      * @param examId
      */
     List<TesteeVO> getTesteeReport(int examId);

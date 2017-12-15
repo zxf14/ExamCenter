@@ -1,18 +1,14 @@
 package com.nju.coursework.saas.logic.vo;
 
-import com.nju.coursework.saas.data.entity.Answer;
 import com.nju.coursework.saas.data.entity.Exam;
-import com.nju.coursework.saas.data.entity.Question;
-import com.nju.coursework.saas.data.entity.Student;
 import com.nju.coursework.saas.util.DateTimeUtils;
 import lombok.Getter;
 
+import java.sql.Timestamp;
 import java.time.Instant;
 import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
-import java.util.stream.Collectors;
 
 @Getter
 public class ExamVO {
@@ -35,7 +31,7 @@ public class ExamVO {
         init(exam);
     }
 
-    public ExamVO(Exam exam, List<QuestionVO> questions, List<Integer>value, List<AnswerVO> answers) {
+    public ExamVO(Exam exam, List<QuestionVO> questions, List<Integer> value, List<AnswerVO> answers) {
         init(exam);
         this.questions = new ArrayList<>(questions);
         this.value = new ArrayList<>(value);
@@ -46,14 +42,16 @@ public class ExamVO {
         this.id = exam.getId();
         this.title = exam.getExamTitle();
         this.place = exam.getExamPlace();
-        this.startTime = DateTimeUtils.dateTime(exam.getStartTime().toInstant());
-        this.between = DateTimeUtils.between(exam.getStartTime().toInstant(), exam.getEndTime().toInstant(), ChronoUnit.HOURS);
-        if (exam.getStartTime().toInstant().compareTo(Instant.now()) > 0) {
+        Instant timeStart = Timestamp.valueOf(exam.getStartTime()).toInstant();
+        Instant timeEnd = Timestamp.valueOf(exam.getEndTime()).toInstant();
+        this.startTime = DateTimeUtils.dateTime(timeStart);
+        this.between = DateTimeUtils.between(timeStart, timeEnd, ChronoUnit.HOURS);
+        if (timeStart.compareTo(Instant.now()) > 0) {
             this.state = 0;
-        } else if(exam.getEndTime().toInstant().compareTo(Instant.now()) < 0) {
+        } else if (timeEnd.compareTo(Instant.now()) < 0) {
             this.state = 2;
-        } else if(exam.getStartTime().toInstant().compareTo(Instant.now()) < 0 &&
-                exam.getEndTime().toInstant().compareTo(Instant.now()) > 0) {
+        } else if (timeStart.compareTo(Instant.now()) < 0 &&
+                timeEnd.compareTo(Instant.now()) > 0) {
             this.state = 1;
         }
     }

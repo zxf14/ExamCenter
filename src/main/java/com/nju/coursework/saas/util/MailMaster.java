@@ -65,7 +65,7 @@ public class MailMaster {
     public void sendForResult(String userMail, String examTitle, int score) {
         try {
             MimeMessage message = createMessage(myMailAccount, Arrays.asList(userMail), "考试结果", "您参加的考试: " +
-            examTitle + "分数为： " + score);
+                    examTitle + "分数为： " + score);
             Transport transport = session.getTransport();
             transport.connect(myMailAccount, myMailPassword);
             transport.sendMessage(message, message.getAllRecipients());
@@ -74,7 +74,6 @@ public class MailMaster {
             e.printStackTrace();
         }
     }
-
 
 
     private MimeMessage createMessage(String sender, List<String> receiver, String subject, String content) throws Exception {

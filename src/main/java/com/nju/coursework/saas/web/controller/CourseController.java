@@ -30,11 +30,12 @@ public class CourseController {
         GeneralResponse resp = courseService.createCourse((Integer) session.getAttribute("id"), courseName);
         return JsonUtil.toJsonString(resp);
     }
+
     @LoginRequired
     @GetMapping("/list")
     @ResponseBody
     public String getCourse(HttpSession session) throws IOException {
-        if (session.getAttribute("id") == null){
+        if (session.getAttribute("id") == null) {
             return JsonUtil.toJsonString(new GeneralResponse(false, "未登录"));
         }
         GeneralResponse response = new GeneralResponse(true, "");

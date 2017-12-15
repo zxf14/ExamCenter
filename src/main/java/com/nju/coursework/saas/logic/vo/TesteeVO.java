@@ -21,8 +21,8 @@ public class TesteeVO {
     }
 
     public TesteeVO(Testee testee) {
-        if (testee.getExamByExamId()!=null) examId = testee.getExamByExamId().getId();
-        if (testee.getStudentByStudentId()!=null) studentId = testee.getStudentByStudentId().getStudentNo();
+        if (testee.getExamByExamId() != null) examId = testee.getExamByExamId().getId();
+        if (testee.getStudentByStudentId() != null) studentId = testee.getStudentByStudentId().getStudentNo();
         id = testee.getId();
         studentMail = testee.getStudentMail();
         studentName = testee.getStudentName();

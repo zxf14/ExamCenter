@@ -3,12 +3,10 @@ package com.nju.coursework.saas.logic.service;
 import com.nju.coursework.saas.logic.vo.ExamVO;
 import com.nju.coursework.saas.logic.vo.QuestionVO;
 import com.nju.coursework.saas.logic.vo.QuizVO;
-import com.nju.coursework.saas.logic.vo.StudentVO;
 import com.nju.coursework.saas.web.response.GeneralResponse;
 import lombok.NonNull;
 
 import java.io.InputStream;
-import java.sql.Timestamp;
 import java.util.List;
 
 public interface ExamService {
@@ -16,15 +14,17 @@ public interface ExamService {
      * @param userId
      * @param questionNum
      * @param scores
-     * @param testees
+     * @param groupId
      * @param questions
      * @param startTime
      * @param endTime
+     * @param title
+     * @param place
      * @return
      */
     GeneralResponse examConfig(int userId, int questionNum, @NonNull List<Integer> scores,
-                               @NonNull List<StudentVO> testees, @NonNull List<QuestionVO> questions,
-                               @NonNull Timestamp startTime, @NonNull Timestamp endTime,
+                               @NonNull int groupId, @NonNull List<QuestionVO> questions,
+                               @NonNull String startTime, @NonNull String endTime,
                                String title, String place);
 
     /**
@@ -39,13 +39,14 @@ public interface ExamService {
      */
     GeneralResponse examConfigByExcel(int userId, int questionNum, InputStream excel, @NonNull String groupName,
                                       @NonNull List<Integer> scores, @NonNull List<QuestionVO> questions,
-                                      @NonNull Timestamp startTime, @NonNull Timestamp endTime,
+                                      @NonNull String startTime, @NonNull String endTime,
                                       String title, String place);
 
     GeneralResponse submitExam(int testeeId, List<QuizVO> quiz);
 
     /**
-     *考前生成试卷
+     * 考前生成试卷
+     *
      * @param examId 考试id
      * @return
      */
@@ -53,7 +54,8 @@ public interface ExamService {
 
     /**
      * 考后生成试卷
-     * @param examId 考试id
+     *
+     * @param examId    考试id
      * @param studentId 学生id列表
      * @return
      */
@@ -61,6 +63,7 @@ public interface ExamService {
 
     /**
      * 批量生成所有考生的试卷
+     *
      * @param examId
      * @return
      */
@@ -68,6 +71,7 @@ public interface ExamService {
 
     /**
      * 根据课程Id获取该课程下的所有考试简介
+     *
      * @param courseId
      * @return
      */
@@ -75,6 +79,7 @@ public interface ExamService {
 
     /**
      * 根据学生Id获取该学生有关的所有考试简介
+     *
      * @param studentNo
      * @return
      */

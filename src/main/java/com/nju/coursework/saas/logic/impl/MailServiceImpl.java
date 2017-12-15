@@ -5,8 +5,6 @@ import com.nju.coursework.saas.util.MailMaster;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.List;
-
 /**
  * Created by guhan on 17/11/8.
  */

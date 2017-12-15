@@ -25,6 +25,7 @@ public class DateTimeUtils {
     public static String time(LocalDateTime dateTime) {
         return time(dateTime.toLocalTime());
     }
+
     /**
      * 格式化日期。
      * 将日期格式化为{@code yyyy-MM-dd}。
@@ -63,9 +64,11 @@ public class DateTimeUtils {
     public static String dateTime(LocalDateTime dateTime) {
         return DATE_TIME_FORMATTER.format(dateTime);
     }
+
     public static ZonedDateTime z(Instant instant) {
         return instant.atZone(zoneId());
     }
+
     /**
      * 计算从{@param from}到{@param to}度过多长时间，单位时间为{@param unit}。
      */

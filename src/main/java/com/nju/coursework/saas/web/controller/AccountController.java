@@ -28,6 +28,7 @@ public class AccountController {
 
     /**
      * /test/teacher/login
+     *
      * @param username
      * @param password
      * @param session
@@ -46,6 +47,7 @@ public class AccountController {
 
     /**
      * /test/student/register
+     *
      * @param name
      * @param id
      * @param email
@@ -66,6 +68,7 @@ public class AccountController {
 
     /**
      * /test/student/login
+     *
      * @param id
      * @param password
      * @param session

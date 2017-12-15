@@ -8,14 +8,14 @@ import com.nju.coursework.saas.logic.service.MailService;
 import com.nju.coursework.saas.logic.vo.*;
 import com.nju.coursework.saas.web.response.GeneralResponse;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.autoconfigure.AutoConfigurationPackage;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
 import java.io.InputStream;
 import java.sql.Timestamp;
+import java.time.Instant;
 import java.util.ArrayList;
-import java.util.Collection;
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -43,33 +43,40 @@ public class ExamServiceImpl implements ExamService {
     AnswerRepository answerRepository;
     @Autowired
     CourseRepository courseRepository;
+    @Autowired
+    GroupRepository groupRepository;
     @Resource
     GroupService groupService;
     @Resource
     MailService mailService;
 
     @Override
-    public GeneralResponse examConfig(int userId, int quizCount, List<Integer> scores, List<StudentVO> studentVO,
-                                      List<QuestionVO> questions, Timestamp startTime, Timestamp endTime,
+    public GeneralResponse examConfig(int userId, int quizCount, List<Integer> scores, int groupId,
+                                      List<QuestionVO> questions, String startTime, String endTime,
                                       String title, String place) {
         if (quizCount != questions.size()) {
             return new GeneralResponse(false, "设置的试题总数与实际题数量不匹配");
         }
-        if (startTime.toInstant().compareTo(endTime.toInstant()) > 0) {
+        Instant timeStart = Timestamp.valueOf(startTime).toInstant();
+        Instant timeEnd = Timestamp.valueOf(endTime).toInstant();
+        if (timeStart.compareTo(timeEnd) > 0) {
             return new GeneralResponse(false, "考试开始时间晚于考试结束时间");
         }
         List<Testee> testees = new ArrayList<>();
 
-        studentVO.stream().filter(s -> s.getMail() != null).forEach(
-                s -> {
-                    List<Student> student = studentRepository.findByNo(s.getStudentNo());
-                    String mail = s.getMail();
-                    Testee testee = new Testee();
-                    testee.setStudentMail(mail);
-                    testee.setStudentByStudentId(student.get(0));
-                    testees.add(testee);
-                }
-        );
+        Groups group = groupRepository.findOne(groupId);
+        List<String> studentName = Arrays.asList(group.getStudents().split(";"));
+        studentName.stream().forEach(s -> {
+            List<Student> students = studentRepository.findByName(s.split(" ")[0])
+                    .stream().filter(student -> student.getMail() != null).collect(Collectors.toList());
+            students.forEach(
+                    stu -> {
+                        Testee testee = new Testee();
+                        testee.setStudentByStudentId(stu);
+                        testee.setStudentMail(stu.getMail());
+                        testees.add(testee);
+                    });
+        });
 
         return saveExam(userId, testees, scores, questions, startTime, endTime, title, place);
     }
@@ -77,12 +84,14 @@ public class ExamServiceImpl implements ExamService {
     @Override
     public GeneralResponse examConfigByExcel(int userId, int quizCount, InputStream excel, String groupName,
                                              List<Integer> scores, List<QuestionVO> questions,
-                                             Timestamp startTime, Timestamp endTime,
+                                             String startTime, String endTime,
                                              String title, String place) {
         if (quizCount != scores.size()) {
             return new GeneralResponse(false, "设置的试题总数与实际题数量不匹配");
         }
-        if (startTime.toInstant().compareTo(endTime.toInstant()) > 0) {
+        Instant timeStart = Timestamp.valueOf(startTime).toInstant();
+        Instant timeEnd = Timestamp.valueOf(endTime).toInstant();
+        if (timeStart.compareTo(timeEnd) > 0) {
             return new GeneralResponse(false, "考试开始时间晚于考试结束时间");
         }
         if (excel != null) {
@@ -113,7 +122,7 @@ public class ExamServiceImpl implements ExamService {
     }
 
     private GeneralResponse saveExam(int userId, List<Testee> testees, List<Integer> scores, List<QuestionVO> questions,
-                                     Timestamp startTime, Timestamp endTime, String title, String place) {
+                                     String startTime, String endTime, String title, String place) {
 
         List<Quiz> quizs = new ArrayList<>();
         User teacher = userRepository.findOne(userId);
@@ -222,7 +231,7 @@ public class ExamServiceImpl implements ExamService {
     @Override
     public List<ExamVO> createExamBefore(List<Integer> examId) {
         return examId.stream().map(id ->
-           getExamAfter(id, null)).collect(Collectors.toList());
+                getExamAfter(id, null)).collect(Collectors.toList());
     }
 
     @Override
