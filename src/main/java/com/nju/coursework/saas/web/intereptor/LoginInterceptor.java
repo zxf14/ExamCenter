@@ -18,9 +18,6 @@ public class LoginInterceptor extends HandlerInterceptorAdapter {
     @Autowired
     private UserRepository userRepository;
 
-    @Autowired
-    private StudentService studentService;
-
     /**
      * 预处理回调方法，实现处理器的预处理（如登录检查）。
      * 第三个参数为响应的处理器，即controller。
@@ -45,10 +42,6 @@ public class LoginInterceptor extends HandlerInterceptorAdapter {
             Object obj = request.getSession().getAttribute("id");
             if (obj == null || !(obj instanceof String)) {
                 response.sendRedirect(request.getContextPath() + "/index.html");
-                return false;
-            }
-            User use = userRepository.findOne((int) obj);
-            if (use == null) {
                 return false;
             }
         }
