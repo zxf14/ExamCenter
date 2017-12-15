@@ -24,7 +24,7 @@ public interface ExamService {
      * @param examId 考试id
      * @return
      */
-    List<ExamVO> createExamBefore(List<Integer> examId);
+    ExamVO createExamBefore(Integer examId);
 
     /**
      * 考后生成试卷

@@ -235,15 +235,23 @@ public class ExamServiceImpl implements ExamService {
     }
 
     @Override
-    public List<ExamVO> createExamBefore(List<Integer> examId) {
-        return examId.stream().map(id ->
-                getExamAfter(id, null)).collect(Collectors.toList());
+    public ExamVO createExamBefore(Integer examId) {
+
+        return getExamAfter(examId, null);
     }
 
     @Override
     public ExamVO getExamAfter(int examId, String studentId) {
         Exam exam = examRepository.findOne(examId);
-        Student student = studentRepository.findByNo(studentId).get(0);
+        Student student = null;
+
+        if (studentId != null){
+            List<Student> students = studentRepository.findByNo(studentId);
+            if (students.size()>0){
+                student = students.get(0);
+            }
+        }
+
         List<AnswerVO> answers = new ArrayList<>();
         List<QuestionVO> questions = quizRepository.findByExamId(examId).stream()
                 .map(quiz -> {
