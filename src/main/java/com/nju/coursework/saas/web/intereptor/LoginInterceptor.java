@@ -11,6 +11,7 @@ import org.springframework.web.servlet.handler.HandlerInterceptorAdapter;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 import java.lang.reflect.Method;
 
 //todo
@@ -40,7 +41,7 @@ public class LoginInterceptor extends HandlerInterceptorAdapter {
         if (methodAnnotation != null) {
             // 验证用户是否登陆
             Object obj = request.getSession().getAttribute("id");
-            if (obj == null || !(obj instanceof String)) {
+            if (obj == null) {
                 response.sendRedirect(request.getContextPath() + "/index.html");
                 return false;
             }
