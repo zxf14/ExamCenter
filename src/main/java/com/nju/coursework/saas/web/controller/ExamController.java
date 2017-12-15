@@ -18,7 +18,7 @@ import java.io.IOException;
 import java.util.List;
 
 @RestController
-@RequestMapping("/test/Exam")
+@RequestMapping("/test/exam")
 public class ExamController {
 
     @Autowired
