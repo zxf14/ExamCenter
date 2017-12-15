@@ -58,7 +58,7 @@ public class DateTimeUtils {
      * 系统内所有时间相关接口均基于该时区{@code ZoneId.of("Asia/Nanjing")}。
      */
     public static ZoneId zoneId() {
-        return ZoneId.of("Asia/Nanjing");
+        return ZoneId.of("Asia/Shanghai");
     }
 
     public static String dateTime(LocalDateTime dateTime) {

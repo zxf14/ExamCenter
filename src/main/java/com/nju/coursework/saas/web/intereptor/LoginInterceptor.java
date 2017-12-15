@@ -42,7 +42,6 @@ public class LoginInterceptor extends HandlerInterceptorAdapter {
             // 验证用户是否登陆
             Object obj = request.getSession().getAttribute("id");
             if (obj == null) {
-//                response.sendRedirect(request.getContextPath() + "/index.html");
                 response.setStatus(401);
                 return false;
             }
