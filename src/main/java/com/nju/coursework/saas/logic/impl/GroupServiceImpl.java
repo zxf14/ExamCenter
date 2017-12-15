@@ -3,6 +3,7 @@ package com.nju.coursework.saas.logic.impl;
 import com.nju.coursework.saas.data.db.GroupRepository;
 import com.nju.coursework.saas.data.db.UserRepository;
 import com.nju.coursework.saas.data.entity.Groups;
+import com.nju.coursework.saas.data.entity.User;
 import com.nju.coursework.saas.logic.service.GroupService;
 import com.nju.coursework.saas.logic.vo.GroupsVO;
 import com.nju.coursework.saas.util.ExcelConverter;
@@ -61,7 +62,7 @@ public class GroupServiceImpl implements GroupService {
 
     @Override
     public List<GroupsVO> getGroups(int userId) {
-        List<Groups> groups = groupRepository.findByTeacher(userRepository.findOne(userId));
+        List<Groups> groups = groupRepository.findByTeacher(userId);
         List<GroupsVO> result = groups.stream().map(item -> new GroupsVO(item)).collect(Collectors.toList());
         return result;
     }

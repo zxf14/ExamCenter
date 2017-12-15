@@ -5,6 +5,7 @@ import com.nju.coursework.saas.data.entity.Groups;
 import lombok.Getter;
 import lombok.Setter;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
@@ -25,7 +26,11 @@ public class GroupsVO {
     public GroupsVO(Groups groups) {
         id = groups.getId();
         name = groups.getName();
-        students = Arrays.asList(groups.getStudents().split(";"));
+        if (groups.getStudents()!=null)
+            students = Arrays.asList(groups.getStudents().split(";"));
+        else {
+            students = new ArrayList<>();
+        }
     }
 
     public String getName() {

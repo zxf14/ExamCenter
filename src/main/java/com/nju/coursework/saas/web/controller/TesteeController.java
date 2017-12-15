@@ -26,7 +26,7 @@ public class TesteeController {
     @LoginRequired
     @GetMapping("/list")
     @ResponseBody
-    public String getTesteesReport(int examId, HttpSession session) throws IOException {
+    public String getTesteesReport(int examId, HttpSession session) {
         List<TesteeVO> testeeVOS = testeeService.getTesteeReport(examId);
         GeneralResponse resp = new GeneralResponse(true, "");
         resp.putDate("report", testeeVOS);
