@@ -1,5 +1,6 @@
 package com.nju.coursework.saas.logic.service;
 
+import com.nju.coursework.saas.logic.vo.ExamConfigVO;
 import com.nju.coursework.saas.logic.vo.ExamVO;
 import com.nju.coursework.saas.logic.vo.QuestionVO;
 import com.nju.coursework.saas.logic.vo.QuizVO;
@@ -10,37 +11,10 @@ import java.io.InputStream;
 import java.util.List;
 
 public interface ExamService {
-    /**
-     * @param userId
-     * @param questionNum
-     * @param scores
-     * @param groupId
-     * @param questions
-     * @param startTime
-     * @param endTime
-     * @param title
-     * @param place
-     * @return
-     */
-    GeneralResponse examConfig(int userId, int questionNum, @NonNull List<Integer> scores,
-                               @NonNull int groupId, @NonNull List<QuestionVO> questions,
-                               @NonNull String startTime, @NonNull String endTime,
-                               String title, String place);
 
-    /**
-     * @param userId
-     * @param questionNum
-     * @param excel
-     * @param groupName
-     * @param scores
-     * @param startTime
-     * @param endTime
-     * @return
-     */
-    GeneralResponse examConfigByExcel(int userId, int questionNum, InputStream excel, @NonNull String groupName,
-                                      @NonNull List<Integer> scores, @NonNull List<QuestionVO> questions,
-                                      @NonNull String startTime, @NonNull String endTime,
-                                      String title, String place);
+    GeneralResponse examConfig(int userId, ExamConfigVO examConfigVO);
+
+    GeneralResponse examConfigByExcel(int userId, ExamConfigVO examConfigVO, InputStream excel);
 
     GeneralResponse submitExam(int testeeId, List<QuizVO> quiz);
 

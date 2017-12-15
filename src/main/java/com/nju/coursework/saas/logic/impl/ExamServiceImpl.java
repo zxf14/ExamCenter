@@ -51,20 +51,19 @@ public class ExamServiceImpl implements ExamService {
     MailService mailService;
 
     @Override
-    public GeneralResponse examConfig(int userId, int quizCount, List<Integer> scores, int groupId,
-                                      List<QuestionVO> questions, String startTime, String endTime,
-                                      String title, String place) {
-        if (quizCount != questions.size()) {
+    public GeneralResponse examConfig(int userId, ExamConfigVO examConfigVO) {
+        int quizCount = examConfigVO.getQuestionNum();
+        if (quizCount != examConfigVO.getQuestions().size()) {
             return new GeneralResponse(false, "设置的试题总数与实际题数量不匹配");
         }
-        Instant timeStart = Timestamp.valueOf(startTime).toInstant();
-        Instant timeEnd = Timestamp.valueOf(endTime).toInstant();
+        Instant timeStart = Timestamp.valueOf(examConfigVO.getStartTime()).toInstant();
+        Instant timeEnd = Timestamp.valueOf(examConfigVO.getEndTime()).toInstant();
         if (timeStart.compareTo(timeEnd) > 0) {
             return new GeneralResponse(false, "考试开始时间晚于考试结束时间");
         }
         List<Testee> testees = new ArrayList<>();
 
-        Groups group = groupRepository.findOne(groupId);
+        Groups group = groupRepository.findOne(examConfigVO.getGroupId());
         List<String> studentName = Arrays.asList(group.getStudents().split(";"));
         studentName.stream().forEach(s -> {
             List<Student> students = studentRepository.findByName(s.split(" ")[0])
@@ -78,29 +77,28 @@ public class ExamServiceImpl implements ExamService {
                     });
         });
 
-        return saveExam(userId, testees, scores, questions, startTime, endTime, title, place);
+        return saveExam(userId, testees, examConfigVO.getScores(), examConfigVO.getQuestions(),
+                examConfigVO.getStartTime(), examConfigVO.getEndTime(),
+                examConfigVO.getTitle(), examConfigVO.getPlace());
     }
 
     @Override
-    public GeneralResponse examConfigByExcel(int userId, int quizCount, InputStream excel, String groupName,
-                                             List<Integer> scores, List<QuestionVO> questions,
-                                             String startTime, String endTime,
-                                             String title, String place) {
-        if (quizCount != scores.size()) {
+    public GeneralResponse examConfigByExcel(int userId, ExamConfigVO examConfigVO, InputStream excel) {
+        if (examConfigVO.getQuestionNum() != examConfigVO.getQuestions().size()) {
             return new GeneralResponse(false, "设置的试题总数与实际题数量不匹配");
         }
-        Instant timeStart = Timestamp.valueOf(startTime).toInstant();
-        Instant timeEnd = Timestamp.valueOf(endTime).toInstant();
+        Instant timeStart = Timestamp.valueOf(examConfigVO.getStartTime()).toInstant();
+        Instant timeEnd = Timestamp.valueOf(examConfigVO.getEndTime()).toInstant();
         if (timeStart.compareTo(timeEnd) > 0) {
             return new GeneralResponse(false, "考试开始时间晚于考试结束时间");
         }
         if (excel != null) {
-            groupService.createGroup(userId, excel, groupName);
+            groupService.createGroup(userId, excel, examConfigVO.getGroupName());
         } else {
             return new GeneralResponse(false, "无excel文件");
         }
         List<GroupsVO> validGroups = groupService.getGroups(userId).stream()
-                .filter(g -> g.getName() == groupName).collect(Collectors.toList());
+                .filter(g -> g.getName() == examConfigVO.getGroupName()).collect(Collectors.toList());
 
         List<Testee> testees = new ArrayList<>();
         validGroups.forEach(g -> {
@@ -118,7 +116,9 @@ public class ExamServiceImpl implements ExamService {
                     });
         });
 
-        return saveExam(userId, testees, scores, questions, startTime, endTime, title, place);
+        return saveExam(userId, testees, examConfigVO.getScores(), examConfigVO.getQuestions(),
+                examConfigVO.getStartTime(), examConfigVO.getEndTime(),
+                examConfigVO.getTitle(), examConfigVO.getPlace());
     }
 
     private GeneralResponse saveExam(int userId, List<Testee> testees, List<Integer> scores, List<QuestionVO> questions,

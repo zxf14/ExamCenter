@@ -1,6 +1,7 @@
 package com.nju.coursework.saas.web.controller;
 
 import com.nju.coursework.saas.logic.service.ExamService;
+import com.nju.coursework.saas.logic.vo.ExamConfigVO;
 import com.nju.coursework.saas.logic.vo.ExamVO;
 import com.nju.coursework.saas.logic.vo.QuestionVO;
 import com.nju.coursework.saas.logic.vo.QuizVO;
@@ -25,24 +26,18 @@ public class ExamController {
 
     @LoginRequired
     @PostMapping("/config/create")
-    public String createExam(int questionNum, @NonNull List<Integer> scores, int groupId,
-                             List<QuestionVO> questions, @NonNull String startTime, @NonNull String endTime,
-                             String title, String place, HttpSession session) {
-        GeneralResponse response = examService.examConfig((Integer) session.getAttribute("id"), questionNum, scores,
-                groupId, questions, startTime, endTime, title, place);
+    public String createExam(@RequestBody ExamConfigVO examConfigVO, HttpSession session) {
+        GeneralResponse response = examService.examConfig((Integer) session.getAttribute("id"), examConfigVO);
         return JsonUtil.toJsonString(response);
     }
 
     @LoginRequired
     @PostMapping("/config/import")
-    public String importStudentToCreateExam(int quizCount, @RequestParam("file") MultipartFile file, String groupName,
-                                            List<Integer> scores, List<QuestionVO> questions, String startTime, String endTime,
-                                            String title, String place, HttpSession session) {
+    public String importStudentToCreateExam(@RequestBody ExamConfigVO examConfigVO, @RequestParam("file") MultipartFile file, HttpSession session) {
         GeneralResponse response;
         try {
 
-            response = examService.examConfigByExcel((Integer) session.getAttribute("id"), quizCount,
-                    file.getInputStream(), groupName, scores, questions, startTime, endTime, title, place);
+            response = examService.examConfigByExcel((Integer) session.getAttribute("id"), examConfigVO, file.getInputStream());
         } catch (IOException e) {
             e.printStackTrace();
             return JsonUtil.toJsonString(new GeneralResponse(false, "excel文件导入出错"));
