@@ -19,5 +19,6 @@ public class ExamConfigVO {
     String endTime;
     String title;
     String place;
+    int courseId;
 
 }

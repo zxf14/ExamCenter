@@ -65,8 +65,6 @@ public class ExamServiceImpl implements ExamService {
 
         Groups group = groupRepository.findOne(examConfigVO.getGroupId());
         List<String> studentName = Arrays.asList(group.getStudents().split(";"));
-//        List<String> studentName = students.stream().map(s -> s.split(" ")[0]).collect(Collectors.toList());
-//        List<String> studentEmail = students.stream().map(s -> s.split(" ")[1]).collect(Collectors.toList());
 
         studentName.stream().forEach(s -> {
             List<Student> students = studentRepository.findByEmail(s.split(" ")[1]);
@@ -85,7 +83,7 @@ public class ExamServiceImpl implements ExamService {
 
         return saveExam(userId, testees, examConfigVO.getScores(), examConfigVO.getQuestions(),
                 examConfigVO.getStartTime(), examConfigVO.getEndTime(),
-                examConfigVO.getTitle(), examConfigVO.getPlace());
+                examConfigVO.getTitle(), examConfigVO.getPlace(), examConfigVO.getCourseId());
     }
 
     @Override
@@ -124,16 +122,18 @@ public class ExamServiceImpl implements ExamService {
 
         return saveExam(userId, testees, examConfigVO.getScores(), examConfigVO.getQuestions(),
                 examConfigVO.getStartTime(), examConfigVO.getEndTime(),
-                examConfigVO.getTitle(), examConfigVO.getPlace());
+                examConfigVO.getTitle(), examConfigVO.getPlace(), examConfigVO.getCourseId());
     }
 
     private GeneralResponse saveExam(int userId, List<Testee> testees, List<Integer> scores, List<QuestionVO> questions,
-                                     String startTime, String endTime, String title, String place) {
+                                     String startTime, String endTime, String title, String place, int courseId) {
 
         List<Quiz> quizs = new ArrayList<>();
         User teacher = userRepository.findOne(userId);
+        Course course = courseRepository.findOne(courseId);
         try {
             Exam exam = new Exam();
+            exam.setCourseById(course);
             exam.setUserByUserId(teacher);
             exam.setStartTime(startTime);
             exam.setEndTime(endTime);
