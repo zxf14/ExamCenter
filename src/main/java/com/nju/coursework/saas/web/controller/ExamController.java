@@ -41,7 +41,7 @@ public class ExamController {
         GeneralResponse response;
         try {
 
-            response = examService.examConfigByExcel((Integer) session.getAttribute("userId"), quizCount,
+            response = examService.examConfigByExcel((Integer) session.getAttribute("id"), quizCount,
                     file.getInputStream(), groupName, scores, questions, startTime, endTime, title, place);
         } catch (IOException e) {
             e.printStackTrace();
