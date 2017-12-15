@@ -26,6 +26,13 @@ public class AccountController {
     @Autowired
     StudentService studentService;      /*学生*/
 
+    /**
+     * /test/teacher/login
+     * @param username
+     * @param password
+     * @param session
+     * @return
+     */
     @PostMapping("/teacher/login")
     @ResponseBody
     public String loginTeacher(String username, String password, HttpSession session) {
@@ -37,6 +44,15 @@ public class AccountController {
         return js;
     }
 
+    /**
+     * /test/student/register
+     * @param name
+     * @param id
+     * @param email
+     * @param password
+     * @param session
+     * @return
+     */
     @PostMapping("/student/register")
     @ResponseBody
     public String registerStudent(String name, String id, String email, String password, HttpSession session) {
@@ -48,6 +64,13 @@ public class AccountController {
         return js;
     }
 
+    /**
+     * /test/student/login
+     * @param id
+     * @param password
+     * @param session
+     * @return
+     */
     @PostMapping("/student/login")
     @ResponseBody
     public String loginStudent(String id, String password, HttpSession session) {

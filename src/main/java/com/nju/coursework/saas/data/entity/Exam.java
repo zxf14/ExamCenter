@@ -12,8 +12,8 @@ public class Exam {
     private int id;
     private String examTitle;
     private String examPlace;
-    private Timestamp startTime;
-    private Timestamp endTime;
+    private String startTime;
+    private String endTime;
     private Course courseById;
     private User userByUserId;
     private Collection<Quiz> quizzesById;
@@ -32,17 +32,17 @@ public class Exam {
 
     @Basic
     @Column(name = "start_time", nullable = true)
-    public Timestamp getStartTime() {
+    public String getStartTime() {
         return startTime;
     }
 
-    public void setStartTime(Timestamp startTime) {
+    public void setStartTime(String startTime) {
         this.startTime = startTime;
     }
 
     @Basic
     @Column(name = "end_time", nullable = true)
-    public Timestamp getEndTime() {
+    public String getEndTime() {
         return endTime;
     }
 
@@ -58,7 +58,7 @@ public class Exam {
         return examPlace;
     }
 
-    public void setEndTime(Timestamp endTime) {
+    public void setEndTime(String endTime) {
         this.endTime = endTime;
     }
 
