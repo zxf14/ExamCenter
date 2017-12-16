@@ -24,8 +24,8 @@ public class ExamVO {
     private int id;
     private String title;
     private String place;
-    private LocalDate startTime;
-    private LocalDate endTime;
+    private String startTime;
+    private String endTime;
     private int state = -1; //0为未开始，1为进行中，2为已结束, default为-1
     private int between;    //考试时长，以小时为单位
     //分值，与questions是一一对应的
@@ -56,8 +56,11 @@ public class ExamVO {
         this.place = exam.getExamPlace();
         Instant timeStart = Timestamp.valueOf(exam.getStartTime()).toInstant();
         Instant timeEnd = Timestamp.valueOf(exam.getEndTime()).toInstant();
-        this.startTime = LocalDate.parse(DateTimeUtils.date(timeStart), DATE_FORMATTER);
-        this.endTime = LocalDate.parse(DateTimeUtils.date(timeEnd), DATE_FORMATTER);
+//        this.startTime = LocalDate.parse(DateTimeUtils.date(timeStart), DATE_FORMATTER);
+//        this.endTime = LocalDate.parse(DateTimeUtils.date(timeEnd), DATE_FORMATTER);
+
+        this.startTime = exam.getStartTime();
+        this.endTime = exam.getEndTime();
         this.between = DateTimeUtils.between(timeStart, timeEnd, ChronoUnit.HOURS);
 
         if (timeStart.compareTo(Instant.now()) > 0) {
