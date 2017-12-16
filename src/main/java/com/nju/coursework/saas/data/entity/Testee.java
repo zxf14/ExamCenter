@@ -11,7 +11,7 @@ public class Testee {
     private String studentMail;
     private String studentName;
     private String examPassword;
-    private Integer score;
+    private Integer score = 0;
     private Student studentByStudentId;
     private Exam examByExamId;
 
