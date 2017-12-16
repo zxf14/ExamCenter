@@ -296,7 +296,9 @@ public class ExamServiceImpl implements ExamService {
 
         if (student != null) {
             answers = answerRepository.findByStudentId(studentId).stream()
-                    .map(answer -> new AnswerVO(answer)).collect(Collectors.toList());
+                    .filter(answer -> answer.getQuizByQuizId().getExamByExamId().getId() == examId)
+                    .map(answer -> new AnswerVO(answer))
+                    .collect(Collectors.toList());
         }
         return new ExamVO(exam, questions, value, answers);
     }
