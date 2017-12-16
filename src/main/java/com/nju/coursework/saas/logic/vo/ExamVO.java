@@ -3,12 +3,17 @@ package com.nju.coursework.saas.logic.vo;
 import com.nju.coursework.saas.data.entity.Exam;
 import com.nju.coursework.saas.util.DateTimeUtils;
 import lombok.Getter;
+import org.springframework.format.datetime.joda.LocalDateParser;
 
 import java.sql.Timestamp;
 import java.time.Instant;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
 import java.util.List;
+
+import static com.nju.coursework.saas.util.DateTimeUtils.DATE_FORMATTER;
 
 @Getter
 public class ExamVO {
@@ -19,8 +24,8 @@ public class ExamVO {
     private int id;
     private String title;
     private String place;
-    private String startTime;
-    private String endTime;
+    private LocalDate startTime;
+    private LocalDate endTime;
     private int state = -1; //0为未开始，1为进行中，2为已结束, default为-1
     private int between;    //考试时长，以小时为单位
     //分值，与questions是一一对应的
@@ -51,8 +56,8 @@ public class ExamVO {
         this.place = exam.getExamPlace();
         Instant timeStart = Timestamp.valueOf(exam.getStartTime()).toInstant();
         Instant timeEnd = Timestamp.valueOf(exam.getEndTime()).toInstant();
-        this.startTime = DateTimeUtils.dateTime(timeStart);
-        this.endTime = DateTimeUtils.dateTime(timeEnd);
+        this.startTime = LocalDate.parse(DateTimeUtils.date(timeStart), DATE_FORMATTER);
+        this.endTime = LocalDate.parse(DateTimeUtils.date(timeEnd), DATE_FORMATTER);
         this.between = DateTimeUtils.between(timeStart, timeEnd, ChronoUnit.HOURS);
 
         if (timeStart.compareTo(Instant.now()) > 0) {

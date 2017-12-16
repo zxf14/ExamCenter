@@ -52,6 +52,11 @@ public class ExamController {
         return JsonUtil.toJsonString(response);
     }
 
+    /**
+     * 考前教师生成试卷
+     * @param examId
+     * @return
+     */
     @LoginRequired
     @GetMapping("/teacherCreate")
     public String teacherCreate(Integer examId) {
@@ -61,6 +66,12 @@ public class ExamController {
         return JsonUtil.toJsonString(resp);
     }
 
+    /**
+     * 考后生成试卷
+     * @param examId 考试id
+     * @param studentNo 学生编号
+     * @return
+     */
     @LoginRequired
     @GetMapping("/getExam")
     public String getExam(int examId, String studentNo) {
@@ -70,6 +81,11 @@ public class ExamController {
         return JsonUtil.toJsonString(resp);
     }
 
+    /**
+     * 考后批量生成该考试下的所有试卷
+     * @param examId
+     * @return
+     */
     @LoginRequired
     @GetMapping("/getExamList")
     public String getExamList(int examId) {
@@ -79,6 +95,11 @@ public class ExamController {
         return JsonUtil.toJsonString(resp);
     }
 
+    /**
+     * 通过课程id获取该课程下所有的考试列表
+     * @param courseId
+     * @return
+     */
     @LoginRequired
     @GetMapping("/getExamByCourse")
     public String getExamByCourse(int courseId) {
@@ -88,6 +109,11 @@ public class ExamController {
         return JsonUtil.toJsonString(resp);
     }
 
+    /**
+     * 通过学生id获得学生相关的所有考试列表
+     * @param studentNo
+     * @return
+     */
     @LoginRequired
     @GetMapping("/getExamByStudentNo")
     public String getExamByStudentId(String studentNo) {

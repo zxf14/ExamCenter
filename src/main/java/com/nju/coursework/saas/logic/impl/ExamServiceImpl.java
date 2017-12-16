@@ -291,7 +291,10 @@ public class ExamServiceImpl implements ExamService {
     @Override
     public List<ExamVO> getExamInfoByCourse(int courseId) {
         List<Exam> examList = examRepository.findByCourseId(courseId);
-        return examList.stream().map(e -> new ExamVO(e)).collect(Collectors.toList());
+        return examList.stream().map(e -> {
+            List<QuizVO> questions = getQuestions(e.getId());
+            return new ExamVO(e, questions);
+        }).collect(Collectors.toList());
     }
 
     @Override
