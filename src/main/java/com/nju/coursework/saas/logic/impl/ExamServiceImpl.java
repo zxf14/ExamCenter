@@ -26,7 +26,6 @@ import java.util.stream.IntStream;
 @Service
 public class ExamServiceImpl implements ExamService {
 
-
     @Autowired
     UserRepository userRepository;
     @Autowired
@@ -79,15 +78,14 @@ public class ExamServiceImpl implements ExamService {
             Testee testee = new Testee();
             testee.setStudentMail(s.split(" ")[1]);
             testee.setStudentName(s.split(" ")[0]);
-            String password = (testee.hashCode() + Instant.now().hashCode() + "").substring(2,8);
+            String password = (testee.hashCode() + Instant.now().hashCode() + "").substring(2, 8);
             testee.setExamPassword(password);
             if (students != null && students.size() > 0) {
                 testee.setStudentByStudentId(students.get(0));
             }
             testees.add(testee);
-
         });
-        GeneralResponse generalResponse =  saveExam(userId, testees, examConfigVO.getScores(), examConfigVO.getQuestions(),
+        GeneralResponse generalResponse = saveExam(userId, testees, examConfigVO.getScores(), examConfigVO.getQuestions(),
                 examConfigVO.getStartTime(), examConfigVO.getEndTime(),
                 examConfigVO.getTitle(), examConfigVO.getPlace(), examConfigVO.getCourseId());
 
@@ -264,9 +262,9 @@ public class ExamServiceImpl implements ExamService {
         Exam exam = examRepository.findOne(examId);
         Student student = null;
 
-        if (studentId != null){
+        if (studentId != null) {
             List<Student> students = studentRepository.findByNo(studentId);
-            if (students.size()>0){
+            if (students.size() > 0) {
                 student = students.get(0);
             }
         }
@@ -316,7 +314,7 @@ public class ExamServiceImpl implements ExamService {
                 .map(t -> {
                     List<QuizVO> questions = getQuestions(t.getExamByExamId().getId());
                     ExamVO examVO = new ExamVO(t.getExamByExamId(), questions, t.getId());
-                    return  examVO;
+                    return examVO;
                 }).collect(Collectors.toList());
         return examList;
     }
@@ -327,6 +325,7 @@ public class ExamServiceImpl implements ExamService {
 
         return testee.getExamPassword().equals(password);
     }
+
     private List<QuizVO> getQuestions(int examByExamId) {
         List<Quiz> quizzes = quizRepository.findByExamId(examByExamId);
         return quizzes.stream().map(i -> {
