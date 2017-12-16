@@ -79,7 +79,8 @@ public class QuestionServiceImpl implements QuestionService {
         question.setType((int) xssfRow.getCell(5).getNumericCellValue());
         questionRepository.saveAndFlush(question);
 
-        String[] answers = ExcelConverter.getCellValue(xssfRow.getCell(5)).split(" ");
+        String answerStr = ExcelConverter.getCellValue(xssfRow.getCell(6));
+        String[] answers = answerStr.split(" ");
         for (int i = 0; i < 4; i++) {
             Aoption option = new Aoption();
             option.setQuestionByQuestionId(question);
