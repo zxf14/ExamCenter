@@ -6,6 +6,7 @@ import com.nju.coursework.saas.data.entity.Question;
 import com.nju.coursework.saas.data.entity.Quiz;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import java.util.List;
@@ -14,6 +15,7 @@ import java.util.List;
 @Setter
 @AllArgsConstructor
 @JsonInclude(JsonInclude.Include.NON_NULL)
+@NoArgsConstructor
 public class QuizVO {
     private Integer value;
     private List<String> optionId;

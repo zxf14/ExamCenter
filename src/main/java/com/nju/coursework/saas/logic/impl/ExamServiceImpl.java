@@ -9,6 +9,7 @@ import com.nju.coursework.saas.logic.vo.*;
 import com.nju.coursework.saas.web.response.GeneralResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.web.bind.annotation.RequestBody;
 
 import javax.annotation.Resource;
 import java.io.InputStream;
@@ -188,7 +189,7 @@ public class ExamServiceImpl implements ExamService {
     }
 
     @Override
-    public GeneralResponse submitExam(int testeeId, List<QuizVO> quizVO) {
+    public GeneralResponse submitExam(int testeeId, @RequestBody List<QuizVO> quizVO) {
 
         List<Answer> answerList = new ArrayList<>();
         quizVO.stream().forEach(
