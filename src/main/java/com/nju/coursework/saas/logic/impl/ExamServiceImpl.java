@@ -57,10 +57,14 @@ public class ExamServiceImpl implements ExamService {
         if (quizCount != examConfigVO.getQuestions().size()) {
             return new GeneralResponse(false, "设置的试题总数与实际题数量不匹配");
         }
-        Instant timeStart = Timestamp.valueOf(examConfigVO.getStartTime()).toInstant();
-        Instant timeEnd = Timestamp.valueOf(examConfigVO.getEndTime()).toInstant();
-        if (timeStart.compareTo(timeEnd) > 0) {
-            return new GeneralResponse(false, "考试开始时间晚于考试结束时间");
+        try {
+            Instant timeStart = Timestamp.valueOf(examConfigVO.getStartTime()).toInstant();
+            Instant timeEnd = Timestamp.valueOf(examConfigVO.getEndTime()).toInstant();
+            if (timeStart.compareTo(timeEnd) > 0) {
+                return new GeneralResponse(false, "考试开始时间晚于考试结束时间");
+            }
+        } catch (Exception e) {
+            return new GeneralResponse(false, "时间格式错误");
         }
         List<Testee> testees = new ArrayList<>();
 
@@ -70,7 +74,7 @@ public class ExamServiceImpl implements ExamService {
                 .collect(Collectors.toList());
 
         studentName.stream().forEach(s -> {
-            List<Student> students = studentRepository.findByEmail(s.split(" ")[1]);
+            List<Student> students = studentRepository.findByName(s.split(" ")[0]);
             if (students != null && students.size() != 0) {
                 students = students.stream().filter(student -> student.getMail() != null).collect(Collectors.toList());
                 students.forEach(
@@ -78,7 +82,7 @@ public class ExamServiceImpl implements ExamService {
                             Testee testee = new Testee();
                             testee.setStudentByStudentId(stu);
                             testee.setStudentMail(s.split(" ")[1]);
-                            String password = testee.hashCode() + "" .substring(2,8);
+                            String password = testee.hashCode() + "";
                             testee.setExamPassword(password);
                             testees.add(testee);
                         });
@@ -97,10 +101,14 @@ public class ExamServiceImpl implements ExamService {
         if (examConfigVO.getQuestionNum() != examConfigVO.getQuestions().size()) {
             return new GeneralResponse(false, "设置的试题总数与实际题数量不匹配");
         }
-        Instant timeStart = Timestamp.valueOf(examConfigVO.getStartTime()).toInstant();
-        Instant timeEnd = Timestamp.valueOf(examConfigVO.getEndTime()).toInstant();
-        if (timeStart.compareTo(timeEnd) > 0) {
-            return new GeneralResponse(false, "考试开始时间晚于考试结束时间");
+        try {
+            Instant timeStart = Timestamp.valueOf(examConfigVO.getStartTime()).toInstant();
+            Instant timeEnd = Timestamp.valueOf(examConfigVO.getEndTime()).toInstant();
+            if (timeStart.compareTo(timeEnd) > 0) {
+                return new GeneralResponse(false, "考试开始时间晚于考试结束时间");
+            }
+        } catch (Exception e) {
+            return new GeneralResponse(false, "时间格式错误");
         }
         if (excel != null) {
             groupService.createGroup(userId, excel, examConfigVO.getGroupName());
@@ -121,7 +129,7 @@ public class ExamServiceImpl implements ExamService {
                                     Testee testee = new Testee();
                                     testee.setStudentByStudentId(stu);
                                     testee.setStudentMail(stu.getMail());
-                                    String password = testee.hashCode() + "" .substring(2,8);
+                                    String password = testee.hashCode() + "";
                                     testee.setExamPassword(password);
                                     testees.add(testee);
                                 });
@@ -148,14 +156,16 @@ public class ExamServiceImpl implements ExamService {
             exam.setExamTitle(title);
             exam.setExamPlace(place);
             examRepository.saveAndFlush(exam);
-            IntStream.range(0, questions.size()).forEach(
-                    i -> {
-                        Quiz quiz = new Quiz();
-                        quiz.setValue(scores.get(i));
-                        quiz.setQuestionByQuestionId(questionRepository.findOne(questions.get(i).getId()));
-                        quizs.add(quiz);
-                    }
-            );
+            if (questions.size() > 0) {
+                IntStream.range(0, questions.size()).forEach(
+                        i -> {
+                            Quiz quiz = new Quiz();
+                            quiz.setValue(scores.get(i));
+                            quiz.setQuestionByQuestionId(questionRepository.findOne(questions.get(i).getId()));
+                            quizs.add(quiz);
+                        }
+                );
+            }
             quizs.forEach(
                     q -> {
                         q.setExamByExamId(exam);

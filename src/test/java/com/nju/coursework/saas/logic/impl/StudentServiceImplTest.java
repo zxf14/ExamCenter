@@ -27,6 +27,6 @@ public class StudentServiceImplTest extends BaseTests {
 
     @Test
     public void getVerifyCode() {
-        System.out.println(studentService.getVerifyCode("mail1@qq.com"));
+        System.out.println(studentService.getVerifyCode("141250190@smail.nju.edu.cn"));
     }
 }
