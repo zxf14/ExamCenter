@@ -1,5 +1,6 @@
 package com.nju.coursework.saas.logic.service;
 
+import com.nju.coursework.saas.data.entity.Testee;
 import com.nju.coursework.saas.logic.vo.TesteeVO;
 
 import java.util.List;
@@ -14,4 +15,6 @@ public interface TesteeService {
      * @param examId
      */
     List<TesteeVO> getTesteeReport(int examId);
+
+
 }

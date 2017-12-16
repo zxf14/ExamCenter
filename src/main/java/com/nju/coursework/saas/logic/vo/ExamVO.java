@@ -2,6 +2,8 @@ package com.nju.coursework.saas.logic.vo;
 
 import com.nju.coursework.saas.data.entity.Exam;
 import com.nju.coursework.saas.util.DateTimeUtils;
+import lombok.AllArgsConstructor;
+import lombok.Data;
 import lombok.Getter;
 import org.springframework.format.datetime.joda.LocalDateParser;
 
@@ -34,6 +36,8 @@ public class ExamVO {
     //此字段用于考后生成试卷，存放学生选择的答案，与question是一一对应的；考前生成的试卷此列表为空
     private List<AnswerVO> answers;
 
+    private Exam_Testee exam_testee;//此字段只有通过学生id获取考试列表时才生效
+
     public ExamVO(Exam exam) {
         init(exam);
     }
@@ -48,6 +52,12 @@ public class ExamVO {
     public ExamVO(Exam exam, List<QuizVO> questions) {
         init(exam);
         this.quizVOS = questions;
+    }
+
+    public ExamVO(Exam exam, List<QuizVO> questions, int testeeId) {
+        init(exam);
+        this.quizVOS = questions;
+        this.exam_testee = new Exam_Testee(exam.getId(), testeeId);
     }
 
     private void init(Exam exam) {
@@ -69,5 +79,11 @@ public class ExamVO {
             this.state = 1;
         }
     }
+}
 
+@Data
+@AllArgsConstructor
+class Exam_Testee {
+    private int examId;
+    private int testeeId;
 }
