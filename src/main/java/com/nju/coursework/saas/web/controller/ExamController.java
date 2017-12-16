@@ -47,7 +47,7 @@ public class ExamController {
 
     @LoginRequired
     @PostMapping("/submit")
-    public String submitExam(int testeeId, List<QuizVO> quiz) {
+    public String submitExam(int testeeId, @RequestBody List<QuizVO> quiz) {
         GeneralResponse response = examService.submitExam(testeeId, quiz);
         return JsonUtil.toJsonString(response);
     }
