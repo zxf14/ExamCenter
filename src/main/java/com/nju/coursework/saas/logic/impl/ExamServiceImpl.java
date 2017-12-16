@@ -76,7 +76,7 @@ public class ExamServiceImpl implements ExamService {
                             Testee testee = new Testee();
                             testee.setStudentByStudentId(stu);
                             testee.setStudentMail(s.split(" ")[1]);
-                            String password = testee.hashCode() + "" .substring(2,8);
+                            String password = (testee.hashCode() + Instant.now().hashCode() + "").substring(2,8);
                             testee.setExamPassword(password);
                             testees.add(testee);
                         });
