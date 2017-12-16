@@ -12,6 +12,7 @@ public class Testee {
     private String studentName;
     private String examPassword;
     private Integer score = 0;
+    private Integer state = -1; //默认为-1，未开始为0，已结束为2，已开始已提交为3，已开始未提交为4
     private Student studentByStudentId;
     private Exam examByExamId;
 
@@ -55,6 +56,16 @@ public class Testee {
         this.score = score;
     }
 
+    @Basic
+    @Column(name = "state", nullable = true)
+    public int getState() {
+        return state;
+    }
+
+    public void setState(Integer state) {
+        this.state = state;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
@@ -64,7 +75,7 @@ public class Testee {
         if (id != testee.id) return false;
         if (studentMail != null ? !studentMail.equals(testee.studentMail) : testee.studentMail != null) return false;
         if (score != null ? !score.equals(testee.score) : testee.score != null) return false;
-
+        if (state != null ? !state.equals(testee.state) : testee.state != null) return false;
         return true;
     }
 
@@ -73,6 +84,7 @@ public class Testee {
         int result = id;
         result = 31 * result + (studentMail != null ? studentMail.hashCode() : 0);
         result = 31 * result + (score != null ? score.hashCode() : 0);
+        result = 31 * result + (state != null ? state.hashCode() : 0);
         return result;
     }
 

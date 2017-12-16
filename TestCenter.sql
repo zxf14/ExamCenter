@@ -148,6 +148,7 @@ CREATE TABLE `testee` (
   `student_mail` varchar(30) COLLATE utf8_bin DEFAULT NULL,
   `password` varchar(100) COLLATE utf8_bin DEFAULT NULL,
   `score` int(11) DEFAULT '0' COMMENT '分数',
+  `state` int(11) DEFAULT  '-1' ,
   PRIMARY KEY (`id`),
   KEY `examId` (`exam_id`),
   KEY `testee_ibfk_1` (`student_id`),
