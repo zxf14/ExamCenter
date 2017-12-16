@@ -8,9 +8,12 @@ import com.nju.coursework.saas.logic.vo.StudentVO;
 import com.nju.coursework.saas.web.response.GeneralResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import sun.java2d.loops.FillRect;
 
 import java.util.Date;
 import java.util.List;
+
+import static jdk.nashorn.internal.objects.NativeString.substring;
 
 /**
  * Created by zhouxiaofan on 2017/11/8.
@@ -27,8 +30,6 @@ public class StudentServiceImpl implements StudentService {
     public GeneralResponse register(StudentVO studentVO) {
         List<Student> students = studentRepository.findByNo(studentVO.getStudentNo());
         if (students.size() > 0) return new GeneralResponse(false, "学号已注册");
-        String verityCode = getVerifyCode(studentVO.getMail());
-        mailService.validateMail(studentVO.getMail(), verityCode);
         Student student = new Student();
         student.setMail(studentVO.getMail());
         student.setName(studentVO.getName());
@@ -37,7 +38,6 @@ public class StudentServiceImpl implements StudentService {
 
         studentRepository.saveAndFlush(student);
         GeneralResponse generalResponse = new GeneralResponse(true, "mail sent");
-        generalResponse.putDate("verifyCode", verityCode);
         return generalResponse;
     }
 
@@ -53,7 +53,9 @@ public class StudentServiceImpl implements StudentService {
     }
 
     @Override
-    public String getVerifyCode(String mail) {
-        return (mail.hashCode() + new Date().hashCode() + "").substring(2, 8);
+    public GeneralResponse getVerifyCode(String mail) {
+        String verityCode = mail.hashCode() + new Date().hashCode() + "".substring(2, 8);
+        mailService.validateMail(mail, verityCode);
+        return new GeneralResponse(true, verityCode);
     }
 }

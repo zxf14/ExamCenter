@@ -7,6 +7,7 @@ import com.nju.coursework.saas.util.JsonUtil;
 import com.nju.coursework.saas.web.response.GeneralResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -83,5 +84,12 @@ public class AccountController {
         }
         String js = JsonUtil.toJsonString(resp);
         return js;
+    }
+
+    @GetMapping("/student/register/verify")
+    @ResponseBody
+    public String verify(String studentMail) {
+        GeneralResponse resp = studentService.getVerifyCode(studentMail);
+        return JsonUtil.toJsonString(resp);
     }
 }
