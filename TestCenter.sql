@@ -52,9 +52,9 @@ CREATE TABLE `course` (
 -- ----------------------------
 DROP TABLE IF EXISTS `exam`;
 CREATE TABLE `exam` (
-  `start_time` datetime DEFAULT NULL,
+  `start_time` VARCHAR(255) DEFAULT NULL,
   `id` int(11) NOT NULL AUTO_INCREMENT,
-  `end_time` datetime DEFAULT NULL,
+  `end_time` VARCHAR(255) DEFAULT NULL,
   `course_id` int(11) DEFAULT NULL,
   `user_id` int(11) DEFAULT NULL,
   `title` VARCHAR(1000) DEFAULT NULL,
