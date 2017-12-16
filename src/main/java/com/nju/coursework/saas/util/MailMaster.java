@@ -53,7 +53,9 @@ public class MailMaster {
 
     public void sendForExam(String userMail, String key, String examTitle) {
         try {
-            MimeMessage message = createMessage(myMailAccount, Arrays.asList(userMail),
+            List<String> receiverList = new ArrayList<>();
+            receiverList.add(userMail);
+            MimeMessage message = createMessage(myMailAccount, receiverList,
                     "考试密钥", examTitle + "的考试密钥为: " + key);
             Transport transport = session.getTransport();
             transport.connect(myMailAccount, myMailPassword);

@@ -327,7 +327,7 @@ public class ExamServiceImpl implements ExamService {
     public boolean attendExam(int testeeId, String password) {
         Testee testee = testeeRepository.findOne(testeeId);
 
-        return testee.getExamPassword() == password;
+        return testee.getExamPassword().equals(password);
     }
     private List<QuizVO> getQuestions(int examByExamId) {
         List<Quiz> quizzes = quizRepository.findByExamId(examByExamId);

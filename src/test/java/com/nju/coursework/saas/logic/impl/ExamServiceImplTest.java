@@ -28,7 +28,6 @@ public class ExamServiceImplTest extends  BaseTests{
     @Resource
     StudentService studentService;
 
-    @Ignore
     @Test
     public void createExam() {
         ExamConfigVO vo = new ExamConfigVO();
@@ -52,6 +51,7 @@ public class ExamServiceImplTest extends  BaseTests{
         System.out.println(examService.getExamInfoByStudent("1").size());
     }
 
+    @Ignore
     @Test
     public void getVerifyCode() {
         System.out.println(studentService.getVerifyCode("141250190@smail.nju.edu.cn"));
