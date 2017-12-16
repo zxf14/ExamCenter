@@ -52,7 +52,7 @@ public class ExamVO {
     public ExamVO(Exam exam, List<QuizVO> questions, int testeeId, int state) {
         init(exam);
         this.quizVOS = questions;
-        if (this.state == 1 && state != -1) {
+        if (this.state == 1 && state == 3) {
             this.state = state;
         }
         this.exam_testee = new Exam_Testee(exam.getId(), testeeId);
