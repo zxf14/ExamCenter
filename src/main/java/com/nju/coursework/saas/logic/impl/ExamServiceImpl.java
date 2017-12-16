@@ -304,7 +304,7 @@ public class ExamServiceImpl implements ExamService {
         List<ExamVO> examList = testeeList.stream()
                 .map(t -> {
                     List<QuizVO> questions = getQuestions(t.getExamByExamId().getId());
-                    ExamVO examVO = new ExamVO(t.getExamByExamId(), questions);
+                    ExamVO examVO = new ExamVO(t.getExamByExamId(), questions, t.getId());
                     return  examVO;
                 }).collect(Collectors.toList());
         return examList;
