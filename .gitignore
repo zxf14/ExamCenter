@@ -63,3 +63,8 @@ TestCenter.iml
 !/.mvn/wrapper/maven-wrapper.jar
 target/
 src/main/resources/META-INF/persistence.xml
+package/TestCenter/config/application.properties
+
+package/TestCenter/config/static/questionsList.xlsx
+
+package/TestCenter/config/static/studentList.xlsx
