@@ -1,6 +1,7 @@
 package com.nju.coursework.saas.logic.vo;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
+import com.nju.coursework.saas.data.entity.Aoption;
 import com.nju.coursework.saas.data.entity.Question;
 import lombok.Getter;
 import lombok.Setter;
@@ -16,9 +17,6 @@ public class QuestionVO {
     private int id;
     private Integer type;//0单选1多选
     private List<OptionVO> optionVOList;
-
-    public QuestionVO() {
-    }
 
     public QuestionVO(Question item) {
         this.id = item.getId();

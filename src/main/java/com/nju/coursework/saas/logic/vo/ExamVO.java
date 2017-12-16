@@ -14,6 +14,7 @@ import java.util.List;
 public class ExamVO {
 
     private List<QuestionVO> questions;
+    private List<QuizVO> quizVOS;
     //考试id
     private int id;
     private String title;
@@ -37,6 +38,11 @@ public class ExamVO {
         this.questions = new ArrayList<>(questions);
         this.value = new ArrayList<>(value);
         this.answers = new ArrayList<>(answers);
+    }
+
+    public ExamVO(Exam exam, List<QuizVO> questions) {
+        init(exam);
+        this.quizVOS = questions;
     }
 
     private void init(Exam exam) {
