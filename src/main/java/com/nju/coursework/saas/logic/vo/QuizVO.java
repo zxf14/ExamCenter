@@ -23,6 +23,7 @@ public class QuizVO {
     private int id;
 
     public QuizVO(Quiz quiz, Question question) {
+        this.id = quiz.getId();
         this.value = quiz.getValue();
         this.question = new QuestionVO(question);
     }

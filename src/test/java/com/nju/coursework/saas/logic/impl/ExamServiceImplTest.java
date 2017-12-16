@@ -63,4 +63,8 @@ public class ExamServiceImplTest extends  BaseTests{
         System.out.println(studentService.getVerifyCode("141250190@smail.nju.edu.cn"));
     }
 
+    @Test
+    public void getByStudentNo() {
+        System.out.println(examService.getExamInfoByStudent("1"));
+    }
 }
