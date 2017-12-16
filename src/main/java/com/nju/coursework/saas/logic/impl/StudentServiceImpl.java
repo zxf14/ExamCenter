@@ -54,7 +54,10 @@ public class StudentServiceImpl implements StudentService {
 
     @Override
     public GeneralResponse getVerifyCode(String mail) {
-        String verityCode = mail.hashCode() + new Date().hashCode() + "".substring(2, 8);
+        String verityCode = mail.hashCode() + new Date().hashCode() + "";
+        if (verityCode == null) {
+            return new GeneralResponse(false, "生成验证码错误");
+        }
         mailService.validateMail(mail, verityCode);
         return new GeneralResponse(true, verityCode);
     }
