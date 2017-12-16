@@ -4,6 +4,7 @@ import com.fasterxml.jackson.annotation.JsonInclude;
 import com.nju.coursework.saas.data.entity.Aoption;
 import com.nju.coursework.saas.data.entity.Question;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import java.util.List;
@@ -12,6 +13,7 @@ import java.util.stream.Collectors;
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @Getter
 @Setter
+@NoArgsConstructor
 public class QuestionVO {
     private String content;
     private int id;

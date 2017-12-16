@@ -5,17 +5,12 @@ import com.nju.coursework.saas.util.DateTimeUtils;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.Getter;
-import org.springframework.format.datetime.joda.LocalDateParser;
 
 import java.sql.Timestamp;
 import java.time.Instant;
-import java.time.LocalDate;
-import java.time.LocalDateTime;
 import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
 import java.util.List;
-
-import static com.nju.coursework.saas.util.DateTimeUtils.DATE_FORMATTER;
 
 @Getter
 public class ExamVO {
@@ -66,9 +61,12 @@ public class ExamVO {
         this.place = exam.getExamPlace();
         Instant timeStart = Timestamp.valueOf(exam.getStartTime()).toInstant();
         Instant timeEnd = Timestamp.valueOf(exam.getEndTime()).toInstant();
-        this.startTime = DateTimeUtils.dateTime(timeStart);
-        this.endTime = DateTimeUtils.dateTime(timeEnd);
-        this.between = DateTimeUtils.between(timeStart, timeEnd, ChronoUnit.DAYS);
+//        this.startTime = LocalDate.parse(DateTimeUtils.date(timeStart), DATE_FORMATTER);
+//        this.endTime = LocalDate.parse(DateTimeUtils.date(timeEnd), DATE_FORMATTER);
+
+        this.startTime = exam.getStartTime();
+        this.endTime = exam.getEndTime();
+        this.between = DateTimeUtils.between(timeStart, timeEnd, ChronoUnit.HOURS);
 
         if (timeStart.compareTo(Instant.now()) > 0) {
             this.state = 0;
