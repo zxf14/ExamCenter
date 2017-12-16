@@ -24,7 +24,7 @@ public class ExamVO {
     private String startTime;
     private String endTime;
     private int state = -1; //0为未开始，1为进行中，2为已结束, default为-1
-    private int between;    //考试时长，以小时为单位
+    private double between;    //考试时长，以小时为单位
     //分值，与questions是一一对应的
     private List<Integer> value;
 
@@ -66,7 +66,7 @@ public class ExamVO {
 
         this.startTime = exam.getStartTime();
         this.endTime = exam.getEndTime();
-        this.between = DateTimeUtils.between(timeStart, timeEnd, ChronoUnit.HOURS);
+        this.between = DateTimeUtils.between(timeStart, timeEnd, ChronoUnit.MILLIS);
 
         if (timeStart.compareTo(Instant.now()) > 0) {
             this.state = 0;
