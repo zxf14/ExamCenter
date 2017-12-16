@@ -146,6 +146,7 @@ CREATE TABLE `testee` (
   `exam_id` int(11) NOT NULL,
   `student_name` varchar(30) COLLATE utf8_bin DEFAULT NULL,
   `student_mail` varchar(30) COLLATE utf8_bin DEFAULT NULL,
+  `password`varchar(100) COLLATE utf8_bin DEFAULT NULL,
   `score` int(11) DEFAULT '0' COMMENT '分数',
   PRIMARY KEY (`id`),
   KEY `examId` (`exam_id`),

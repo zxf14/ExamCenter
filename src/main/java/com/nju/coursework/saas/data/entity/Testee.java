@@ -10,6 +10,7 @@ public class Testee {
     private int id;
     private String studentMail;
     private String studentName;
+    private String examPassword;
     private Integer score;
     private Student studentByStudentId;
     private Exam examByExamId;
@@ -41,6 +42,15 @@ public class Testee {
         return score;
     }
 
+    @Basic
+    @Column(name = "password", nullable = true)
+    public String getExamPassword() {
+        return examPassword;
+    }
+
+    public void setExamPassword(String password) {
+        this.examPassword = password;
+    }
     public void setScore(Integer score) {
         this.score = score;
     }

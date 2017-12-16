@@ -75,15 +75,18 @@ public class ExamServiceImpl implements ExamService {
                             Testee testee = new Testee();
                             testee.setStudentByStudentId(stu);
                             testee.setStudentMail(s.split(" ")[1]);
+                            String password = testee.hashCode() + "" .substring(2,8);
+                            testee.setExamPassword(password);
                             testees.add(testee);
                         });
             }
 
         });
-
-        return saveExam(userId, testees, examConfigVO.getScores(), examConfigVO.getQuestions(),
+        GeneralResponse generalResponse =  saveExam(userId, testees, examConfigVO.getScores(), examConfigVO.getQuestions(),
                 examConfigVO.getStartTime(), examConfigVO.getEndTime(),
                 examConfigVO.getTitle(), examConfigVO.getPlace(), examConfigVO.getCourseId());
+
+        return generalResponse;
     }
 
     @Override
@@ -115,6 +118,8 @@ public class ExamServiceImpl implements ExamService {
                                     Testee testee = new Testee();
                                     testee.setStudentByStudentId(stu);
                                     testee.setStudentMail(stu.getMail());
+                                    String password = testee.hashCode() + "" .substring(2,8);
+                                    testee.setExamPassword(password);
                                     testees.add(testee);
                                 });
                     });
@@ -163,6 +168,8 @@ public class ExamServiceImpl implements ExamService {
         } catch (Exception e) {
             return new GeneralResponse(false, e.getMessage());
         }
+        testees.forEach(t -> mailService.examKeyMail(t.getStudentMail(), t.getExamPassword(),
+                t.getExamByExamId().getExamTitle()));
         return new GeneralResponse(true, "成功创建试卷");
     }
 
@@ -292,6 +299,13 @@ public class ExamServiceImpl implements ExamService {
         List<ExamVO> examList = testeeList.stream()
                 .map(t -> new ExamVO(t.getExamByExamId())).collect(Collectors.toList());
         return examList;
+    }
+
+    @Override
+    public boolean attendExam(int testeeId, String password) {
+        Testee testee = testeeRepository.findOne(testeeId);
+
+        return testee.getExamPassword() == password;
     }
 
 }

@@ -13,13 +13,13 @@ public class MailServiceImpl implements MailService {
     @Autowired
     MailMaster mailMaster;
 
-    public void validateMail(String userMail) {
-        mailMaster.sendForValidation(userMail, "https://localhost:8080/student/login");
+    public void validateMail(String userMail, String verifyCode) {
+        mailMaster.sendForValidation(userMail, verifyCode);
     }
 
     @Override
-    public void examKeyMail(String userMail) {
-
+    public void examKeyMail(String userMail, String key, String examTitle) {
+        mailMaster.sendForExam(userMail, key, examTitle);
     }
 
     @Override

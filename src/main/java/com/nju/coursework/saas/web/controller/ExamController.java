@@ -97,5 +97,13 @@ public class ExamController {
         return JsonUtil.toJsonString(resp);
     }
 
+    @LoginRequired
+    @GetMapping("/attendExam")
+    public String attendExam(int testeeId, String password) {
+         GeneralResponse resp = new GeneralResponse(true, "");
+         resp.putDate("validation", examService.attendExam(testeeId, password));
+         return JsonUtil.toJsonString(resp);
+    }
+
 
 }

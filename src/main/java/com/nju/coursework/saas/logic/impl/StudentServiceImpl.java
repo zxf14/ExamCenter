@@ -27,7 +27,8 @@ public class StudentServiceImpl implements StudentService {
     public GeneralResponse register(StudentVO studentVO) {
         List<Student> students = studentRepository.findByNo(studentVO.getStudentNo());
         if (students.size() > 0) return new GeneralResponse(false, "学号已注册");
-        mailService.validateMail(studentVO.getMail());
+        String verityCode = getVerifyCode(studentVO.getMail());
+        mailService.validateMail(studentVO.getMail(), verityCode);
         Student student = new Student();
         student.setMail(studentVO.getMail());
         student.setName(studentVO.getName());
@@ -35,7 +36,9 @@ public class StudentServiceImpl implements StudentService {
         student.setStudentNo(studentVO.getStudentNo());
 
         studentRepository.saveAndFlush(student);
-        return new GeneralResponse(true, "mail sent");
+        GeneralResponse generalResponse = new GeneralResponse(true, "mail sent");
+        generalResponse.putDate("verifyCode", verityCode);
+        return generalResponse;
     }
 
     @Override

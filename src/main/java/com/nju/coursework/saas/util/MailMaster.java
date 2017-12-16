@@ -36,11 +36,12 @@ public class MailMaster {
         session.setDebug(true);
     }
 
-    public void sendForValidation(String userMail, String url) {
+    public void sendForValidation(String userMail, String verifyCode) {
         try {
             List<String> receiverList = new ArrayList<>();
             receiverList.add(userMail);
-            MimeMessage message = createMessage(myMailAccount, receiverList, "在线考试平台邮箱验证", url);
+            MimeMessage message = createMessage(myMailAccount, receiverList,
+                    "在线考试平台邮箱验证", "验证码为" + verifyCode);
             Transport transport = session.getTransport();
             transport.connect(myMailAccount, myMailPassword);
             transport.sendMessage(message, message.getAllRecipients());
@@ -50,9 +51,10 @@ public class MailMaster {
         }
     }
 
-    public void sendForExam(List<String> students, String key) {
+    public void sendForExam(String userMail, String key, String examTitle) {
         try {
-            MimeMessage message = createMessage(myMailAccount, students, "考试密钥", "本次考试密钥为: " + key);
+            MimeMessage message = createMessage(myMailAccount, Arrays.asList(userMail),
+                    "考试密钥", examTitle + "的考试密钥为: " + key);
             Transport transport = session.getTransport();
             transport.connect(myMailAccount, myMailPassword);
             transport.sendMessage(message, message.getAllRecipients());

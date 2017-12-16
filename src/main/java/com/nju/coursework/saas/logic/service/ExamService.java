@@ -58,4 +58,11 @@ public interface ExamService {
      * @return
      */
     List<ExamVO> getExamInfoByStudent(String studentNo);
+
+    /**
+     * 参加考试时输入验证码
+     * @param testeeId
+     * @return
+     */
+    boolean attendExam(int testeeId, String password);
 }
