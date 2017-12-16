@@ -2,6 +2,7 @@ package com.nju.coursework.saas.logic.service;
 
 import com.nju.coursework.saas.logic.vo.StudentVO;
 import com.nju.coursework.saas.web.response.GeneralResponse;
+import sun.java2d.loops.FillRect;
 
 /**
  * Created by zhouxiaofan on 2017/11/8.
@@ -31,6 +32,6 @@ public interface StudentService {
      * @param mail 邮箱地址
      * @return 验证码 6 位数字
      */
-    String getVerifyCode(String mail);
+     GeneralResponse getVerifyCode(String mail);
 
 }
