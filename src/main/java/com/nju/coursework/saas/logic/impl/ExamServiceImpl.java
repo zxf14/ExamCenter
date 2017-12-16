@@ -328,7 +328,6 @@ public class ExamServiceImpl implements ExamService {
     @Override
     public boolean attendExam(int testeeId, String password) {
         Testee testee = testeeRepository.findOne(testeeId);
-
         return testee.getExamPassword().equals(password);
     }
 
