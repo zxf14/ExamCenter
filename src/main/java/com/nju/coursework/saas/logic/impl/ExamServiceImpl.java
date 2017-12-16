@@ -74,20 +74,16 @@ public class ExamServiceImpl implements ExamService {
                 .collect(Collectors.toList());
 
         studentName.stream().forEach(s -> {
-            List<Student> students = studentRepository.findByName(s.split(" ")[0]);
-            if (students != null && students.size() != 0) {
-                students = students.stream().filter(student -> student.getMail() != null).collect(Collectors.toList());
-                students.forEach(
-                        stu -> {
-                            Testee testee = new Testee();
-                            testee.setStudentByStudentId(stu);
-                            testee.setStudentMail(s.split(" ")[1]);
-                            testee.setStudentName(s.split(" ")[0]);
-                            String password = (testee.hashCode() + Instant.now().hashCode() + "").substring(2,8);
-                            testee.setExamPassword(password);
-                            testees.add(testee);
-                        });
+            List<Student> students = studentRepository.findByEmail(s.split(" ")[1]);
+            Testee testee = new Testee();
+            testee.setStudentMail(s.split(" ")[1]);
+            testee.setStudentName(s.split(" ")[0]);
+            String password = (testee.hashCode() + Instant.now().hashCode() + "").substring(2,8);
+            testee.setExamPassword(password);
+            if (students != null && students.size() > 0) {
+                testee.setStudentByStudentId(students.get(0));
             }
+            testees.add(testee);
 
         });
         GeneralResponse generalResponse =  saveExam(userId, testees, examConfigVO.getScores(), examConfigVO.getQuestions(),
@@ -99,47 +95,48 @@ public class ExamServiceImpl implements ExamService {
 
     @Override
     public GeneralResponse examConfigByExcel(int userId, ExamConfigVO examConfigVO, InputStream excel) {
-        if (examConfigVO.getQuestionNum() != examConfigVO.getQuestions().size()) {
-            return new GeneralResponse(false, "设置的试题总数与实际题数量不匹配");
-        }
-        try {
-            Instant timeStart = Timestamp.valueOf(examConfigVO.getStartTime()).toInstant();
-            Instant timeEnd = Timestamp.valueOf(examConfigVO.getEndTime()).toInstant();
-            if (timeStart.compareTo(timeEnd) > 0) {
-                return new GeneralResponse(false, "考试开始时间晚于考试结束时间");
-            }
-        } catch (Exception e) {
-            return new GeneralResponse(false, "时间格式错误");
-        }
-        if (excel != null) {
-            groupService.createGroup(userId, excel, examConfigVO.getGroupName());
-        } else {
-            return new GeneralResponse(false, "无excel文件");
-        }
-        List<GroupsVO> validGroups = groupService.getGroups(userId).stream()
-                .filter(g -> g.getName() == examConfigVO.getGroupName()).collect(Collectors.toList());
-
-        List<Testee> testees = new ArrayList<>();
-        validGroups.forEach(g -> {
-            g.getStudents().stream().forEach(
-                    s -> {
-                        List<Student> students = studentRepository.findByName(s.split(" ")[0])
-                                .stream().filter(student -> student.getMail() != null).collect(Collectors.toList());
-                        students.forEach(
-                                stu -> {
-                                    Testee testee = new Testee();
-                                    testee.setStudentByStudentId(stu);
-                                    testee.setStudentMail(stu.getMail());
-                                    String password = (testee.hashCode() + Instant.now().hashCode() + "").substring(2,8);
-                                    testee.setExamPassword(password);
-                                    testees.add(testee);
-                                });
-                    });
-        });
-
-        return saveExam(userId, testees, examConfigVO.getScores(), examConfigVO.getQuestions(),
-                examConfigVO.getStartTime(), examConfigVO.getEndTime(),
-                examConfigVO.getTitle(), examConfigVO.getPlace(), examConfigVO.getCourseId());
+//        if (examConfigVO.getQuestionNum() != examConfigVO.getQuestions().size()) {
+//            return new GeneralResponse(false, "设置的试题总数与实际题数量不匹配");
+//        }
+//        try {
+//            Instant timeStart = Timestamp.valueOf(examConfigVO.getStartTime()).toInstant();
+//            Instant timeEnd = Timestamp.valueOf(examConfigVO.getEndTime()).toInstant();
+//            if (timeStart.compareTo(timeEnd) > 0) {
+//                return new GeneralResponse(false, "考试开始时间晚于考试结束时间");
+//            }
+//        } catch (Exception e) {
+//            return new GeneralResponse(false, "时间格式错误");
+//        }
+//        if (excel != null) {
+//            groupService.createGroup(userId, excel, examConfigVO.getGroupName());
+//        } else {
+//            return new GeneralResponse(false, "无excel文件");
+//        }
+//        List<GroupsVO> validGroups = groupService.getGroups(userId).stream()
+//                .filter(g -> g.getName() == examConfigVO.getGroupName()).collect(Collectors.toList());
+//
+//        List<Testee> testees = new ArrayList<>();
+//        validGroups.forEach(g -> {
+//            g.getStudents().stream().forEach(
+//                    s -> {
+//                        List<Student> students = studentRepository.findByName(s.split(" ")[0])
+//                                .stream().filter(student -> student.getMail() != null).collect(Collectors.toList());
+//                        students.forEach(
+//                                stu -> {
+//                                    Testee testee = new Testee();
+//                                    testee.setStudentByStudentId(stu);
+//                                    testee.setStudentMail(stu.getMail());
+//                                    String password = (testee.hashCode() + Instant.now().hashCode() + "").substring(2,8);
+//                                    testee.setExamPassword(password);
+//                                    testees.add(testee);
+//                                });
+//                    });
+//        });
+//
+//        return saveExam(userId, testees, examConfigVO.getScores(), examConfigVO.getQuestions(),
+//                examConfigVO.getStartTime(), examConfigVO.getEndTime(),
+//                examConfigVO.getTitle(), examConfigVO.getPlace(), examConfigVO.getCourseId());
+        return null;
     }
 
     private GeneralResponse saveExam(int userId, List<Testee> testees, List<Integer> scores, List<QuestionVO> questions,

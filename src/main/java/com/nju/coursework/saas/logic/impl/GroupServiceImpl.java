@@ -39,7 +39,7 @@ public class GroupServiceImpl implements GroupService {
                 list.add(info);
             }
             try {
-                saveGroup(list, groupName);
+                saveGroup(list, groupName, userId);
             } catch (Exception error) {
                 return new GeneralResponse(false, "excel格式错误");
             }
@@ -52,11 +52,11 @@ public class GroupServiceImpl implements GroupService {
         return new GeneralResponse(false, "");
     }
 
-    private void saveGroup(List<String> list, String groupName) {
+    private void saveGroup(List<String> list, String groupName, int userId) {
         Groups group = new Groups();
         group.setName(groupName);
         group.setStudents(String.join(";", list));
-        group.setUserByUserId(userRepository.findOne(1));
+        group.setUserByUserId(userRepository.findOne(userId));
         groupRepository.saveAndFlush(group);
     }
 
