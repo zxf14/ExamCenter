@@ -11,6 +11,7 @@ import org.springframework.stereotype.Service;
 import sun.java2d.loops.FillRect;
 
 import javax.annotation.Resource;
+import java.time.Instant;
 import java.util.Date;
 import java.util.List;
 
@@ -55,7 +56,7 @@ public class StudentServiceImpl implements StudentService {
 
     @Override
     public GeneralResponse getVerifyCode(String mail) {
-        String verityCode = mail.hashCode() + new Date().hashCode() + "";
+        String verityCode = (mail.hashCode() + Instant.now().hashCode() + "").substring(2,8);
         if (verityCode == null) {
             return new GeneralResponse(false, "生成验证码错误");
         }
