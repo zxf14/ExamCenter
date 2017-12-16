@@ -3,6 +3,7 @@ package com.nju.coursework.saas.logic.impl;
 import com.nju.coursework.BaseTests;
 import com.nju.coursework.saas.logic.service.CourseService;
 import com.nju.coursework.saas.logic.service.ExamService;
+import com.nju.coursework.saas.logic.service.MailService;
 import com.nju.coursework.saas.logic.service.StudentService;
 import com.nju.coursework.saas.logic.vo.CourseVO;
 import com.nju.coursework.saas.logic.vo.ExamConfigVO;
@@ -27,8 +28,8 @@ public class ExamServiceImplTest extends  BaseTests{
     ExamService examService;
     @Resource
     StudentService studentService;
-
-    @Ignore
+    @Resource
+    MailService mailService;
     @Test
     public void createExam() {
         ExamConfigVO vo = new ExamConfigVO();
@@ -52,6 +53,12 @@ public class ExamServiceImplTest extends  BaseTests{
         System.out.println(examService.getExamInfoByStudent("1").size());
     }
 
+    @Test
+    @Ignore
+    public void sendPassword() {
+        mailService.examKeyMail("141250190@smail.nju.edu.cn", "test", "Test");
+    }
+    @Ignore
     @Test
     public void getVerifyCode() {
         System.out.println(studentService.getVerifyCode("141250190@smail.nju.edu.cn"));
