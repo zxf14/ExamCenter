@@ -7,6 +7,8 @@ import com.nju.coursework.saas.logic.service.GroupService;
 import com.nju.coursework.saas.logic.service.MailService;
 import com.nju.coursework.saas.logic.vo.*;
 import com.nju.coursework.saas.web.response.GeneralResponse;
+import lombok.AllArgsConstructor;
+import lombok.Data;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -291,8 +293,8 @@ public class ExamServiceImpl implements ExamService {
                         }
                 ).collect(Collectors.toList());
 
-        List<Integer> value = quizRepository.findByExamId(examId).stream()
-                .map(quiz -> new Integer(quiz.getValue())).collect(Collectors.toList());
+        List<Value> value = quizRepository.findByExamId(examId).stream()
+                .map(quiz -> new Value(quiz.getQuestionByQuestionId().getId(), quiz.getValue())).collect(Collectors.toList());
 
         if (student != null) {
             answers = answerRepository.findByStudentId(studentId).stream()
@@ -300,7 +302,22 @@ public class ExamServiceImpl implements ExamService {
                     .map(answer -> new AnswerVO(answer))
                     .collect(Collectors.toList());
         }
-        return new ExamVO(exam, questions, value, answers);
+        List<AnswerVO> filterAnswer = new ArrayList<>();
+        List<Integer> filterValue = new ArrayList<>();
+        for(int i = 0;i < questions.size();i++) {
+            QuestionVO q = questions.get(i);
+            answers.stream().forEach(a -> {
+                if (a.getQuestionId() == q.getId()) {
+                    filterAnswer.add(a);
+                }
+            });
+            value.stream().forEach(v -> {
+                if (v.getQuestionId() == q.getId()) {
+                    filterValue.add(new Integer(v.getValue()));
+                }
+            });
+        }
+        return new ExamVO(exam, questions, filterValue, filterAnswer);
     }
 
     @Override
@@ -349,4 +366,10 @@ public class ExamServiceImpl implements ExamService {
             return quizVO;
         }).collect(Collectors.toList());
     }
+}
+@Data
+@AllArgsConstructor
+class Value {
+    private int questionId;
+    private int value;
 }
