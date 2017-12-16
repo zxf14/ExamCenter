@@ -46,7 +46,6 @@ public class ExamServiceImplTest extends  BaseTests{
         vo.setPlace("abc");
         examService.examConfig(1, vo);
     }
-
     @Ignore
     @Test
     public void getExamByStudent() {
