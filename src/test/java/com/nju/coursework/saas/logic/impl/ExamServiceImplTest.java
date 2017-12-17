@@ -36,10 +36,8 @@ public class ExamServiceImplTest extends  BaseTests{
         vo.setCourseId(1);
         vo.setGroupId(1);
         vo.setQuestionNum(1);
-        vo.setScores(Arrays.asList(0));
+        vo.setScores(0);
         vo.setGroupName("test");
-        QuestionVO questionVO = new QuestionVO();
-        vo.setQuestions(Arrays.asList(questionVO));
         vo.setStartTime("2017-12-16 14:14:21");
         vo.setEndTime("2017-12-17 12:12:12");
         vo.setTitle("test");
