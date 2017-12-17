@@ -13,9 +13,8 @@ import java.util.List;
 public class ExamConfigVO {
 
     int questionNum;
-    List<Integer> scores;
+    int scores;
     int groupId;
-    List<QuestionVO> questions;
     String groupName;
     String startTime;
     String endTime;
