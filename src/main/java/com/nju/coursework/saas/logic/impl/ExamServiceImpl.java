@@ -60,6 +60,9 @@ public class ExamServiceImpl implements ExamService {
         if (quizCount != examConfigVO.getQuestions().size()) {
             return new GeneralResponse(false, "设置的试题总数与实际题数量不匹配");
         }
+        if (quizCount != examConfigVO.getScores().size()) {
+            return new GeneralResponse(false, "设置的分值数目与实际题数不匹配");
+        }
         try {
             Instant timeStart = Timestamp.valueOf(examConfigVO.getStartTime()).toInstant();
             Instant timeEnd = Timestamp.valueOf(examConfigVO.getEndTime()).toInstant();
@@ -275,7 +278,7 @@ public class ExamServiceImpl implements ExamService {
     public ExamVO getExamAfter(int examId, String studentId) {
         Exam exam = examRepository.findOne(examId);
         Student student = null;
-
+        StudentVO studentVO = null;
         if (studentId != null) {
             List<Student> students = studentRepository.findByNo(studentId);
             if (students.size() > 0) {
@@ -301,6 +304,11 @@ public class ExamServiceImpl implements ExamService {
                     .filter(answer -> answer.getQuizByQuizId().getExamByExamId().getId() == examId)
                     .map(answer -> new AnswerVO(answer))
                     .collect(Collectors.toList());
+            studentVO = new StudentVO();
+            studentVO.setName(student.getName());
+            studentVO.setMail(student.getMail());
+            studentVO.setStudentNo(student.getStudentNo());
+
         }
         List<AnswerVO> filterAnswer = new ArrayList<>();
         List<Integer> filterValue = new ArrayList<>();
@@ -317,7 +325,7 @@ public class ExamServiceImpl implements ExamService {
                 }
             });
         }
-        return new ExamVO(exam, questions, filterValue, filterAnswer);
+        return new ExamVO(exam, questions, filterValue, filterAnswer, studentVO);
     }
 
     @Override

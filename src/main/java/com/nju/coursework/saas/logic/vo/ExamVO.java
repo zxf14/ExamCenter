@@ -30,6 +30,7 @@ public class ExamVO {
 
     //此字段用于考后生成试卷，存放学生选择的答案，与question是一一对应的；考前生成的试卷此列表为空
     private List<AnswerVO> answers;
+    private StudentVO studentVOS;//只有考后生成的试卷此列表有意义
 
     private Exam_Testee exam_testee;//此字段只有通过学生id获取考试列表时才生效
 
@@ -37,11 +38,12 @@ public class ExamVO {
         init(exam);
     }
 
-    public ExamVO(Exam exam, List<QuestionVO> questions, List<Integer> value, List<AnswerVO> answers) {
+    public ExamVO(Exam exam, List<QuestionVO> questions, List<Integer> value, List<AnswerVO> answers, StudentVO studentVOS) {
         init(exam);
         this.questions = new ArrayList<>(questions);
         this.value = new ArrayList<>(value);
         this.answers = new ArrayList<>(answers);
+        this.studentVOS = studentVOS;
     }
 
     public ExamVO(Exam exam, List<QuizVO> questions) {
