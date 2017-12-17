@@ -289,7 +289,6 @@ public class ExamServiceImpl implements ExamService {
         List<QuestionVO> questions = quizRepository.findByTesteeId(testeeId).stream()
                 .map(quiz -> {
                             Question question = quiz.getQuestionByQuestionId();
-                            Collections.shuffle(optionRepository.findByQuestion(question.getId()));
                             questionRepository.saveAndFlush(question);
                             return new QuestionVO(question);
                         }
