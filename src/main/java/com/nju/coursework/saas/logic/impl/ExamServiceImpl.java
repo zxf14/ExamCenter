@@ -267,11 +267,12 @@ public class ExamServiceImpl implements ExamService {
         for (Aoption option : aoption) {
             if (option == null) {
                 answer.setScore(0);
+                return;
             }
             if (!option.getIsRight()) {
                 answer.setScore(0);
+                return;
             }
-            return;
         }
         List<Aoption> filterAoption = aoption.stream().filter(Aoption::getIsRight).collect(Collectors.toList());
         if (filterAoption.size() == rightAoption.size()) {
