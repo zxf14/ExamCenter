@@ -49,6 +49,13 @@ public class ExamVO {
         this.questions.forEach(q -> Collections.shuffle(q.getOptionVOList()));
     }
 
+    public ExamVO(Exam exam, List<QuestionVO> questions, List<Integer> value, StudentVO studentVO) {
+        init(exam);
+        this.questions = new ArrayList<>(questions);
+        this.value = new ArrayList<>(value);
+        this.studentVOS = studentVO;
+        this.questions.forEach(q -> Collections.shuffle(q.getOptionVOList()));
+    }
     public ExamVO(Exam exam, List<QuizVO> questions) {
         init(exam);
         this.quizVOS = questions;

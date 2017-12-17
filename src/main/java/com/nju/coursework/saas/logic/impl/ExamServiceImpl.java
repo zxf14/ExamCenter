@@ -9,6 +9,7 @@ import com.nju.coursework.saas.logic.vo.*;
 import com.nju.coursework.saas.web.response.GeneralResponse;
 import lombok.AllArgsConstructor;
 import lombok.Data;
+import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -278,9 +279,34 @@ public class ExamServiceImpl implements ExamService {
     }
 
     @Override
-    public ExamVO createExamBefore(Integer examId) {
+    public ExamVO createExamBefore(Integer examId, Integer testeeId) {
+        Exam exam = examRepository.findOne(examId);
+        Testee testee = testeeRepository.findOne(testeeId);
+        StudentVO studentVO = new StudentVO();
+        studentVO.setStudentNo(testee.getStudentByStudentId().getStudentNo());
+        studentVO.setMail(testee.getStudentMail());
+        studentVO.setName(testee.getStudentName());
+        List<QuestionVO> questions = quizRepository.findByTesteeId(testeeId).stream()
+                .map(quiz -> {
+                            Question question = quiz.getQuestionByQuestionId();
+                            Collections.shuffle(optionRepository.findByQuestion(question.getId()));
+                            questionRepository.saveAndFlush(question);
+                            return new QuestionVO(question);
+                        }
+                ).collect(Collectors.toList());
 
-        return getExamAfter(examId, null);
+        List<Value> value = quizRepository.findByTesteeId(examId).stream()
+                .map(quiz -> new Value(quiz.getQuestionByQuestionId().getId(), quiz.getValue())).collect(Collectors.toList());
+        List<Integer> filterValue = new ArrayList<>();
+        for(int i = 0;i < questions.size();i++) {
+            QuestionVO q = questions.get(i);
+            value.stream().forEach(v -> {
+                if (v.getQuestionId() == q.getId()) {
+                    filterValue.add(new Integer(v.getValue()));
+                }
+            });
+        }
+        return new ExamVO(exam, questions, filterValue, studentVO);
     }
 
     @Override

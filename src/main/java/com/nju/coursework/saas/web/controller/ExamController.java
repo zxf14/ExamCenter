@@ -59,8 +59,8 @@ public class ExamController {
      */
     @LoginRequired
     @GetMapping("/teacherCreate")
-    public String teacherCreate(Integer examId) {
-        ExamVO exam = examService.createExamBefore(examId);
+    public String teacherCreate(Integer examId, Integer testeeId) {
+        ExamVO exam = examService.createExamBefore(examId, testeeId);
         GeneralResponse resp = new GeneralResponse(true, "");
         resp.putDate("exam", exam);
         return JsonUtil.toJsonString(resp);
