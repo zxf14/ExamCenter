@@ -7,6 +7,8 @@ import com.nju.coursework.saas.logic.service.GroupService;
 import com.nju.coursework.saas.logic.service.MailService;
 import com.nju.coursework.saas.logic.vo.*;
 import com.nju.coursework.saas.web.response.GeneralResponse;
+import lombok.AllArgsConstructor;
+import lombok.Data;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -79,6 +81,7 @@ public class ExamServiceImpl implements ExamService {
             Testee testee = new Testee();
             testee.setStudentMail(s.split(" ")[1]);
             testee.setStudentName(s.split(" ")[0]);
+            testee.setState(0);
             String password = (testee.hashCode() + Instant.now().hashCode() + "").substring(2, 8);
             testee.setExamPassword(password);
             if (students != null && students.size() > 0) {
@@ -221,6 +224,12 @@ public class ExamServiceImpl implements ExamService {
                 a.setStudentByStudentId(testee.getStudentByStudentId());
                 answerRepository.saveAndFlush(a);
             });
+            Instant endTime = Timestamp.valueOf(testee.getExamByExamId().getEndTime()).toInstant();
+            if (endTime.compareTo(Instant.now()) > 0) {
+                testee.setState(3);
+            } else {
+                testee.setState(2);
+            }
             testeeRepository.saveAndFlush(testee);
         } catch (Exception e) {
             return new GeneralResponse(false, e.getMessage());
@@ -240,10 +249,9 @@ public class ExamServiceImpl implements ExamService {
     }
 
     private void handleMulti(Question question, Quiz quiz, List<Aoption> aoption, Answer answer) {
-        List<Aoption> rightAoption = question.getAoptionsById().stream().filter(Aoption::getIsRight)
+        List<Aoption> rightAoption = optionRepository.findByQuestion(question.getId()).stream().filter(Aoption::getIsRight)
                 .collect(Collectors.toList());
         for (Aoption option : aoption) {
-
             if (option == null || !option.getIsRight()) {
                 answer.setScore(0);
                 return;
@@ -285,14 +293,31 @@ public class ExamServiceImpl implements ExamService {
                         }
                 ).collect(Collectors.toList());
 
-        List<Integer> value = quizRepository.findByExamId(examId).stream()
-                .map(quiz -> new Integer(quiz.getValue())).collect(Collectors.toList());
+        List<Value> value = quizRepository.findByExamId(examId).stream()
+                .map(quiz -> new Value(quiz.getQuestionByQuestionId().getId(), quiz.getValue())).collect(Collectors.toList());
 
         if (student != null) {
             answers = answerRepository.findByStudentId(studentId).stream()
-                    .map(answer -> new AnswerVO(answer)).collect(Collectors.toList());
+                    .filter(answer -> answer.getQuizByQuizId().getExamByExamId().getId() == examId)
+                    .map(answer -> new AnswerVO(answer))
+                    .collect(Collectors.toList());
         }
-        return new ExamVO(exam, questions, value, answers);
+        List<AnswerVO> filterAnswer = new ArrayList<>();
+        List<Integer> filterValue = new ArrayList<>();
+        for(int i = 0;i < questions.size();i++) {
+            QuestionVO q = questions.get(i);
+            answers.stream().forEach(a -> {
+                if (a.getQuestionId() == q.getId()) {
+                    filterAnswer.add(a);
+                }
+            });
+            value.stream().forEach(v -> {
+                if (v.getQuestionId() == q.getId()) {
+                    filterValue.add(new Integer(v.getValue()));
+                }
+            });
+        }
+        return new ExamVO(exam, questions, filterValue, filterAnswer);
     }
 
     @Override
@@ -319,7 +344,7 @@ public class ExamServiceImpl implements ExamService {
         List<ExamVO> examList = testeeList.stream()
                 .map(t -> {
                     List<QuizVO> questions = getQuestions(t.getExamByExamId().getId());
-                    ExamVO examVO = new ExamVO(t.getExamByExamId(), questions, t.getId());
+                    ExamVO examVO = new ExamVO(t.getExamByExamId(), questions, t.getId(), t.getState());
                     return examVO;
                 }).collect(Collectors.toList());
         return examList;
@@ -341,5 +366,10 @@ public class ExamServiceImpl implements ExamService {
             return quizVO;
         }).collect(Collectors.toList());
     }
-
+}
+@Data
+@AllArgsConstructor
+class Value {
+    private int questionId;
+    private int value;
 }
