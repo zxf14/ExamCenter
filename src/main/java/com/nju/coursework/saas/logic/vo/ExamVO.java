@@ -10,6 +10,8 @@ import java.sql.Timestamp;
 import java.time.Instant;
 import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Collections;
 import java.util.List;
 
 @Getter
@@ -44,6 +46,7 @@ public class ExamVO {
         this.value = new ArrayList<>(value);
         this.answers = new ArrayList<>(answers);
         this.studentVOS = studentVOS;
+        this.questions.forEach(q -> Collections.shuffle(q.getOptionVOList()));
     }
 
     public ExamVO(Exam exam, List<QuizVO> questions) {

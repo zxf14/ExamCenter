@@ -18,10 +18,7 @@ import javax.annotation.Resource;
 import java.io.InputStream;
 import java.sql.Timestamp;
 import java.time.Instant;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collections;
-import java.util.List;
+import java.util.*;
 import java.util.stream.Collector;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
@@ -57,12 +54,6 @@ public class ExamServiceImpl implements ExamService {
     @Override
     public GeneralResponse examConfig(int userId, ExamConfigVO examConfigVO) {
         int quizCount = examConfigVO.getQuestionNum();
-        if (quizCount != examConfigVO.getQuestions().size()) {
-            return new GeneralResponse(false, "设置的试题总数与实际题数量不匹配");
-        }
-        if (quizCount != examConfigVO.getScores().size()) {
-            return new GeneralResponse(false, "设置的分值数目与实际题数不匹配");
-        }
         try {
             Instant timeStart = Timestamp.valueOf(examConfigVO.getStartTime()).toInstant();
             Instant timeEnd = Timestamp.valueOf(examConfigVO.getEndTime()).toInstant();
@@ -94,7 +85,7 @@ public class ExamServiceImpl implements ExamService {
             }
             testees.add(testee);
         });
-        GeneralResponse generalResponse = saveExam(userId, testees, examConfigVO.getScores(), examConfigVO.getQuestions(),
+        GeneralResponse generalResponse = saveExam(userId, quizCount, testees, examConfigVO.getScores(),
                 examConfigVO.getStartTime(), examConfigVO.getEndTime(),
                 examConfigVO.getTitle(), examConfigVO.getPlace(), examConfigVO.getCourseId());
 
@@ -147,7 +138,7 @@ public class ExamServiceImpl implements ExamService {
         return null;
     }
 
-    private GeneralResponse saveExam(int userId, List<Testee> testees, List<Integer> scores, List<QuestionVO> questions,
+    private GeneralResponse saveExam(int userId, int questionNum, List<Testee> testees, int score,
                                      String startTime, String endTime, String title, String place, int courseId) {
 
         List<Quiz> quizs = new ArrayList<>();
@@ -162,27 +153,29 @@ public class ExamServiceImpl implements ExamService {
             exam.setExamTitle(title);
             exam.setExamPlace(place);
             examRepository.saveAndFlush(exam);
-            if (questions.size() > 0) {
-                IntStream.range(0, questions.size()).forEach(
-                        i -> {
+            List<Question> questions = questionRepository.findByCourseId(courseId);
+            if (questionNum > questions.size()) {
+                return new GeneralResponse(false, "设置的题目数量超过当前的题库题目数");
+            }
+            testees.forEach(
+                    t -> {
+                        t.setExamByExamId(exam);
+                        testeeRepository.saveAndFlush(t);
+                        Collections.shuffle(questions);
+                        for(int i = 0;i < questionNum;i++) {
                             Quiz quiz = new Quiz();
-                            quiz.setValue(scores.get(i));
-                            quiz.setQuestionByQuestionId(questionRepository.findOne(questions.get(i).getId()));
+                            quiz.setValue(score);
+                            quiz.setQuestionByQuestionId(questions.get(i));
+                            quiz.setTesteeByTesteeId(t);
                             quizs.add(quiz);
                         }
-                );
-            }
+                    }
+            );
             quizs.forEach(
                     q -> {
                         q.setExamByExamId(exam);
                         quizRepository.saveAndFlush(q);
                     });
-            testees.forEach(
-                    t -> {
-                        t.setExamByExamId(exam);
-                        testeeRepository.saveAndFlush(t);
-                    }
-            );
 
         } catch (Exception e) {
             return new GeneralResponse(false, e.getMessage());
@@ -190,6 +183,10 @@ public class ExamServiceImpl implements ExamService {
         testees.forEach(t -> mailService.examKeyMail(t.getStudentMail(), t.getExamPassword(),
                 t.getExamByExamId().getExamTitle()));
         return new GeneralResponse(true, "成功创建试卷");
+    }
+
+    private int random(int size) {
+        return (int)Math.random() * size;
     }
 
     @Override
@@ -354,7 +351,7 @@ public class ExamServiceImpl implements ExamService {
     public List<ExamVO> getExamInfoByCourse(int courseId) {
         List<Exam> examList = examRepository.findByCourseId(courseId);
         return examList.stream().map(e -> {
-            List<QuizVO> questions = getQuestions(e.getId());
+            List<QuizVO> questions = getQuestions(quizRepository.findByExamId(e.getId()));
             return new ExamVO(e, questions);
         }).collect(Collectors.toList());
     }
@@ -365,7 +362,7 @@ public class ExamServiceImpl implements ExamService {
 
         List<ExamVO> examList = testeeList.stream()
                 .map(t -> {
-                    List<QuizVO> questions = getQuestions(t.getExamByExamId().getId());
+                    List<QuizVO> questions = getQuestions(quizRepository.findByTesteeId(t.getId()));
                     ExamVO examVO = new ExamVO(t.getExamByExamId(), questions, t.getId(), t.getState());
                     return examVO;
                 }).collect(Collectors.toList());
@@ -378,8 +375,7 @@ public class ExamServiceImpl implements ExamService {
         return testee.getExamPassword().equals(password);
     }
 
-    private List<QuizVO> getQuestions(int examByExamId) {
-        List<Quiz> quizzes = quizRepository.findByExamId(examByExamId);
+    private List<QuizVO> getQuestions(List<Quiz> quizzes) {
         return quizzes.stream().map(i -> {
             Question question = questionRepository.findOne(i.getQuestionByQuestionId().getId());
             List<Aoption> optionVO = optionRepository.findByQuestion(question.getId());

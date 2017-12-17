@@ -12,5 +12,7 @@ import java.util.List;
 public interface QuizRepository extends JpaRepository<Quiz, Integer> {
     @Query("select t from Quiz t where t.examByExamId.id=?1")
     List<Quiz> findByExamId(int examId);
+    @Query("select t from Quiz t where  t.testeeByTesteeId.id=?1")
+    List<Quiz> findByTesteeId(int testeeId);
 }
 

@@ -1,6 +1,7 @@
 package com.nju.coursework.saas.data.entity;
 
 import javax.persistence.*;
+import java.util.Collection;
 
 /**
  * Created by zhouxiaofan on 2017/12/4.
@@ -15,7 +16,7 @@ public class Testee {
     private Integer state = -1; //默认为-1，未开始为0，已结束为2，已开始已提交为3，已开始未提交为4
     private Student studentByStudentId;
     private Exam examByExamId;
-
+    private Collection<Quiz> quiz;
     @Id
     @GeneratedValue
     @Column(name = "id", nullable = false)
@@ -120,5 +121,14 @@ public class Testee {
 
     public void setStudentName(String studentName) {
         this.studentName = studentName;
+    }
+
+    @OneToMany(mappedBy = "testee")
+    public Collection<Quiz> getQuizzesById() {
+        return quiz;
+    }
+
+    public void setQuiz(Collection<Quiz> quiz) {
+        this.quiz = quiz;
     }
 }

@@ -115,13 +115,16 @@ DROP TABLE IF EXISTS `quiz`;
 CREATE TABLE `quiz` (
   `exam_id` int(11) DEFAULT NULL,
   `question_id` int(11) DEFAULT NULL,
+  `testee_id` int(11) DEFAULT  NULL,
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `value` int(11) DEFAULT NULL COMMENT '分值',
   PRIMARY KEY (`id`),
   KEY `examId` (`exam_id`),
   KEY `questionId` (`question_id`),
+  KEY `testeeId` (`testee_id`),
   CONSTRAINT `quiz_ibfk_1` FOREIGN KEY (`exam_id`) REFERENCES `exam` (`id`),
-  CONSTRAINT `quiz_ibfk_2` FOREIGN KEY (`question_id`) REFERENCES `question` (`id`)
+  CONSTRAINT `quiz_ibfk_2` FOREIGN KEY (`question_id`) REFERENCES `question` (`id`),
+  CONSTRAINT `quiz_ibfk_3` FOREIGN KEY (`testee_id`) REFERENCES  `testee` (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='考试试题';
 
 -- ----------------------------
