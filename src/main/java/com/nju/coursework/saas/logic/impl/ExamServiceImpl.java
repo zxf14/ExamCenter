@@ -286,26 +286,32 @@ public class ExamServiceImpl implements ExamService {
         studentVO.setStudentNo(testee.getStudentByStudentId().getStudentNo());
         studentVO.setMail(testee.getStudentMail());
         studentVO.setName(testee.getStudentName());
-        List<QuestionVO> questions = quizRepository.findByTesteeId(testeeId).stream()
-                .map(quiz -> {
-                            Question question = quiz.getQuestionByQuestionId();
-                            questionRepository.saveAndFlush(question);
-                            return new QuestionVO(question);
-                        }
-                ).collect(Collectors.toList());
+        if (quizRepository.findByTesteeId(testeeId) != null && quizRepository.findByTesteeId(testeeId).size()>0) {
+            int score = quizRepository.findByTesteeId(testeeId).get(0).getValue();
+            List<QuestionVO> questions = quizRepository.findByTesteeId(testeeId).stream()
+                    .map(quiz -> {
+                                Question question = quiz.getQuestionByQuestionId();
+                                questionRepository.saveAndFlush(question);
+                                return new QuestionVO(question);
+                            }
+                    ).collect(Collectors.toList());
 
-        List<Value> value = quizRepository.findByTesteeId(examId).stream()
-                .map(quiz -> new Value(quiz.getQuestionByQuestionId().getId(), quiz.getValue())).collect(Collectors.toList());
-        List<Integer> filterValue = new ArrayList<>();
-        for(int i = 0;i < questions.size();i++) {
-            QuestionVO q = questions.get(i);
-            value.stream().forEach(v -> {
-                if (v.getQuestionId() == q.getId()) {
-                    filterValue.add(new Integer(v.getValue()));
-                }
-            });
+            List<Value> value = quizRepository.findByTesteeId(examId).stream()
+                    .map(quiz -> new Value(quiz.getQuestionByQuestionId().getId(), quiz.getValue())).collect(Collectors.toList());
+            List<Integer> filterValue = new ArrayList<>();
+            for(int i = 0;i < questions.size();i++) {
+                QuestionVO q = questions.get(i);
+                value.stream().forEach(v -> {
+                    if (v.getQuestionId() == q.getId()) {
+                        filterValue.add(new Integer(v.getValue()));
+                    }
+                });
+            }
+            return new ExamVO(exam, questions, score, studentVO);
+        } else {
+            return new ExamVO(exam);
         }
-        return new ExamVO(exam, questions, filterValue, studentVO);
+
     }
 
     @Override
@@ -313,6 +319,7 @@ public class ExamServiceImpl implements ExamService {
         Exam exam = examRepository.findOne(examId);
         Student student = null;
         StudentVO studentVO = null;
+        int score = 0;
         if (studentId != null) {
             List<Student> students = studentRepository.findByNo(studentId);
             if (students.size() > 0) {
@@ -329,7 +336,9 @@ public class ExamServiceImpl implements ExamService {
                             return new QuestionVO(question);
                         }
                 ).collect(Collectors.toList());
-
+        if (quizRepository.findByExamId(examId)!= null && quizRepository.findByExamId(examId).size() > 0) {
+            score = quizRepository.findByExamId(examId).get(0).getValue();
+        }
         List<Value> value = quizRepository.findByExamId(examId).stream()
                 .map(quiz -> new Value(quiz.getQuestionByQuestionId().getId(), quiz.getValue())).collect(Collectors.toList());
 
@@ -360,7 +369,7 @@ public class ExamServiceImpl implements ExamService {
                 }
             });
         }
-        return new ExamVO(exam, questions, filterValue, filterAnswer, studentVO);
+        return new ExamVO(exam, questions, score, filterAnswer, studentVO);
     }
 
     @Override

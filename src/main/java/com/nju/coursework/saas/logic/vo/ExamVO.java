@@ -28,7 +28,7 @@ public class ExamVO {
     private int state = -1; //0为未开始，1为进行中，2为已结束, default为-1
     private double between;    //考试时长，以小时为单位
     //分值，与questions是一一对应的
-    private List<Integer> value;
+    private Integer value;
 
     //此字段用于考后生成试卷，存放学生选择的答案，与question是一一对应的；考前生成的试卷此列表为空
     private List<AnswerVO> answers;
@@ -40,19 +40,19 @@ public class ExamVO {
         init(exam);
     }
 
-    public ExamVO(Exam exam, List<QuestionVO> questions, List<Integer> value, List<AnswerVO> answers, StudentVO studentVOS) {
+    public ExamVO(Exam exam, List<QuestionVO> questions, Integer value, List<AnswerVO> answers, StudentVO studentVOS) {
         init(exam);
         this.questions = new ArrayList<>(questions);
-        this.value = new ArrayList<>(value);
+        this.value = value;
         this.answers = new ArrayList<>(answers);
         this.studentVOS = studentVOS;
         this.questions.forEach(q -> Collections.shuffle(q.getOptionVOList()));
     }
 
-    public ExamVO(Exam exam, List<QuestionVO> questions, List<Integer> value, StudentVO studentVO) {
+    public ExamVO(Exam exam, List<QuestionVO> questions, Integer value, StudentVO studentVO) {
         init(exam);
         this.questions = new ArrayList<>(questions);
-        this.value = new ArrayList<>(value);
+        this.value = value;
         this.studentVOS = studentVO;
         this.questions.forEach(q -> Collections.shuffle(q.getOptionVOList()));
     }
