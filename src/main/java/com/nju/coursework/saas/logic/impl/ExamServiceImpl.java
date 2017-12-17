@@ -77,6 +77,8 @@ public class ExamServiceImpl implements ExamService {
         Groups group = groupRepository.findOne(examConfigVO.getGroupId());
         List<String> studentName = Arrays.asList(group.getStudents().split(";")).stream()
                 .filter(s -> s.split(" ").length == 2)
+                .filter(s -> studentRepository.findByEmail(s.split(" ")[1]) != null &&
+                studentRepository.findByEmail(s.split(" ")[1]).size() > 0)
                 .collect(Collectors.toList());
 
         studentName.stream().forEach(s -> {
