@@ -224,11 +224,14 @@ public class ExamServiceImpl implements ExamService {
         );
         try {
             Testee testee = testeeRepository.findOne(testeeId);
-            testee.setScore(answerList.stream().mapToInt(Answer::getScore).sum());
+            final int[] testeeScore = {0};
             answerList.forEach(a -> {
                 a.setStudentByStudentId(testee.getStudentByStudentId());
                 answerRepository.saveAndFlush(a);
+                testeeScore[0] += a.getScore();
             });
+//            testee.setScore(answerList.stream().mapToInt(Answer::getScore).sum());
+            testee.setScore(testeeScore[0]);
             Instant endTime = Timestamp.valueOf(testee.getExamByExamId().getEndTime()).toInstant();
             if (endTime.compareTo(Instant.now()) > 0) {
                 testee.setState(3);
@@ -254,13 +257,21 @@ public class ExamServiceImpl implements ExamService {
     }
 
     private void handleMulti(Question question, Quiz quiz, List<Aoption> aoption, Answer answer) {
-        List<Aoption> rightAoption = optionRepository.findByQuestion(question.getId()).stream().filter(Aoption::getIsRight)
+        if (aoption == null) {
+            answer.setScore(0);
+            return;
+        }
+        List<Aoption> rightAoption = optionRepository.findByQuestion(question.getId()).stream()
+                .filter(Aoption::getIsRight)
                 .collect(Collectors.toList());
         for (Aoption option : aoption) {
-            if (option == null || !option.getIsRight()) {
+            if (option == null) {
                 answer.setScore(0);
-                return;
             }
+            if (!option.getIsRight()) {
+                answer.setScore(0);
+            }
+            return;
         }
         List<Aoption> filterAoption = aoption.stream().filter(Aoption::getIsRight).collect(Collectors.toList());
         if (filterAoption.size() == rightAoption.size()) {
@@ -306,6 +317,7 @@ public class ExamServiceImpl implements ExamService {
                     .filter(answer -> answer.getQuizByQuizId().getExamByExamId().getId() == examId)
                     .map(answer -> new AnswerVO(answer))
                     .collect(Collectors.toList());
+
             studentVO = new StudentVO();
             studentVO.setName(student.getName());
             studentVO.setMail(student.getMail());
@@ -334,6 +346,7 @@ public class ExamServiceImpl implements ExamService {
     public List<ExamVO> getExamAfterList(int examId) {
         List<Testee> testees = testeeRepository.findByExamId(examId);
         return testees.stream()
+                .filter(t -> t.getStudentByStudentId() != null)
                 .map(t -> getExamAfter(examId, t.getStudentByStudentId().getStudentNo()))
                 .collect(Collectors.toList());
     }

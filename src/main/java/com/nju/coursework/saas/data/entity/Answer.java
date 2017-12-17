@@ -8,7 +8,7 @@ import javax.persistence.*;
 @Entity
 public class Answer {
     private String content;
-    private int score;
+    private Integer score;
     private int id;
     private Quiz quizByQuizId;
     private Student studentByStudentId;
@@ -34,6 +34,16 @@ public class Answer {
         this.id = id;
     }
 
+    @Basic
+    @Column(name = "score", nullable = true)
+    public int getScore() {
+        return score;
+    }
+
+    public void setScore(int score) {
+        this.score = score;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
@@ -43,7 +53,7 @@ public class Answer {
 
         if (id != answer.id) return false;
         if (content != null ? !content.equals(answer.content) : answer.content != null) return false;
-
+        if (score != null ? !score.equals(answer.score) : answer.score != null) return false;
         return true;
     }
 
@@ -74,13 +84,4 @@ public class Answer {
         this.studentByStudentId = studentByStudentId;
     }
 
-    @Basic
-    @Column(name = "score", nullable = true)
-    public int getScore() {
-        return score;
-    }
-
-    public void setScore(int score) {
-        this.score = score;
-    }
 }

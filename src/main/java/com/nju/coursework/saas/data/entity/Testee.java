@@ -11,7 +11,7 @@ public class Testee {
     private String studentMail;
     private String studentName;
     private String examPassword;
-    private Integer score = 0;
+    private Integer score;
     private Integer state = -1; //默认为-1，未开始为0，已结束为2，已开始已提交为3，已开始未提交为4
     private Student studentByStudentId;
     private Exam examByExamId;
