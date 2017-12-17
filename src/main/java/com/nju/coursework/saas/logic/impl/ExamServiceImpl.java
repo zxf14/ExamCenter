@@ -193,26 +193,24 @@ public class ExamServiceImpl implements ExamService {
     }
 
     @Override
-    public GeneralResponse submitExam(int testeeId, @RequestBody List<QuizVO> quizVO) {
+    public GeneralResponse submitExam(int testeeId, @RequestBody List<QuizVO> quizVOs) {
 
         List<Answer> answerList = new ArrayList<>();
-        quizVO.stream().forEach(
-                q -> {
-                    Quiz quiz = quizRepository.findOne(q.getId());
+        quizVOs.stream().forEach(
+                quizVO -> {
+                    Quiz quiz = quizRepository.findOne(quizVO.getId());
 //                    Question question = quiz.getQuestionByQuestionId();
-                    Question question = questionRepository.findOne(q.getQuestion().getId());
-                    List<Aoption> options = q.getOptionId().stream().map(
-                            i -> {
-                                if (i != null) {
-                                    Aoption option = optionRepository.findOne(Integer.parseInt(i));
+                    Question question = questionRepository.findOne(quizVO.getQuestion().getId());
+                    //学生选择答案
+                    List<Aoption> options = quizVO.getOptionId().stream().filter(optionId -> optionId != null).map(
+                            optionId -> {
+                                    Aoption option = optionRepository.findOne(Integer.parseInt(optionId));
                                     return option;
-                                }
-                                return null;
                             }
                     ).collect(Collectors.toList());
                     Answer answer = new Answer();
                     answer.setQuizByQuizId(quiz);
-                    answer.setContent(String.join(" ", q.getOptionId()));
+                    answer.setContent(String.join(" ", quizVO.getOptionId().stream().filter(optionId -> optionId != null).collect(Collectors.toList())));
                     if (question.getType() == 0) {
                         handleSingle(quiz, options, answer);
                     } else {
@@ -256,26 +254,26 @@ public class ExamServiceImpl implements ExamService {
         }
     }
 
-    private void handleMulti(Question question, Quiz quiz, List<Aoption> aoption, Answer answer) {
-        if (aoption == null) {
+    private void handleMulti(Question question, Quiz quiz, List<Aoption> aoptionList, Answer answer) {
+        if (aoptionList == null) {
             answer.setScore(0);
             return;
         }
         List<Aoption> rightAoption = optionRepository.findByQuestion(question.getId()).stream()
                 .filter(Aoption::getIsRight)
                 .collect(Collectors.toList());
-        for (Aoption option : aoption) {
+        int rightNum = 0;
+        for (Aoption option : aoptionList) {
             if (option == null) {
-                answer.setScore(0);
-                return;
+                continue;
             }
             if (!option.getIsRight()) {
                 answer.setScore(0);
                 return;
             }
+            rightNum ++;
         }
-        List<Aoption> filterAoption = aoption.stream().filter(Aoption::getIsRight).collect(Collectors.toList());
-        if (filterAoption.size() == rightAoption.size()) {
+        if (rightNum == rightAoption.size()) {
             answer.setScore(quiz.getValue());
         } else {
             answer.setScore(quiz.getValue() / 2);
