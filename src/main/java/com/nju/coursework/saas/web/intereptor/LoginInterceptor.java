@@ -14,7 +14,6 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import java.lang.reflect.Method;
 
-//todo
 public class LoginInterceptor extends HandlerInterceptorAdapter {
     @Autowired
     private UserRepository userRepository;
@@ -28,6 +27,8 @@ public class LoginInterceptor extends HandlerInterceptorAdapter {
     @Override
     public boolean preHandle(HttpServletRequest request, HttpServletResponse response,
                              Object handler) throws Exception {
+
+        System.out.println("-------" + request.getRequestURI());
 
         // 如果不是映射到方法直接通过
         if (!(handler instanceof HandlerMethod)) {
@@ -47,26 +48,5 @@ public class LoginInterceptor extends HandlerInterceptorAdapter {
             }
         }
         return true;
-    }
-
-    /**
-     * 当前请求进行处理之后，也就是Controller 方法调用之后执行，
-     * 但是它会在DispatcherServlet 进行视图返回渲染之前被调用。
-     * 此时我们可以通过modelAndView对模型数据进行处理或对视图进行处理。
-     */
-    @Override
-    public void postHandle(HttpServletRequest request, HttpServletResponse response,
-                           Object handler, ModelAndView modelAndView) throws Exception {
-        System.out.println("-------------------postHandle");
-    }
-
-    /**
-     * 方法将在整个请求结束之后，也就是在DispatcherServlet 渲染了对应的视图之后执行。
-     * 这个方法的主要作用是用于进行资源清理工作的。
-     */
-    @Override
-    public void afterCompletion(HttpServletRequest request, HttpServletResponse response,
-                                Object handler, Exception ex) throws Exception {
-        System.out.println("-------------------afterCompletion");
     }
 }

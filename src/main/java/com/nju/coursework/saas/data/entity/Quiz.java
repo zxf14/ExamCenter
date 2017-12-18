@@ -13,7 +13,7 @@ public class Quiz {
     private Collection<Answer> answersById;
     private Exam examByExamId;
     private Question questionByQuestionId;
-    private Testee testee;
+    private Testee testeeByTesteeId;
 
     @Id
     @GeneratedValue
@@ -84,13 +84,15 @@ public class Quiz {
     public void setQuestionByQuestionId(Question questionByQuestionId) {
         this.questionByQuestionId = questionByQuestionId;
     }
+
     @ManyToOne
     @JoinColumn(name = "testee_id", referencedColumnName = "id")
     public Testee getTesteeByTesteeId() {
-        return testee;
+        return testeeByTesteeId;
     }
 
-    public void setTesteeByTesteeId(Testee testee) {
-        this.testee = testee;
+    public void setTesteeByTesteeId(Testee testeeByTesteeId) {
+        this.testeeByTesteeId = testeeByTesteeId;
     }
+
 }

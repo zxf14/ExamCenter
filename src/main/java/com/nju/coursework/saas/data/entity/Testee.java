@@ -16,7 +16,7 @@ public class Testee {
     private Integer state = -1; //默认为-1，未开始为0，已结束为2，已开始已提交为3，已开始未提交为4
     private Student studentByStudentId;
     private Exam examByExamId;
-    private Collection<Quiz> quiz;
+    private Collection<Quiz> quizzesById;
     @Id
     @GeneratedValue
     @Column(name = "id", nullable = false)
@@ -123,12 +123,12 @@ public class Testee {
         this.studentName = studentName;
     }
 
-    @OneToMany(mappedBy = "testee")
-    public Collection<Quiz> getQuizzesById() {
-        return quiz;
+    public void setQuizzesById(Collection<Quiz> quizzesById) {
+        this.quizzesById = quizzesById;
     }
 
-    public void setQuiz(Collection<Quiz> quiz) {
-        this.quiz = quiz;
+    @OneToMany(mappedBy = "testeeByTesteeId")
+    public Collection<Quiz> getQuizzesById() {
+        return quizzesById;
     }
 }
