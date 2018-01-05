@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<persistence xmlns="http://java.sun.com/xml/ns/persistence" version="2.0">
+
+    <persistence-unit name="NewPersistenceUnit">
+        <class>com.nju.coursework.saas.data.entity.Answer</class>
+        <class>com.nju.coursework.saas.data.entity.Exam</class>
+        <class>com.nju.coursework.saas.data.entity.Aoption</class>
+        <class>com.nju.coursework.saas.data.entity.Question</class>
+        <class>com.nju.coursework.saas.data.entity.Quiz</class>
+        <class>com.nju.coursework.saas.data.entity.Student</class>
+        <class>com.nju.coursework.saas.data.entity.Testee</class>
+        <class>com.nju.coursework.saas.data.entity.User</class>
+    </persistence-unit>
+</persistence>
