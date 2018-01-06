@@ -70,7 +70,7 @@ public class ExamServiceImpl implements ExamService {
         List<String> studentName = Arrays.asList(group.getStudents().split(";")).stream()
                 .filter(s -> s.split(" ").length == 2)
                 .filter(s -> studentRepository.findByEmail(s.split(" ")[1]) != null &&
-                studentRepository.findByEmail(s.split(" ")[1]).size() > 0)
+                        studentRepository.findByEmail(s.split(" ")[1]).size() > 0)
                 .collect(Collectors.toList());
 
         studentName.stream().forEach(s -> {
@@ -163,7 +163,7 @@ public class ExamServiceImpl implements ExamService {
                         t.setExamByExamId(exam);
                         testeeRepository.saveAndFlush(t);
                         Collections.shuffle(questions);
-                        for(int i = 0;i < questionNum;i++) {
+                        for (int i = 0; i < questionNum; i++) {
                             Quiz quiz = new Quiz();
                             quiz.setValue(score);
                             quiz.setQuestionByQuestionId(questions.get(i));
@@ -187,7 +187,7 @@ public class ExamServiceImpl implements ExamService {
     }
 
     private int random(int size) {
-        return (int)Math.random() * size;
+        return (int) Math.random() * size;
     }
 
     @Override
@@ -202,8 +202,8 @@ public class ExamServiceImpl implements ExamService {
                     //学生选择答案
                     List<Aoption> options = quizVO.getOptionId().stream().filter(optionId -> optionId != null).map(
                             optionId -> {
-                                    Aoption option = optionRepository.findOne(Integer.parseInt(optionId));
-                                    return option;
+                                Aoption option = optionRepository.findOne(Integer.parseInt(optionId));
+                                return option;
                             }
                     ).collect(Collectors.toList());
                     Answer answer = new Answer();
@@ -269,7 +269,7 @@ public class ExamServiceImpl implements ExamService {
                 answer.setScore(0);
                 return;
             }
-            rightNum ++;
+            rightNum++;
         }
         if (rightNum == rightAoption.size()) {
             answer.setScore(quiz.getValue());
@@ -286,7 +286,7 @@ public class ExamServiceImpl implements ExamService {
         studentVO.setStudentNo(testee.getStudentByStudentId().getStudentNo());
         studentVO.setMail(testee.getStudentMail());
         studentVO.setName(testee.getStudentName());
-        if (quizRepository.findByTesteeId(testeeId) != null && quizRepository.findByTesteeId(testeeId).size()>0) {
+        if (quizRepository.findByTesteeId(testeeId) != null && quizRepository.findByTesteeId(testeeId).size() > 0) {
             int score = quizRepository.findByTesteeId(testeeId).get(0).getValue();
             List<QuestionVO> questions = quizRepository.findByTesteeId(testeeId).stream()
                     .map(quiz -> {
@@ -299,7 +299,7 @@ public class ExamServiceImpl implements ExamService {
             List<Value> value = quizRepository.findByTesteeId(examId).stream()
                     .map(quiz -> new Value(quiz.getQuestionByQuestionId().getId(), quiz.getValue())).collect(Collectors.toList());
             List<Integer> filterValue = new ArrayList<>();
-            for(int i = 0;i < questions.size();i++) {
+            for (int i = 0; i < questions.size(); i++) {
                 QuestionVO q = questions.get(i);
                 value.stream().forEach(v -> {
                     if (v.getQuestionId() == q.getId()) {
@@ -320,23 +320,33 @@ public class ExamServiceImpl implements ExamService {
         Student student = null;
         StudentVO studentVO = null;
         int score = 0;
+        int testeeId = 0;
         if (studentId != null) {
+            testeeId = getTestee(studentId, examId);
+
             List<Student> students = studentRepository.findByNo(studentId);
             if (students.size() > 0) {
                 student = students.get(0);
             }
         }
 
+
         List<AnswerVO> answers = new ArrayList<>();
+        int finalTesteeId = testeeId;
         List<QuestionVO> questions = quizRepository.findByExamId(examId).stream()
                 .map(quiz -> {
+                            if (finalTesteeId != 0 && finalTesteeId != quiz.getTesteeByTesteeId().getId()) {
+                                return null;
+                            }
                             Question question = quiz.getQuestionByQuestionId();
                             Collections.shuffle(optionRepository.findByQuestion(question.getId()));
                             questionRepository.saveAndFlush(question);
+
                             return new QuestionVO(question);
                         }
-                ).collect(Collectors.toList());
-        if (quizRepository.findByExamId(examId)!= null && quizRepository.findByExamId(examId).size() > 0) {
+                ).filter(item -> item != null).collect(Collectors.toList());
+
+        if (quizRepository.findByExamId(examId) != null && quizRepository.findByExamId(examId).size() > 0) {
             score = quizRepository.findByExamId(examId).get(0).getValue();
         }
         List<Value> value = quizRepository.findByExamId(examId).stream()
@@ -356,7 +366,7 @@ public class ExamServiceImpl implements ExamService {
         }
         List<AnswerVO> filterAnswer = new ArrayList<>();
         List<Integer> filterValue = new ArrayList<>();
-        for(int i = 0;i < questions.size();i++) {
+        for (int i = 0; i < questions.size(); i++) {
             QuestionVO q = questions.get(i);
             answers.stream().forEach(a -> {
                 if (a.getQuestionId() == q.getId()) {
@@ -370,6 +380,16 @@ public class ExamServiceImpl implements ExamService {
             });
         }
         return new ExamVO(exam, questions, score, filterAnswer, studentVO);
+    }
+
+    private int getTestee(String studentId, int examId) {
+        List<Testee> testees = testeeRepository.findByStudentId(studentId);
+        for (Testee testee : testees) {
+            if (testee.getExamByExamId().getId() == examId) {
+                return testee.getId();
+            }
+        }
+        return 0;
     }
 
     @Override
@@ -419,6 +439,7 @@ public class ExamServiceImpl implements ExamService {
         }).collect(Collectors.toList());
     }
 }
+
 @Data
 @AllArgsConstructor
 class Value {
